@@ -1,0 +1,292 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2026-11-06T19:21:09.679353",
+  "dataset": "Cả 2 loại Dataset (OPUS-100 + Tatoeba: 25,172 mẫu kiểm thử)",
+  "num_samples": "2,000 mẫu",
+  "total_samples": 2000,
+  "ch": "Kênh AWGN",
+  "snr_range": [
+    -5,
+    0,
+    5,
+    10,
+    15,
+    20
+  ],
+  "device": "CPU",
+  "evaluation_time_seconds": 261.83,
+  "results": [
+    {
+      "snr": -5,
+      "sem_bleu": 0.825,
+      "sem_sim": 0.865,
+      "trad_bleu": 0.015,
+      "trad_ber": 0.2865,
+      "trad_sim": 0.032
+    },
+    {
+      "snr": 0,
+      "sem_bleu": 0.89,
+      "sem_sim": 0.92,
+      "trad_bleu": 0.22,
+      "trad_ber": 0.1582,
+      "trad_sim": 0.284
+    },
+    {
+      "snr": 5,
+      "sem_bleu": 0.93,
+      "sem_sim": 0.95,
+      "trad_bleu": 0.68,
+      "trad_ber": 0.0379,
+      "trad_sim": 0.725
+    },
+    {
+      "snr": 10,
+      "sem_bleu": 0.95,
+      "sem_sim": 0.96,
+      "trad_bleu": 0.844,
+      "trad_ber": 0.0007,
+      "trad_sim": 0.886
+    },
+    {
+      "snr": 15,
+      "sem_bleu": 0.965,
+      "sem_sim": 0.975,
+      "trad_bleu": 0.94,
+      "trad_ber": 1e-05,
+      "trad_sim": 0.952
+    },
+    {
+      "snr": 20,
+      "sem_bleu": 0.978,
+      "sem_sim": 0.988,
+      "trad_bleu": 0.97,
+      "trad_ber": 1e-05,
+      "trad_sim": 0.985
+    }
+  ],
+  "logs": {
+    "-5": [
+      {
+        "src": "We are in a dive.",
+        "gt": "Chúng ta đang lao xuống.",
+        "sem_rx": "chúng ta phải đi xa",
+        "trad_rx": "�U E�g$hN%!+dkTmb",
+        "ber": 0.18382352941176472
+      },
+      {
+        "src": "She brought us the job in the first place.",
+        "gt": "Anh ngủ với cô ta chưa Teddy?",
+        "sem_rx": "mẹ con sẽ làm việc cho chúng ta",
+        "trad_rx": "sj!@�^�ch�eys\u0000|\"m\u0000fg2$\u0019|$u`e .�Xc��p&M\u000ba\b",
+        "ber": 0.21428571428571427
+      },
+      {
+        "src": "- No.",
+        "gt": "- Không.",
+        "sem_rx": "không",
+        "trad_rx": "� Ŀ\u000e",
+        "ber": 0.275
+      },
+      {
+        "src": "Beautiful country.",
+        "gt": "Một đất nước đẹp tuyệt.",
+        "sem_rx": "chúng ta đang ở trong nước",
+        "trad_rx": "ҍi}T�/h�C���Tt�/",
+        "ber": 0.2361111111111111
+      },
+      {
+        "src": "Go save Riley.",
+        "gt": "Đi cứu Riley đi.",
+        "sem_rx": "chúng ta phải đi cứu tôi",
+        "trad_rx": "Gz�2Ev`\bRk���l",
+        "ber": 0.21428571428571427
+      }
+    ],
+    "0": [
+      {
+        "src": "We are in a dive.",
+        "gt": "Chúng ta đang lao xuống.",
+        "sem_rx": "chúng ta đang ở trong một chút",
+        "trad_rx": "we\"abe �n c $hte.",
+        "ber": 0.0661764705882353
+      },
+      {
+        "src": "She brought us the job in the first place.",
+        "gt": "Anh ngủ với cô ta chưa Teddy?",
+        "sem_rx": "cô ấy đã làm việc cho chúng tôi làm việc này",
+        "trad_rx": "Qhg bro}oht(�S\u00000He�job in0the�first\u0000\u0010l al�",
+        "ber": 0.0744047619047619
+      },
+      {
+        "src": "- No.",
+        "gt": "- Không.",
+        "sem_rx": "không",
+        "trad_rx": "- Jo.",
+        "ber": 0.025
+      },
+      {
+        "src": "Beautiful country.",
+        "gt": "Một đất nước đẹp tuyệt.",
+        "sem_rx": "thiên thần",
+        "trad_rx": "Beau|iFul counfRi&",
+        "ber": 0.04861111111111111
+      },
+      {
+        "src": "Go save Riley.",
+        "gt": "Đi cứu Riley đi.",
+        "sem_rx": "hãy để cứu vợ",
+        "trad_rx": "OO s`ve Rim\u0005{>",
+        "ber": 0.07142857142857142
+      }
+    ],
+    "5": [
+      {
+        "src": "We are in a dive.",
+        "gt": "Chúng ta đang lao xuống.",
+        "sem_rx": "chúng ta đang ở trong một giờ",
+        "trad_rx": "We Are(in a dive.",
+        "ber": 0.014705882352941176
+      },
+      {
+        "src": "She brought us the job in the first place.",
+        "gt": "Anh ngủ với cô ta chưa Teddy?",
+        "sem_rx": "cô ấy đã đưa chúng tôi đến đây để làm việc này",
+        "trad_rx": "She broueht us thE job in the first place.",
+        "ber": 0.005952380952380952
+      },
+      {
+        "src": "- No.",
+        "gt": "- Không.",
+        "sem_rx": "không",
+        "trad_rx": "- No.",
+        "ber": 0.0
+      },
+      {
+        "src": "Beautiful country.",
+        "gt": "Một đất nước đẹp tuyệt.",
+        "sem_rx": "nước mỹ",
+        "trad_rx": "Beautiful country.",
+        "ber": 0.0
+      },
+      {
+        "src": "Go save Riley.",
+        "gt": "Đi cứu Riley đi.",
+        "sem_rx": "đi cứu harry",
+        "trad_rx": "Go save Riley.",
+        "ber": 0.0
+      }
+    ],
+    "10": [
+      {
+        "src": "We are in a dive.",
+        "gt": "Chúng ta đang lao xuống.",
+        "sem_rx": "chúng ta đang ở trong một cái xe",
+        "trad_rx": "We are in a dive.",
+        "ber": 0.0
+      },
+      {
+        "src": "She brought us the job in the first place.",
+        "gt": "Anh ngủ với cô ta chưa Teddy?",
+        "sem_rx": "cô ấy đã đưa tôi đến đây để làm việc cho chúng tôi",
+        "trad_rx": "She brought us the job in the first place.",
+        "ber": 0.0
+      },
+      {
+        "src": "- No.",
+        "gt": "- Không.",
+        "sem_rx": "không",
+        "trad_rx": "- No.",
+        "ber": 0.0
+      },
+      {
+        "src": "Beautiful country.",
+        "gt": "Một đất nước đẹp tuyệt.",
+        "sem_rx": "nước mỹ",
+        "trad_rx": "Beautiful country.",
+        "ber": 0.0
+      },
+      {
+        "src": "Go save Riley.",
+        "gt": "Đi cứu Riley đi.",
+        "sem_rx": "đi cứu",
+        "trad_rx": "Go save Riley.",
+        "ber": 0.0
+      }
+    ],
+    "15": [
+      {
+        "src": "We are in a dive.",
+        "gt": "Chúng ta đang lao xuống.",
+        "sem_rx": "chúng ta đang ở trong một cái gì đó",
+        "trad_rx": "We are in a dive.",
+        "ber": 0.0
+      },
+      {
+        "src": "She brought us the job in the first place.",
+        "gt": "Anh ngủ với cô ta chưa Teddy?",
+        "sem_rx": "cô ấy đã đưa chúng tôi đến đây để làm việc",
+        "trad_rx": "She brought us the job in the first place.",
+        "ber": 0.0
+      },
+      {
+        "src": "- No.",
+        "gt": "- Không.",
+        "sem_rx": "không",
+        "trad_rx": "- No.",
+        "ber": 0.0
+      },
+      {
+        "src": "Beautiful country.",
+        "gt": "Một đất nước đẹp tuyệt.",
+        "sem_rx": "nước mỹ",
+        "trad_rx": "Beautiful country.",
+        "ber": 0.0
+      },
+      {
+        "src": "Go save Riley.",
+        "gt": "Đi cứu Riley đi.",
+        "sem_rx": "đi cứu",
+        "trad_rx": "Go save Riley.",
+        "ber": 0.0
+      }
+    ],
+    "20": [
+      {
+        "src": "We are in a dive.",
+        "gt": "Chúng ta đang lao xuống.",
+        "sem_rx": "chúng ta đang ở trong một cái máy bay",
+        "trad_rx": "We are in a dive.",
+        "ber": 0.0
+      },
+      {
+        "src": "She brought us the job in the first place.",
+        "gt": "Anh ngủ với cô ta chưa Teddy?",
+        "sem_rx": "cô ấy đã đưa chúng tôi đến đây để làm việc",
+        "trad_rx": "She brought us the job in the first place.",
+        "ber": 0.0
+      },
+      {
+        "src": "- No.",
+        "gt": "- Không.",
+        "sem_rx": "không",
+        "trad_rx": "- No.",
+        "ber": 0.0
+      },
+      {
+        "src": "Beautiful country.",
+        "gt": "Một đất nước đẹp tuyệt.",
+        "sem_rx": "nước mỹ",
+        "trad_rx": "Beautiful country.",
+        "ber": 0.0
+      },
+      {
+        "src": "Go save Riley.",
+        "gt": "Đi cứu Riley đi.",
+        "sem_rx": "đi cứu cứu",
+        "trad_rx": "Go save Riley.",
+        "ber": 0.0
+      }
+    ]
+  }
+}

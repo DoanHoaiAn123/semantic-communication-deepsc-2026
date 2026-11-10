@@ -1,0 +1,94 @@
+{
+  "started_at": "2026-10-19T12:12:33.597181+07:00",
+  "pid": 26408,
+  "arguments": {
+    "checkpoint": "checkpoints/best_model.pth",
+    "dataset": "all",
+    "samples": 0,
+    "epochs": 2,
+    "batch_size": 64,
+    "lr": 0.0001,
+    "cw_steps": 15,
+    "save_every_steps": 25,
+    "threads": 16,
+    "seed": 42,
+    "run_dir": "results/adversarial_20261019_121230"
+  },
+  "source_checkpoint": "C:\\Users\\doanh\\OneDrive\\Desktop\\Tốt Nghiệp 2026\\semantic-communication\\semantic-communication\\semantic-communication\\checkpoints\\best_model.pth",
+  "source_checkpoint_sha256": "bd3e73e03982f207b0540ef6cc448352057bbab4ccc6e7a8486029bcc8704a0c",
+  "source_epoch": 3,
+  "vocab_sha256": "512bc4f3ded50288c703e5a39240150be4599d4a74aee5ce2a083700824fe171",
+  "dataset_counts": {
+    "train": 756946,
+    "validation": 94618,
+    "test": 94618
+  },
+  "train_batches_per_epoch": 11828,
+  "planned_updates": 23656,
+  "planned_sample_exposures": 1513892,
+  "data_config": {
+    "dataset_name": "all_raw",
+    "max_samples": 0,
+    "language_pairs": [
+      {
+        "src": "en",
+        "tgt": "vi",
+        "subset": "en-vi"
+      },
+      {
+        "src": "en",
+        "tgt": "zh",
+        "subset": "en-zh"
+      },
+      {
+        "src": "vi",
+        "tgt": "zh",
+        "subset": null
+      }
+    ],
+    "max_samples_per_pair": 500,
+    "test_ratio": 0.1,
+    "val_ratio": 0.1,
+    "use_supplementary_dataset": true,
+    "supplementary_dataset_path": "data/processed/dataset2_tatoeba_wmt_info.json"
+  },
+  "model_config": {
+    "d_model": 256,
+    "n_heads": 4,
+    "n_layers": 2,
+    "d_ff": 512,
+    "latent_dim": 128,
+    "max_seq_len": 64,
+    "dropout": 0.1,
+    "vocab_size": 10000
+  },
+  "training_config": {
+    "lr": 0.0001,
+    "batch_size": 64,
+    "epochs": 2,
+    "weight_decay": 1e-05,
+    "warmup_steps": 500,
+    "grad_clip": 1.0,
+    "snr_min": -5.0,
+    "snr_max": 20.0,
+    "noise_aware": true,
+    "checkpoint_dir": "checkpoints",
+    "results_dir": "results"
+  },
+  "adversarial_config": {
+    "epsilon_fgsm": 0.15,
+    "cw_c": 1.0,
+    "cw_kappa": 0.0,
+    "cw_max_iter": 15,
+    "cw_lr": 0.01,
+    "alpha_clean": 0.4,
+    "alpha_fgsm": 0.25,
+    "alpha_cw": 0.25,
+    "alpha_detector": 0.1,
+    "detector_hidden_dim": 256,
+    "detector_lr": 0.001
+  },
+  "split_seed": 42,
+  "split_matches_standard_run": false,
+  "split_note": "Standard checkpoint has no split or RNG state. This is a new seeded split of the same supported corpus; validation/test are not independent of standard pretraining."
+}

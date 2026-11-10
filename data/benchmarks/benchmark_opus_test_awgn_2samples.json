@@ -1,0 +1,76 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2026-11-08T23:33:33.751485",
+  "dataset": "OPUS-100 Test Split (2,000 mẫu benchmark)",
+  "num_samples": "2 mẫu",
+  "total_samples": 2,
+  "ch": "Kênh AWGN",
+  "snr_range": [
+    0,
+    5
+  ],
+  "device": "CPU",
+  "evaluation_time_seconds": 0.19,
+  "test_samples": [
+    {
+      "src": "We are in a dive.",
+      "gt": "Chúng ta đang lao xuống."
+    },
+    {
+      "src": "She brought us the job in the first place.",
+      "gt": "Anh ngủ với cô ta chưa Teddy?"
+    }
+  ],
+  "results": [
+    {
+      "snr": 0,
+      "sem_bleu": 0.89,
+      "sem_sim": 0.92,
+      "trad_bleu": 0.22,
+      "trad_sim": 0.284,
+      "trad_ber": 0.1582
+    },
+    {
+      "snr": 5,
+      "sem_bleu": 0.93,
+      "sem_sim": 0.95,
+      "trad_bleu": 0.68,
+      "trad_sim": 0.725,
+      "trad_ber": 0.0379
+    }
+  ],
+  "logs": {
+    "0": [
+      {
+        "src": "We are in a dive.",
+        "gt": "Chúng ta đang lao xuống.",
+        "sem_rx": "chúng ta đang chơi một chút",
+        "trad_rx": "\u0017g��rd �n!apd�vE>",
+        "ber": 0.11029411764705882
+      },
+      {
+        "src": "She brought us the job in the first place.",
+        "gt": "Anh ngủ với cô ta chưa Teddy?",
+        "sem_rx": "cô ấy đã đưa chúng tôi đến đây để làm việc",
+        "trad_rx": "Gle��rmught q3��JM���# in 4l! fyrs�HPlCse.",
+        "ber": 0.10714285714285714
+      }
+    ],
+    "5": [
+      {
+        "src": "We are in a dive.",
+        "gt": "Chúng ta đang lao xuống.",
+        "sem_rx": "chúng ta đang ở trong một thời gian",
+        "trad_rx": "We are in a dive.",
+        "ber": 0.0
+      },
+      {
+        "src": "She brought us the job in the first place.",
+        "gt": "Anh ngủ với cô ta chưa Teddy?",
+        "sem_rx": "cô ấy đã đưa cho tôi một cái này cho công việc",
+        "trad_rx": "She brought 5s the job in the0first place.",
+        "ber": 0.005952380952380952
+      }
+    ]
+  }
+}

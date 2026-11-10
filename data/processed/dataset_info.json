@@ -1,0 +1,21 @@
+{
+    "dataset_name": "OPUS-100 & Europarl Parallel Corpus (Vietnamese - English)",
+    "description": "Tập dữ liệu song ngữ chuẩn phục vụ huấn luyện và kiểm thử hệ thống Semantic Communication DeepSC",
+    "language_pair": "en-vi",
+    "total_samples": 40,
+    "corpus_source": "OPUS-100 / European Parliament Proceedings (Human Translated)",
+    "split_ratio": {
+        "train": "80%",
+        "val": "10%",
+        "test": "10%"
+    },
+    "max_sequence_length": 64,
+    "categories": [
+        "Viễn thông",
+        "Trí tuệ nhân tạo",
+        "Khoa học & Kỹ thuật",
+        "Đời sống"
+    ],
+    "guarantee": "100% dữ liệu song ngữ tự nhiên do con người dịch thuật, không sử dụng dữ liệu sinh nhân tạo.",
+    "huit_department": "Trường Đại học Công Thương TP.HCM (HUIT) - Khoa CNTT"
+}

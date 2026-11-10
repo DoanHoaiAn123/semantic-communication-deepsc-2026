@@ -1,0 +1,30 @@
+﻿{
+    "pid":  26408,
+    "run_dir":  "C:\\Users\\doanh\\OneDrive\\Desktop\\Tốt Nghiệp 2026\\semantic-communication\\semantic-communication\\semantic-communication\\results\\adversarial_20261019_121230",
+    "python":  "C:\\Users\\doanh\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "arguments":  [
+                      "-u",
+                      "training/run_adversarial.py",
+                      "--dataset",
+                      "all",
+                      "--samples",
+                      "0",
+                      "--epochs",
+                      "2",
+                      "--batch_size",
+                      "64",
+                      "--lr",
+                      "0.0001",
+                      "--cw_steps",
+                      "15",
+                      "--save_every_steps",
+                      "25",
+                      "--threads",
+                      "16",
+                      "--seed",
+                      "42",
+                      "--run_dir",
+                      "results/adversarial_20261019_121230"
+                  ],
+    "launched_at":  "2026-10-19T12:12:31.0614094+07:00"
+}

@@ -1,0 +1,292 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2026-10-25T17:58:35.581521",
+  "dataset": "Tatoeba Parallel Corpus (Toàn bộ 23,172 mẫu)",
+  "num_samples": "500 mẫu",
+  "total_samples": 500,
+  "ch": "Kênh AWGN",
+  "snr_range": [
+    -5,
+    0,
+    5,
+    10,
+    15,
+    20
+  ],
+  "device": "CPU",
+  "evaluation_time_seconds": 127.94,
+  "results": [
+    {
+      "snr": -5,
+      "sem_bleu": 0.8241,
+      "sem_sim": 0.8647,
+      "trad_bleu": 0.0215,
+      "trad_ber": 0.2898448058912685,
+      "trad_sim": 0.032
+    },
+    {
+      "snr": 0,
+      "sem_bleu": 0.8682,
+      "sem_sim": 0.8968,
+      "trad_bleu": 0.1542,
+      "trad_ber": 0.1589495993616839,
+      "trad_sim": 0.284
+    },
+    {
+      "snr": 5,
+      "sem_bleu": 0.9085,
+      "sem_sim": 0.9274,
+      "trad_bleu": 0.5823,
+      "trad_ber": 0.0379985132390064,
+      "trad_sim": 0.725
+    },
+    {
+      "snr": 10,
+      "sem_bleu": 0.9384,
+      "sem_sim": 0.9472,
+      "trad_bleu": 0.8854,
+      "trad_ber": 0.0006972825658021182,
+      "trad_sim": 0.886
+    },
+    {
+      "snr": 15,
+      "sem_bleu": 0.9582,
+      "sem_sim": 0.9671,
+      "trad_bleu": 0.9682,
+      "trad_ber": 0.0,
+      "trad_sim": 0.952
+    },
+    {
+      "snr": 20,
+      "sem_bleu": 0.9725,
+      "sem_sim": 0.9812,
+      "trad_bleu": 0.995,
+      "trad_ber": 0.0,
+      "trad_sim": 0.985
+    }
+  ],
+  "logs": {
+    "-5": [
+      {
+        "src": "What is it?",
+        "gt": "Cái gì đó?",
+        "sem_rx": "cái gì thế",
+        "trad_rx": "W��<�}>\fme{",
+        "ber": 0.26136363636363635
+      },
+      {
+        "src": "I thought we would go to the children's home.",
+        "gt": "Con nghĩ chúng ta nên đến mái ấm.",
+        "sem_rx": "tôi sẽ tìm được gì",
+        "trad_rx": "\u000b��h�\u0007\u0001�\"9m�¯}Zd\u000eTW\b0�3tP^\t��Yb��um�V �-O�8",
+        "ber": 0.32222222222222224
+      },
+      {
+        "src": "Is there something you want to tell your husband?",
+        "gt": "Có điều gì cô muốn nói với chồng mình không?",
+        "sem_rx": "cô có thể nói gì về chồng cô ấy không",
+        "trad_rx": "M}iwzy�o1\u0016n/`\u0014d�Nf��=�:6�g��y�\u0001uel�y+\u001b�S�uQ}@e��|",
+        "ber": 0.29591836734693877
+      },
+      {
+        "src": "Your master wants to hunt us, burn us, eat our hearts.",
+        "gt": "Thầy của ngươi muốn săn chúng ta, thiêu chúng ta, ăn tim chúng ta.",
+        "sem_rx": "anh muốn chúng ta chiến đấu với nhau",
+        "trad_rx": "Y�\u0005r�\r@r���f^���}�<�P��W4�\r�\u0019�kg3l1�ޜp�qU\"\u0007�9\"�G�3^{^",
+        "ber": 0.3263888888888889
+      },
+      {
+        "src": "Or too weak to see this through?",
+        "gt": "Haylàkẻ yếuđuối?",
+        "sem_rx": "nếu không có một lần nữa thì cũng sẽ bị mất",
+        "trad_rx": "�  \u0014^�#`Ë��|\bu�0\u0014h0\u0015f��~f�7v3",
+        "ber": 0.3125
+      }
+    ],
+    "0": [
+      {
+        "src": "What is it?",
+        "gt": "Cái gì đó?",
+        "sem_rx": "cái gì thế",
+        "trad_rx": "W��v�mmB�$7",
+        "ber": 0.2159090909090909
+      },
+      {
+        "src": "I thought we would go to the children's home.",
+        "gt": "Con nghĩ chúng ta nên đến mái ấm.",
+        "sem_rx": "tôi nghĩ chúng ta nên đi về nhà",
+        "trad_rx": "I vhc�eI�\"ve!wG�$ dkAto\n�j@ qA lds�Ggs �ole8",
+        "ber": 0.15
+      },
+      {
+        "src": "Is there something you want to tell your husband?",
+        "gt": "Có điều gì cô muốn nói với chồng mình không?",
+        "sem_rx": "có phải là cô muốn nói gì với vợ cô không",
+        "trad_rx": "I�htigRebS-methI�/0i/\u0005�wevt\btG�V�nl(�o}r$�usqeju=",
+        "ber": 0.1326530612244898
+      },
+      {
+        "src": "Your master wants to hunt us, burn us, eat our hearts.",
+        "gt": "Thầy của ngươi muốn săn chúng ta, thiêu chúng ta, ăn tim chúng ta.",
+        "sem_rx": "[UNK] [UNK] đang cố gắng để chúng ta đi cùng nhau",
+        "trad_rx": "��}p&-az\\dt�wal0s v_\u0000`�jd 5s\u0004 2Tbn �s`\b�c`t�e�\u0000`egp4s*",
+        "ber": 0.1550925925925926
+      },
+      {
+        "src": "Or too weak to see this through?",
+        "gt": "Haylàkẻ yếuđuối?",
+        "sem_rx": "và như thế có vẻ như thế",
+        "trad_rx": "\u000fb(unn$w%@k$�kI2ef \\Jis��(pOU� =",
+        "ber": 0.1484375
+      }
+    ],
+    "5": [
+      {
+        "src": "What is it?",
+        "gt": "Cái gì đó?",
+        "sem_rx": "cái gì thế",
+        "trad_rx": "What is it?",
+        "ber": 0.0
+      },
+      {
+        "src": "I thought we would go to the children's home.",
+        "gt": "Con nghĩ chúng ta nên đến mái ấm.",
+        "sem_rx": "tôi nghĩ chúng ta nên về nhà",
+        "trad_rx": "I <hougit�e would0g�to the #haldrengs jgme.",
+        "ber": 0.03611111111111111
+      },
+      {
+        "src": "Is there something you want to tell your husband?",
+        "gt": "Có điều gì cô muốn nói với chồng mình không?",
+        "sem_rx": "có phải là cô muốn nói gì với chồng cô không",
+        "trad_rx": "Is�uherg\bwmgthing yOu`�azt t/ 4ell ymuz husband?",
+        "ber": 0.04336734693877551
+      },
+      {
+        "src": "Your master wants to hunt us, burn us, eat our hearts.",
+        "gt": "Thầy của ngươi muốn săn chúng ta, thiêu chúng ta, ăn tim chúng ta.",
+        "sem_rx": "anh muốn chúng tôi ăn cắp chúng tôi",
+        "trad_rx": "Your m�ster vants t\u000f h}nt us, bur~ uc6\u0000eav oUr�heastw.",
+        "ber": 0.037037037037037035
+      },
+      {
+        "src": "Or too weak to see this through?",
+        "gt": "Haylàkẻ yếuđuối?",
+        "sem_rx": "hoặc là có thể thấy nó",
+        "trad_rx": "Or to/ ueao to`see tHis!thr/}g(?",
+        "ber": 0.03515625
+      }
+    ],
+    "10": [
+      {
+        "src": "What is it?",
+        "gt": "Cái gì đó?",
+        "sem_rx": "cái gì thế",
+        "trad_rx": "What is it?",
+        "ber": 0.0
+      },
+      {
+        "src": "I thought we would go to the children's home.",
+        "gt": "Con nghĩ chúng ta nên đến mái ấm.",
+        "sem_rx": "tôi nghĩ chúng ta nên về nhà",
+        "trad_rx": "I thought ue would go to the children's home.",
+        "ber": 0.002777777777777778
+      },
+      {
+        "src": "Is there something you want to tell your husband?",
+        "gt": "Có điều gì cô muốn nói với chồng mình không?",
+        "sem_rx": "có phải anh muốn nói gì với vợ anh không",
+        "trad_rx": "Is there something you want to tell your husband?",
+        "ber": 0.0
+      },
+      {
+        "src": "Your master wants to hunt us, burn us, eat our hearts.",
+        "gt": "Thầy của ngươi muốn săn chúng ta, thiêu chúng ta, ăn tim chúng ta.",
+        "sem_rx": "con trai của chúng ta muốn ăn cắp chúng ta",
+        "trad_rx": "Your master wants to hunt us, burn us, eat our hearts.",
+        "ber": 0.0
+      },
+      {
+        "src": "Or too weak to see this through?",
+        "gt": "Haylàkẻ yếuđuối?",
+        "sem_rx": "hoặc là có thể thấy nó",
+        "trad_rx": "Or too weak to see this through?",
+        "ber": 0.0
+      }
+    ],
+    "15": [
+      {
+        "src": "What is it?",
+        "gt": "Cái gì đó?",
+        "sem_rx": "cái gì thế",
+        "trad_rx": "What is it?",
+        "ber": 0.0
+      },
+      {
+        "src": "I thought we would go to the children's home.",
+        "gt": "Con nghĩ chúng ta nên đến mái ấm.",
+        "sem_rx": "tôi nghĩ chúng ta nên về nhà",
+        "trad_rx": "I thought we would go to the children's home.",
+        "ber": 0.0
+      },
+      {
+        "src": "Is there something you want to tell your husband?",
+        "gt": "Có điều gì cô muốn nói với chồng mình không?",
+        "sem_rx": "có phải anh muốn nói gì với em không",
+        "trad_rx": "Is there something you want to tell your husband?",
+        "ber": 0.0
+      },
+      {
+        "src": "Your master wants to hunt us, burn us, eat our hearts.",
+        "gt": "Thầy của ngươi muốn săn chúng ta, thiêu chúng ta, ăn tim chúng ta.",
+        "sem_rx": "con trai của anh muốn chúng ta ăn cắp chúng ta",
+        "trad_rx": "Your master wants to hunt us, burn us, eat our hearts.",
+        "ber": 0.0
+      },
+      {
+        "src": "Or too weak to see this through?",
+        "gt": "Haylàkẻ yếuđuối?",
+        "sem_rx": "và nếu như có thể thấy nó",
+        "trad_rx": "Or too weak to see this through?",
+        "ber": 0.0
+      }
+    ],
+    "20": [
+      {
+        "src": "What is it?",
+        "gt": "Cái gì đó?",
+        "sem_rx": "cái gì thế",
+        "trad_rx": "What is it?",
+        "ber": 0.0
+      },
+      {
+        "src": "I thought we would go to the children's home.",
+        "gt": "Con nghĩ chúng ta nên đến mái ấm.",
+        "sem_rx": "tôi nghĩ chúng ta nên về nhà",
+        "trad_rx": "I thought we would go to the children's home.",
+        "ber": 0.0
+      },
+      {
+        "src": "Is there something you want to tell your husband?",
+        "gt": "Có điều gì cô muốn nói với chồng mình không?",
+        "sem_rx": "có phải cô muốn nói gì với cô không",
+        "trad_rx": "Is there something you want to tell your husband?",
+        "ber": 0.0
+      },
+      {
+        "src": "Your master wants to hunt us, burn us, eat our hearts.",
+        "gt": "Thầy của ngươi muốn săn chúng ta, thiêu chúng ta, ăn tim chúng ta.",
+        "sem_rx": "con trai của ông muốn chúng ta ăn cắp chúng ta",
+        "trad_rx": "Your master wants to hunt us, burn us, eat our hearts.",
+        "ber": 0.0
+      },
+      {
+        "src": "Or too weak to see this through?",
+        "gt": "Haylàkẻ yếuđuối?",
+        "sem_rx": "hoặc là có thể thấy nó trong một ngày",
+        "trad_rx": "Or too weak to see this through?",
+        "ber": 0.0
+      }
+    ]
+  }
+}

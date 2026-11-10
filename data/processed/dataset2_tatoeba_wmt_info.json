@@ -1,0 +1,76 @@
+{
+    "dataset_name": "Tatoeba + WMT Lifestyle & Domain-General (Vietnamese - English)",
+    "description": "Bộ dữ liệu đối chứng đa miền bổ sung — dùng để kiểm tra khả năng tổng quát hóa của mô hình DeepSC ngoài miền chuyên ngành CNTT/Viễn thông",
+    "language_pair": "en-vi",
+    "total_samples": 100,
+    "corpus_source": "Tatoeba (tatoeba.org) + WMT Newstest (curated) + Domain Expert Curation",
+    "split_ratio": {
+        "all": "100% test (bộ đối chứng, không dùng để train)"
+    },
+    "max_sequence_length": 64,
+    "categories": [
+        {
+            "name": "Đời sống thường ngày",
+            "description": "Các câu về sinh hoạt, ăn uống, thời tiết, gia đình",
+            "sample_count": 20
+        },
+        {
+            "name": "Giáo dục",
+            "description": "Học tập, trường học, nghiên cứu, học bổng",
+            "sample_count": 10
+        },
+        {
+            "name": "Công nghệ",
+            "description": "AI, điện thoại, đám mây, IoT, blockchain",
+            "sample_count": 10
+        },
+        {
+            "name": "Môi trường",
+            "description": "Biến đổi khí hậu, năng lượng tái tạo, đa dạng sinh học",
+            "sample_count": 8
+        },
+        {
+            "name": "Giao tiếp & Truyền thông",
+            "description": "Mạng xã hội, báo chí, truyền thông số",
+            "sample_count": 5
+        },
+        {
+            "name": "Viễn thông chuyên sâu",
+            "description": "OFDM, MIMO, BER, kênh truyền, phân tập",
+            "sample_count": 10
+        },
+        {
+            "name": "NLP & AI chuyên sâu",
+            "description": "Embedding, attention, tokenization, fine-tuning",
+            "sample_count": 10
+        },
+        {
+            "name": "Bảo mật & Tấn công đối kháng",
+            "description": "Adversarial examples, robustness, certified defense",
+            "sample_count": 8
+        },
+        {
+            "name": "Kinh tế",
+            "description": "Thương mại, lạm phát, đầu tư, tăng trưởng",
+            "sample_count": 5
+        },
+        {
+            "name": "Y tế",
+            "description": "Chẩn đoán, tiêm chủng, telemedicine, dinh dưỡng",
+            "sample_count": 5
+        }
+    ],
+    "vocabulary_enrichment": {
+        "purpose": "Bổ sung từ vựng đa miền để làm giàu ngữ cảnh cho Transformer",
+        "benefits": [
+            "Mở rộng phân phối từ vựng ngoài miền chuyên ngành hẹp",
+            "Cải thiện tính tổng quát hóa (generalization) của mô hình",
+            "Bổ sung các câu ngắn hơn để cân bằng phân phối sequence length",
+            "Kiểm tra độ bền tấn công đối kháng ngoài miền",
+            "Đánh giá Attack Detector không bị bias về domain"
+        ]
+    },
+    "comparison_purpose": "So sánh hiệu năng tấn công FGSM và C&W trên miền đời sống với miền chuyên ngành",
+    "created_date": "2026-10-12",
+    "version": "1.0.0"
+}

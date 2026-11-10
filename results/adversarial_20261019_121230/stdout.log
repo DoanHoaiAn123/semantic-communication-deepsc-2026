@@ -1,0 +1,38 @@
+Adversarial fine-tuning started at 2026-10-19T12:12:33.597181+07:00
+Pretrained model: C:\Users\doanh\OneDrive\Desktop\Tốt Nghiệp 2026\semantic-communication\semantic-communication\semantic-communication\checkpoints\best_model.pth
+Device: cpu; threads=16
+FGSM + C&W: 2 epochs, batch=64, C&W steps=15
+Using saved vocab; creating a reproducible split with seed 42
+The previous standard run did not save its split; this split may differ.
+  🔥 Đang nạp TOÀN BỘ dataset từ thư mục data/raw (không chừa lại bất kỳ file nào)...
+  [Raw OPUS-100] Đang nạp từ file cục bộ: opus.en-vi-train.en...
+  [Raw OPUS-100] Đang nạp từ file cục bộ: opus.en-vi-dev.en...
+  [Raw OPUS-100] Đang nạp từ file cục bộ: opus.en-vi-test.en...
+  [Raw OPUS-100] Đã nạp thành công 922,459 cặp câu song ngữ (en-vi)!
+  [Raw Tatoeba] Đang nạp từ file TSV cục bộ: C:\Users\doanh\OneDrive\Desktop\Tốt Nghiệp 2026\semantic-communication\semantic-communication\semantic-communication\data\raw\tatoeba\Các cặp câu trong Tiếng Anh - Tiếng Việt - 2026-10-14.tsv...
+  [Raw Tatoeba] Đã nạp thành công 22,925 cặp câu song ngữ!
+  [Raw Tatoeba ZH-VI] Đã nạp thêm 798 cặp câu Trung - Việt.
+  🌟 TỔNG CỘNG ĐÃ NẠP TOÀN BỘ: 946,182 cặp câu!
+  ⚠️  Không tìm thấy Dataset 2 tại: C:\Users\doanh\OneDrive\Desktop\Tốt Nghiệp 2026\semantic-communication\semantic-communication\semantic-communication\data\processed\dataset2_tatoeba_wmt.csv
+  [Vocab] Sử dụng từ điển có sẵn (10000 từ).
+Dataset sizes: {'train': 756946, 'validation': 94618, 'test': 94618}; train batches/epoch=11828
+Loaded standard checkpoint successfully (epoch=3).
+============================================================
+  ADVERSARIAL TRAINING — FGSM (eps=0.15) & C&W (c=1.0)
+  Device: cpu
+============================================================
+
+Epoch 1/2
+  Train -> Tot: 3.999 | Cln: 4.277 | FGSM: 4.345 | CW: 4.279 | Det: 1.324
+  Val   -> Cln: 4.149 | FGSM: 4.162 | CW: 4.150 | Det: 1.099
+  [OK] Da luu model robust tot nhat tai epoch 1
+
+Epoch 2/2
+  Train -> Tot: 3.871 | Cln: 4.185 | FGSM: 4.162 | CW: 4.185 | Det: 1.099
+  Val   -> Cln: 4.132 | FGSM: 4.088 | CW: 4.132 | Det: 1.099
+  [OK] Da luu model robust tot nhat tai epoch 2
+
+============================================================
+  [HOAN TAT] ADVERSARIAL TRAINING DA SAN SANG!
+============================================================
+Run artifacts: C:\Users\doanh\OneDrive\Desktop\Tốt Nghiệp 2026\semantic-communication\semantic-communication\semantic-communication\results\adversarial_20261019_121230
