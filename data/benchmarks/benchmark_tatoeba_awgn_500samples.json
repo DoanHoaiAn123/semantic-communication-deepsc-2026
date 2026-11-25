@@ -288,5 +288,2007 @@
         "ber": 0.0
       }
     ]
-  }
+  },
+  "test_samples": [
+    {
+      "src": "I have to go to sleep.",
+      "gt": "Tôi phải đi ngủ."
+    },
+    {
+      "src": "Today is June 18th and it is Muiriel's birthday!",
+      "gt": "Hôm nay là ngày 18 tháng sáu, và cũng là ngày sinh nhật của Muiriel!"
+    },
+    {
+      "src": "Muiriel is 20 now.",
+      "gt": "Bây giờ Muiriel được 20 tuổi."
+    },
+    {
+      "src": "The password is \"Muiriel\".",
+      "gt": "Mật mã là \"Muiriel\"."
+    },
+    {
+      "src": "I'm at a loss for words.",
+      "gt": "Tôi hết lời để nói."
+    },
+    {
+      "src": "I'm at a loss for words.",
+      "gt": "Tôi không biết nói gì."
+    },
+    {
+      "src": "I just don't know what to say.",
+      "gt": "Tôi không biết nên nói gì cả..."
+    },
+    {
+      "src": "That was an evil bunny.",
+      "gt": "Đó là một con thỏ hung ác."
+    },
+    {
+      "src": "I was in the mountains.",
+      "gt": "Tôi từ trên núi xuống."
+    },
+    {
+      "src": "Is it a recent picture?",
+      "gt": "Tấm hình này có mới không?"
+    },
+    {
+      "src": "Is it a recent picture?",
+      "gt": "Nó có phải là tấm hình mới chụp không?"
+    },
+    {
+      "src": "This will cost €30.",
+      "gt": "Cái này sẽ tốn €30."
+    },
+    {
+      "src": "This will cost €30.",
+      "gt": "Việc này sẽ tốn €30."
+    },
+    {
+      "src": "This will cost €30.",
+      "gt": "Thứ này sẽ tốn €30."
+    },
+    {
+      "src": "I make €100 a day.",
+      "gt": "Tôi kiếm được 100 euro một ngày."
+    },
+    {
+      "src": "It's because you don't want to be alone.",
+      "gt": "Đó là vì bạn không muốn đơn độc."
+    },
+    {
+      "src": "I'll do my best not to disturb your studying.",
+      "gt": "Tôi sẽ cố không quấy rầy bạn học hành."
+    },
+    {
+      "src": "You should sleep.",
+      "gt": "Bạn nên đi ngủ đi."
+    },
+    {
+      "src": "If the world weren't in the shape it is now, I could trust anyone.",
+      "gt": "Nếu thế giới không như bây giờ, thì tôi có thể tin ai cũng được."
+    },
+    {
+      "src": "It is unfortunately true.",
+      "gt": "Tiếc rằng cái đó là sự thật."
+    },
+    {
+      "src": "Oh, there's a butterfly!",
+      "gt": "Ô kìa, con bươm bướm!"
+    },
+    {
+      "src": "Hurry up.",
+      "gt": "Mau lên!"
+    },
+    {
+      "src": "It depends on the context.",
+      "gt": "Cái đó tùy thuộc vào văn cảnh."
+    },
+    {
+      "src": "America is a lovely place to be, if you are here to earn money.",
+      "gt": "Sống ở Mỹ rất thích nếu là ở đây để kiếm tiền."
+    },
+    {
+      "src": "I'm so fat.",
+      "gt": "Tôi mập quá."
+    },
+    {
+      "src": "So what?",
+      "gt": "Thì sao?"
+    },
+    {
+      "src": "I'm gonna shoot him.",
+      "gt": "Tao sẽ bắn hạ nó."
+    },
+    {
+      "src": "I don't intend to be selfish.",
+      "gt": "Tôi không có ý định ích kỷ đâu."
+    },
+    {
+      "src": "How many close friends do you have?",
+      "gt": "Bạn có bao nhiêu bạn thân?"
+    },
+    {
+      "src": "One can always find time.",
+      "gt": "Một người luôn luôn có thể kiếm thêm thì giờ."
+    },
+    {
+      "src": "If I could send you a marshmallow, Trang, I would.",
+      "gt": "Nếu tôi có thể gửi Trang một cục marshmallow thì tôi sẽ gửi."
+    },
+    {
+      "src": "I am a flawed person, but these are flaws that can easily be fixed.",
+      "gt": "Tôi là người có nhiều thói xấu nhưng những thói xấu này có thể dễ dàng sửa."
+    },
+    {
+      "src": "Whenever I find something I like, it's too expensive.",
+      "gt": "Hễ tôi kiếm được cái gì tôi thích thì nó lại đắt quá."
+    },
+    {
+      "src": "That is intriguing.",
+      "gt": "Cái đó nhìn hấp dẫn."
+    },
+    {
+      "src": "My physics teacher doesn't care if I skip classes.",
+      "gt": "Thầy vật lý không để ý đến việc lên lớp của tôi."
+    },
+    {
+      "src": "I hate it when there are a lot of people.",
+      "gt": "Tôi ghét những lúc đông người."
+    },
+    {
+      "src": "The police will get you to find the bullets.",
+      "gt": "Cảnh sát sẽ bắt bạn tìm ra mấy viên đạn."
+    },
+    {
+      "src": "I don't know what you mean.",
+      "gt": "Tôi không biết ý của bạn là gì."
+    },
+    {
+      "src": "You wanted to tell me about freedom?",
+      "gt": "Bạn muốn nói với tôi về sự tự do hả?"
+    },
+    {
+      "src": "I need to ask you a silly question.",
+      "gt": "Tôi cần hỏi một câu hỏi ngớ ngẩn."
+    },
+    {
+      "src": "I don't know how to demonstrate it, since it's too obvious!",
+      "gt": "Tôi không biết phải trình bày thế nào, bởi vì nó đã quá rõ ràng rồi."
+    },
+    {
+      "src": "Can it be phrased in another way?",
+      "gt": "Có thể nói cách khác được không?"
+    },
+    {
+      "src": "I found a solution, but I found it so fast that it can't be the right solution.",
+      "gt": "Tôi đã tìm ra cách, nhưng mà tìm ra nhanh thế này thì chắc hẳn đó không phải là cách hay rồi."
+    },
+    {
+      "src": "Except that here, it's not so simple.",
+      "gt": "Nhưng ở đây, không dễ dàng như vậy đâu."
+    },
+    {
+      "src": "No, he's not my new boyfriend.",
+      "gt": "Không, anh ấy không phải bạn trai mới của tôi."
+    },
+    {
+      "src": "You never have class or what?!",
+      "gt": "Bạn không bao giờ có lớp hay sao?"
+    },
+    {
+      "src": "Where is the problem?",
+      "gt": "Vấn đề ở đâu?"
+    },
+    {
+      "src": "I love you.",
+      "gt": "Em yêu anh!"
+    },
+    {
+      "src": "I love you.",
+      "gt": "Anh phải lòng em."
+    },
+    {
+      "src": "I don't like you anymore.",
+      "gt": "Tao không thích mày nữa."
+    },
+    {
+      "src": "Congratulations!",
+      "gt": "Xin chúc mừng!"
+    },
+    {
+      "src": "Why don't you come visit us?",
+      "gt": "Sao bạn không tới thăm tụi tôi?"
+    },
+    {
+      "src": "I don't know what to do anymore.",
+      "gt": "Tôi không còn biết phải làm gì nữa."
+    },
+    {
+      "src": "I didn't want this to happen.",
+      "gt": "Tôi cũng không muốn vụ này xảy ra."
+    },
+    {
+      "src": "You can probably guess what happens though.",
+      "gt": "Chắc bạn cũng đoán được cái gì xảy ra mà."
+    },
+    {
+      "src": "What other options do I have?",
+      "gt": "Tôi còn có sự chọn lựa nào khác nữa?"
+    },
+    {
+      "src": "I have nothing better to do.",
+      "gt": "Tôi không có gì tốt hơn để làm hết."
+    },
+    {
+      "src": "Everyone has strengths and weaknesses.",
+      "gt": "Người nào cũng có cái hay và cái dở của họ."
+    },
+    {
+      "src": "I don't know if I still have it.",
+      "gt": "Không biết là tôi còn không nữa."
+    },
+    {
+      "src": "What do you think I've been doing?",
+      "gt": "Bạn nghĩ tôi đang làm gì?"
+    },
+    {
+      "src": "My mom doesn't speak English very well.",
+      "gt": "Mẹ của tôi không nói tiếng Anh giỏi lắm."
+    },
+    {
+      "src": "How do you find food in outer space?",
+      "gt": "Làm sao để tìm được thức ăn khi đang ở ngoài không gian?"
+    },
+    {
+      "src": "Everyone wants to meet you. You're famous!",
+      "gt": "Mọi người muốn gặp bạn vì bạn nổi tiếng!"
+    },
+    {
+      "src": "I utterly despise formal writing!",
+      "gt": "Tôi rất ghét phải viết theo khuôn mẫu!"
+    },
+    {
+      "src": "What keeps you up so late?",
+      "gt": "Bạn làm gì mà thức khuya quá vậy?"
+    },
+    {
+      "src": "You're not fast enough.",
+      "gt": "Bạn không đủ nhanh."
+    },
+    {
+      "src": "Life is hard, but I am harder.",
+      "gt": "Cuộc sống thì khó khăn đấy, nhưng tôi mạnh mẽ hơn nó nhiều."
+    },
+    {
+      "src": "Stop it! You're making her feel uncomfortable!",
+      "gt": "Đừng! Mày đang làm cô ấy bực bội đấy."
+    },
+    {
+      "src": "Nothing is beautiful but the truth.",
+      "gt": "Chỉ có sự thật là tốt đẹp."
+    },
+    {
+      "src": "I don't speak Japanese.",
+      "gt": "Tôi không biết nói tiếng Nhật."
+    },
+    {
+      "src": "I don't speak Japanese.",
+      "gt": "Tôi không nói tiếng Nhật."
+    },
+    {
+      "src": "Nobody understands me.",
+      "gt": "Không ai hiểu được tôi hết."
+    },
+    {
+      "src": "I just wanted to check my email.",
+      "gt": "Tôi chỉ muốn kiểm tra hòm thư điện tử thôi."
+    },
+    {
+      "src": "Stop seeing me as a \"normal\" person!",
+      "gt": "Đừng coi tôi như người \"bình thường\"!"
+    },
+    {
+      "src": "Are you referring to me?",
+      "gt": "Bạn đang nói về tôi à?"
+    },
+    {
+      "src": "\"What's going on in the cave? I'm curious.\" \"I have no idea.\"",
+      "gt": "\"Trong hang đang xảy ra chuyện gì vậy? Tôi rất là tò mò.\" \"Tôi cũng không biết nữa.\""
+    },
+    {
+      "src": "Uh... How's that working?",
+      "gt": "Ờ... cái đó sao rồi?"
+    },
+    {
+      "src": "\"To tell you the truth, I am scared of heights.\" \"You are a coward!\"",
+      "gt": "\"Nói thật là tôi rất là sợ độ cao.\" \"Bạn nhát quá!\""
+    },
+    {
+      "src": "\"Trust me,\" he said.",
+      "gt": "\"Tin tôi đi,\" anh ấy nói."
+    },
+    {
+      "src": "\"This is what I was looking for!\" he exclaimed.",
+      "gt": "\"Đây đúng là thứ mà tôi đang tìm\" anh ta kêu lên."
+    },
+    {
+      "src": "Someday I'll run like the wind.",
+      "gt": "Sẽ có một ngày tôi sẽ chạy nhanh như gió."
+    },
+    {
+      "src": "Let me know if there is anything I can do.",
+      "gt": "Cần gì thì cứ việc nói với tôi."
+    },
+    {
+      "src": "\"I feel like playing cards.\" \"So do I.\"",
+      "gt": "\"Tôi muốn đánh bài.\" \"Tôi cũng vậy.\""
+    },
+    {
+      "src": "Communism will never be reached in my lifetime.",
+      "gt": "Cộng sản sẽ chẳng bao giờ tồn tại đến đời của tôi."
+    },
+    {
+      "src": "Place the deck of cards on the oaken table.",
+      "gt": "Làm ơn để bộ bài trên bàn gỗ sồi."
+    },
+    {
+      "src": "Why don't we go home?",
+      "gt": "Sao mình không đi về đi?"
+    },
+    {
+      "src": "One million people lost their lives in the war.",
+      "gt": "Một triệu người đã ngã xuống trong cuộc chiến đó."
+    },
+    {
+      "src": "Democracy is the worst form of government, except all the others that have been tried.",
+      "gt": "Trong tất cả các loại hình chính phủ, dân chủ là tệ nhất, trừ mọi chính phủ mà đã tồn tại từ xưa đến giờ."
+    },
+    {
+      "src": "It wasn't me, commissioner!",
+      "gt": "Sếp à, không phải tôi đâu!"
+    },
+    {
+      "src": "Oh, my white pants! And they were new.",
+      "gt": "Kìa mấy cái quần trắng của mình! Vẫn còn mới!"
+    },
+    {
+      "src": "When I left the train station, I saw a man.",
+      "gt": "Khi tôi ra khỏi ga xe lửa, tôi gặp một gã đàn ông."
+    },
+    {
+      "src": "Well, the night is quite long, isn't it?",
+      "gt": "Đêm cũng dài quá ha?"
+    },
+    {
+      "src": "Did you miss me?",
+      "gt": "Có nhớ tôi không?"
+    },
+    {
+      "src": "Thank you very much!",
+      "gt": "Cám ơn bạn nhiều nghe!"
+    },
+    {
+      "src": "Round trip? Only one-way.",
+      "gt": "Vé khứ hồi phải không? Một chiều thôi."
+    },
+    {
+      "src": "Pull into shape after washing.",
+      "gt": "Xếp gọn gàng sau khi giặt xong."
+    },
+    {
+      "src": "Wash before first wearing.",
+      "gt": "Giặt trước khi mặc lần đầu."
+    },
+    {
+      "src": "Don't open before the train stops.",
+      "gt": "Đừng mở trước khi xe lửa ngừng lại."
+    },
+    {
+      "src": "Oh, I'm sorry.",
+      "gt": "Ờ, xin lỗi nghe."
+    },
+    {
+      "src": "Poor is not the one who has too little, but the one who wants too much.",
+      "gt": "Người nghèo không phải là người có quá ít mà là người muốn quá nhiều."
+    },
+    {
+      "src": "Seeing that you're not surprised, I think you must have known.",
+      "gt": "Anh có vẻ không bất ngờ nhỉ, chắc anh đã biết cả rồi."
+    },
+    {
+      "src": "How long does it take to get to the station?",
+      "gt": "Mất bao nhiêu thời gian để đi từ đay tới ga?"
+    },
+    {
+      "src": "This will be a good souvenir of my trip around the United States.",
+      "gt": "Cái này sẽ là một kỷ niệm tốt của cuộc du ngoạn xung quanh nước Mỹ."
+    },
+    {
+      "src": "It is difficult to keep up a conversation with someone who only says \"yes\" and \"no\".",
+      "gt": "Rất là khó để nói chuyện với một người luôn luôn trả lời \"Có\" hay \"Không\"."
+    },
+    {
+      "src": "\"How do you feel?\" he inquired.",
+      "gt": "\"Bạn thấy sao?\" anh ấy hỏi."
+    },
+    {
+      "src": "It's quite difficult to master French in 2 or 3 years.",
+      "gt": "Rất là khó để thành thạo tiếng Pháp trong hai hay ba năm."
+    },
+    {
+      "src": "It's impossible for me to explain it to you.",
+      "gt": "Tôi không thế nào giải nghĩa cho bạn được."
+    },
+    {
+      "src": "I don't want to spend the rest of my life regretting it.",
+      "gt": "Tôi không muốn cả đời hối tiếc vì chuyện này."
+    },
+    {
+      "src": "I would never have guessed that.",
+      "gt": "Tôi cũng không đoán được."
+    },
+    {
+      "src": "Imagination affects every aspect of our lives.",
+      "gt": "Sự tưởng tượng ảnh hưởng đến mọi khía cạnh cuộc sống của chúng ta."
+    },
+    {
+      "src": "We can't sleep because of the noise.",
+      "gt": "Chúng tôi không ngủ được vì ồn quá."
+    },
+    {
+      "src": "Do whatever he tells you.",
+      "gt": "Tốt nhất là hãy làm theo mọi thứ anh ấy nói với bạn."
+    },
+    {
+      "src": "It took me more than two hours to translate a few pages of English.",
+      "gt": "Tôi tốn hơn hai tiếng để dịch vài trang tiếng Anh."
+    },
+    {
+      "src": "It is already eleven.",
+      "gt": "Đã mười một giờ rồi."
+    },
+    {
+      "src": "Paris is the most beautiful city in the world.",
+      "gt": "Paris là một thành phố đẹp nhất thế giới."
+    },
+    {
+      "src": "I have a dream.",
+      "gt": "Tôi có ước mơ."
+    },
+    {
+      "src": "This is my friend Rachel. We went to high school together.",
+      "gt": "Đây là bạn tôi tên Rachel, chúng tôi học trường trung học với nhau."
+    },
+    {
+      "src": "The cost of life increased drastically.",
+      "gt": "Giá sinh hoạt đã nhất loạt tăng."
+    },
+    {
+      "src": "But the universe is infinite.",
+      "gt": "Nhưng mà vũ trụ là vô tận."
+    },
+    {
+      "src": "And yet, the contrary is always true as well.",
+      "gt": "Nhưng, sự trái ngược cũng luôn luôn có lý."
+    },
+    {
+      "src": "You're by my side; everything's fine now.",
+      "gt": "Có em bên cạnh thì bây giờ mọi thứ đều ổn cả rồi."
+    },
+    {
+      "src": "What do you mean you don't know?!",
+      "gt": "Ý cậu là cậu không biết hả?!"
+    },
+    {
+      "src": "You look stupid.",
+      "gt": "Bạn nhìn ngốc quá."
+    },
+    {
+      "src": "How do you say that in Italian?",
+      "gt": "Trong tiếng Ý cái đó nói thế nào?"
+    },
+    {
+      "src": "I have to go shopping. I'll be back in an hour.",
+      "gt": "Tôi đi mua sắm một chút. Một tiếng sau trở lại."
+    },
+    {
+      "src": "Thanks, that's all.",
+      "gt": "Cám ơn. Thôi nhé."
+    },
+    {
+      "src": "It's not my fault!",
+      "gt": "Không phải lỗi của tôi!"
+    },
+    {
+      "src": "Open your mouth!",
+      "gt": "Mở miệng ra!"
+    },
+    {
+      "src": "I have lost my wallet.",
+      "gt": "Tôi bị mất ví."
+    },
+    {
+      "src": "There are too many things to do!",
+      "gt": "Có nhiều thứ để làm quá!"
+    },
+    {
+      "src": "Thanks to you I've lost my appetite.",
+      "gt": "Nhờ ơn của bạn tôi hết còn thèm ăn."
+    },
+    {
+      "src": "I really need to hit somebody.",
+      "gt": "Tôi muốn đấm ai đó cho thỏa thích."
+    },
+    {
+      "src": "Who doesn't know this problem?!",
+      "gt": "Ai lại không biết về vấn đề này?!"
+    },
+    {
+      "src": "It's so hot that you could cook an egg on the hood of a car.",
+      "gt": "Nóng đến nỗi mà có thể luộc trứng trên nóc xe."
+    },
+    {
+      "src": "Nobody came.",
+      "gt": "Không ai tới hết."
+    },
+    {
+      "src": "Look at me when I talk to you!",
+      "gt": "Làm ơn nhìn mặt tôi khi nói chuyện!"
+    },
+    {
+      "src": "What if you gave a speech and nobody came?",
+      "gt": "Nếu bạn phát biểu nhưng không ai tới thì sao?"
+    },
+    {
+      "src": "And what are we going to do?",
+      "gt": "Còn chúng tôi làm gì?"
+    },
+    {
+      "src": "I have a headache.",
+      "gt": "Tôi bị nhức đầu."
+    },
+    {
+      "src": "I must admit that I snore.",
+      "gt": "Tôi phải nhận là tôi có ngáy..."
+    },
+    {
+      "src": "My shoes are too small. I need new ones.",
+      "gt": "Giày của tôi bé quá, tôi cần đôi mới."
+    },
+    {
+      "src": "We're getting out of here. The cops are coming.",
+      "gt": "Mau rời khỏi đây. Cảnh sát tới bây giờ."
+    },
+    {
+      "src": "Merry Christmas!",
+      "gt": "Chúc mừng giáng sinh!"
+    },
+    {
+      "src": "\"If you're tired, why don't you go to sleep?\" \"Because if I go to sleep now I will wake up too early.\"",
+      "gt": "\"Nếu mệt thì ngủ một chút đi?\" \"Bây giờ mà ngủ thì sẽ dậy sớm lắm.\""
+    },
+    {
+      "src": "When you're trying to prove something, it helps to know it's true.",
+      "gt": "Nếu muốn chứng minh điều gì thì trước hết phải biết là nó đúng đã."
+    },
+    {
+      "src": "Anything that can be misunderstood will be.",
+      "gt": "Cái gì dễ bị hiểu lầm thì sẽ luôn như vậy thôi."
+    },
+    {
+      "src": "I'm starving!",
+      "gt": "Tôi đói quá rồi!"
+    },
+    {
+      "src": "I have so much work that I will stay for one more hour.",
+      "gt": "Tôi còn nhiều việc phải làm quá, chắc phải ở lại thêm một tiếng đồng hồ nữa."
+    },
+    {
+      "src": "I am married and have two children.",
+      "gt": "Tôi có chồng và hai đứa con."
+    },
+    {
+      "src": "I'd like to study in Paris.",
+      "gt": "Tôi muốn đi du học ở Paris."
+    },
+    {
+      "src": "Why don't you eat vegetables?",
+      "gt": "Sao không ăn rau vậy?"
+    },
+    {
+      "src": "The car crashed into the wall.",
+      "gt": "Cái xe đã đụng vô tường."
+    },
+    {
+      "src": "The car crashed into the wall.",
+      "gt": "Chiếc xe hơi đã đâm vào tường."
+    },
+    {
+      "src": "The car crashed into the wall.",
+      "gt": "Chiếc xe ô tô đã đâm vào tường."
+    },
+    {
+      "src": "Who searches, finds.",
+      "gt": "Tìm thì sẽ thấy."
+    },
+    {
+      "src": "\"Have you finished?\" \"On the contrary, I have not even begun yet.\"",
+      "gt": "\"Xong chưa vậy?\" \"Tôi còn chưa bắt đầu nữa mà.\""
+    },
+    {
+      "src": "\"Good morning\", said Tom with a smile.",
+      "gt": "\"Chào buổi sáng\" Tom mỉm cười và nói."
+    },
+    {
+      "src": "I don't understand German.",
+      "gt": "Tôi không hiểu tiếng Đức."
+    },
+    {
+      "src": "I give you my word.",
+      "gt": "Tôi hứa."
+    },
+    {
+      "src": "I find foreign languages very interesting.",
+      "gt": "Tôi thấy ngoại ngữ rất thú vị."
+    },
+    {
+      "src": "Face life with a smile!",
+      "gt": "Đối mặt sự sống với một nụ cười!"
+    },
+    {
+      "src": "You make me dream.",
+      "gt": "Bạn khiến tôi mơ đấy."
+    },
+    {
+      "src": "The vacation is over now.",
+      "gt": "Kỳ nghỉ từ đây kết thúc."
+    },
+    {
+      "src": "Evening dress is desired.",
+      "gt": "Đầm dạ hội luôn được mong chờ."
+    },
+    {
+      "src": "It's cold.",
+      "gt": "Lạnh."
+    },
+    {
+      "src": "I'm thirsty.",
+      "gt": "Tôi khát nước."
+    },
+    {
+      "src": "When I ask people what they regret most about high school, they nearly all say the same thing: that they wasted so much time.",
+      "gt": "Khi tôi hỏi mọi người điều gì khiến họ cảm thấy tiếc nuối khi còn đi học thì phần đông đều trả lời rằng họ đã lãng phí quá nhiều thời gian."
+    },
+    {
+      "src": "You did this intentionally!",
+      "gt": "Bạn cố ý làm phải không!"
+    },
+    {
+      "src": "You didn't tell him anything?",
+      "gt": "Bạn không nói với anh ấy cái gì à?"
+    },
+    {
+      "src": "Could you call again later, please?",
+      "gt": "Bạn có thể gọi lại được không?"
+    },
+    {
+      "src": "Who am I talking with?",
+      "gt": "Tôi đang nói chuyện với ai đây?"
+    },
+    {
+      "src": "I accept, but only under one condition.",
+      "gt": "Tôi chấp nhận, nhưng có một điều kiện."
+    },
+    {
+      "src": "I don't want to go to school.",
+      "gt": "Tôi không muốn đi học."
+    },
+    {
+      "src": "I don't want to go to school.",
+      "gt": "Tôi không muốn đến trường."
+    },
+    {
+      "src": "It's over between us. Give me back my ring!",
+      "gt": "Chuyện giữa chúng ta kết thúc rồi. Trả lại tôi chiếc nhẫn!"
+    },
+    {
+      "src": "I was planning on going to the beach today, but then it started to rain.",
+      "gt": "Tôi tính đi ra biển chơi nhưng trời lại bắt đầu mưa."
+    },
+    {
+      "src": "She's really smart, isn't she?",
+      "gt": "Cô ấy thông minh lắm phải không?"
+    },
+    {
+      "src": "Justice is expensive.",
+      "gt": "Công lý rất đắt."
+    },
+    {
+      "src": "Tomorrow, I'm going to study at the library.",
+      "gt": "Ngày mai tôi sẽ học ở thư viện."
+    },
+    {
+      "src": "Too late.",
+      "gt": "Muộn quá."
+    },
+    {
+      "src": "Hello? Are you still here?",
+      "gt": "Này, này, bạn còn ở đó không?"
+    },
+    {
+      "src": "I read a book while eating.",
+      "gt": "Tôi đọc sách lúc ăn cơm."
+    },
+    {
+      "src": "I started learning Chinese last week.",
+      "gt": "Tuần trước tôi mới bắt đầu học tiếng Trung quốc."
+    },
+    {
+      "src": "She doesn't want to talk about it.",
+      "gt": "Cô ấy không muốn nói về chuyện đấy."
+    },
+    {
+      "src": "It doesn't mean anything!",
+      "gt": "Cái đó không có ý nghĩa gì hết mà!"
+    },
+    {
+      "src": "Be patient please. It takes time.",
+      "gt": "Làm ơn kiên nhẫn một chút đi, cái này phải tốn thì giờ."
+    },
+    {
+      "src": "If there's no solution, then there's no problem.",
+      "gt": "Không tồn tại vấn đề mà không có giải pháp."
+    },
+    {
+      "src": "Most people have a great disinclination to get out of bed early, even if they have to.",
+      "gt": "Rất nhiều người ngại dậy sớm, cho dù họ phải làm điều đó."
+    },
+    {
+      "src": "It is good to have ideals... don't you think?",
+      "gt": "Có lý tưởng là điều tốt... bạn nghĩ sao?"
+    },
+    {
+      "src": "As the plane was approaching turbulence, the pilot asked the passengers aboard the plane to fasten their seat belts.",
+      "gt": "Lúc máy bay gặp gió xoáy, phi công yêu cầu hành khách thắt dây an toàn."
+    },
+    {
+      "src": "It depends what you mean by \"believe\" in God.",
+      "gt": "Tùy theo bạn cách nghĩa sự \"tin\" Chúa là sao."
+    },
+    {
+      "src": "The people who come on the Maury Povich show often make pretentious claims about their lovers cheating on them.",
+      "gt": "Những người tham gia chương trình Maury Povich thường giả vờ rằng người yêu đang lừa dối họ."
+    },
+    {
+      "src": "My friends say I'm a prolific writer, but I haven't written anything for months.",
+      "gt": "Bạn bè tôi nói tôi là người viết nhiều nhưng mấy tháng rồi tôi chưa viết cái gì hêt."
+    },
+    {
+      "src": "Johnson is a recluse; he prefers to isolate himself from the rest of the students in our class.",
+      "gt": "Johnson là người hơi tự kỉ; anh ấy thích tách biệt mình với các học sinh khác trong lớp."
+    },
+    {
+      "src": "Tim is a huge fan of satirical comedy.",
+      "gt": "Tim rất thích truyện cười mỉa mai."
+    },
+    {
+      "src": "Jimmy tried to cajole his parents into letting him drive across the country with his friends.",
+      "gt": "Jimmy cố thuyết phục bố mẹ để anh có thể đi vòng quanh đất nước với bạn."
+    },
+    {
+      "src": "I cannot dance one single step of Salsa.",
+      "gt": "Một bước Salsa tôi cũng không nhảy được."
+    },
+    {
+      "src": "The murderer was convicted and sentenced to life in prison.",
+      "gt": "Thằng giết người bị xử tù chung thân."
+    },
+    {
+      "src": "The consensus indicates that we are opposed to the proposed idea.",
+      "gt": "Cuộc biểu quyết chỉ ra rằng chúng ta phản đối ý kiến được đưa ra."
+    },
+    {
+      "src": "I find words with concise definitions to be the easiest to remember.",
+      "gt": "Tôi thấy những từ mà giải thích ngắn gọn thì luôn dễ nhớ nhất."
+    },
+    {
+      "src": "I dreamt about you.",
+      "gt": "Tôi mơ đến bạn."
+    },
+    {
+      "src": "I won't lose!",
+      "gt": "Tôi không thua đâu!"
+    },
+    {
+      "src": "Classes are starting again soon.",
+      "gt": "Sắp vô tiết rồi."
+    },
+    {
+      "src": "But you've never told me about this!",
+      "gt": "Nhưng bạn chưa nói tôi về chuyện này mà!"
+    },
+    {
+      "src": "I have to do laundry while it's still sunny.",
+      "gt": "Tôi phải giặt đồ trong khi trời còn nắng."
+    },
+    {
+      "src": "You had plenty of time.",
+      "gt": "Bạn còn rất nhiều thời gian."
+    },
+    {
+      "src": "Come on! Talk to me, Trang.",
+      "gt": "Thôi nào! Nói chuyện với mình đi Trang."
+    },
+    {
+      "src": "I'm almost done.",
+      "gt": "Tôi sắp xong rồi."
+    },
+    {
+      "src": "It's driving me crazy.",
+      "gt": "Cái này làm tôi phát điên mất!"
+    },
+    {
+      "src": "Did you say that I could never win?",
+      "gt": "Bạn vừa nói rằng tôi không thể thắng được à?"
+    },
+    {
+      "src": "It's all dark outside.",
+      "gt": "Bên ngoài trời rất tối."
+    },
+    {
+      "src": "I am too old for this world.",
+      "gt": "Tôi đã quá già cho thế giới này."
+    },
+    {
+      "src": "It is never too late to learn.",
+      "gt": "Không bao giờ trễ quá để học hỏi."
+    },
+    {
+      "src": "He told me the story of his life.",
+      "gt": "Anh ấy nói với tôi chuyện đời của anh."
+    },
+    {
+      "src": "What are you talking about?",
+      "gt": "Bạn đang nói cái gì vậy?"
+    },
+    {
+      "src": "I have class tomorrow.",
+      "gt": "Tôi có lớp ngày mai."
+    },
+    {
+      "src": "I can't believe it!",
+      "gt": "Tôi không tin!"
+    },
+    {
+      "src": "\"Thank you.\" \"You're welcome.\"",
+      "gt": "\"Cám ơn.\" \"Không có chi.\""
+    },
+    {
+      "src": "Winter is my favorite season.",
+      "gt": "Mùa đông là mùa tôi thích nhất."
+    },
+    {
+      "src": "We walked a lot.",
+      "gt": "Chúng tôi đã đi bộ rất nhiều."
+    },
+    {
+      "src": "Hold on, someone is knocking at my door.",
+      "gt": "Chờ tí, có ai đang gõ cửa."
+    },
+    {
+      "src": "He's sleeping like a baby.",
+      "gt": "Anh ấy ngủ say như một đứa bé."
+    },
+    {
+      "src": "You're sick. You have to rest.",
+      "gt": "Bạn bị ốm rồi, nghỉ ngơi cho nhiều đi."
+    },
+    {
+      "src": "Everyone would like to believe that dreams can come true.",
+      "gt": "Ai cũng muốn tin rằng mọi giấc mơ đều có thể trở thành hiện thực."
+    },
+    {
+      "src": "The world doesn't revolve around you.",
+      "gt": "Thế giới không quay quanh bạn."
+    },
+    {
+      "src": "The world doesn't revolve around you.",
+      "gt": "Thế giới không quay quanh mày."
+    },
+    {
+      "src": "Are you saying my life is in danger?",
+      "gt": "Cậu nói rằng tôi đang gặp nguy hiểm đến tính mạng sao?"
+    },
+    {
+      "src": "So what if I am gay? Is it a crime?",
+      "gt": "Bị gay thì sao? Cái đó cũng là tội à?"
+    },
+    {
+      "src": "I spent the whole afternoon chatting with friends.",
+      "gt": "Tôi tốn hết buổi chiều tán chuyện với đám bạn."
+    },
+    {
+      "src": "I want to be more independent.",
+      "gt": "Tôi muốn tự lập hơn."
+    },
+    {
+      "src": "Are you just going to stand there all day?",
+      "gt": "Cậu định đứng đó cả ngày hay sao?"
+    },
+    {
+      "src": "A rabbit has long ears and a short tail.",
+      "gt": "Thỏ có tai dài và đuôi ngắn."
+    },
+    {
+      "src": "My heart was filled with happiness.",
+      "gt": "Tim tôi tràn ngập hạnh phúc."
+    },
+    {
+      "src": "I don't want to hear any more of your complaining.",
+      "gt": "Tôi không muốn nghe thêm bất kì lời than vãn nào từ cậu nữa."
+    },
+    {
+      "src": "Yes! I won twice in a row!",
+      "gt": "Hay quá! Tôi thắng hai lần liền!"
+    },
+    {
+      "src": "I'm tired of eating fast food.",
+      "gt": "Tôi ngán thức ăn nhanh quá rồi."
+    },
+    {
+      "src": "I can't wait to go on a vacation.",
+      "gt": "Tôi không đợi được tới lúc nghỉ hè."
+    },
+    {
+      "src": "Can you imagine what our lives would be like without electricity?",
+      "gt": "Bạn có thể hình dung được cuộc sống sẽ như thế nào nếu không có điện không?"
+    },
+    {
+      "src": "Where is the bathroom?",
+      "gt": "Nhà vệ sinh ở đâu vậy?"
+    },
+    {
+      "src": "His story was too ridiculous for anyone to believe.",
+      "gt": "Chuyện của nó tào lao đến nỗi chẳng ai tin được."
+    },
+    {
+      "src": "How many hours of sleep do you need?",
+      "gt": "Bạn cần bao nhiêu tiếng đồng hồ để ngủ vậy?"
+    },
+    {
+      "src": "Do you think mankind will someday colonize the Moon?",
+      "gt": "Bạn thực sự nghĩ rằng con người một ngày nào đó có thể định cư trên Mặt trăng không?"
+    },
+    {
+      "src": "I don't know what is worse.",
+      "gt": "Tôi không biết cái gì có thể xấu hơn nữa."
+    },
+    {
+      "src": "Beauty lies in the eyes of the one who sees.",
+      "gt": "Vẻ đẹp chỉ tồn tại trong mắt của những người hiểu được nó."
+    },
+    {
+      "src": "I'm too lazy to do my homework.",
+      "gt": "Tôi lười làm bài quá."
+    },
+    {
+      "src": "I feel that I am free.",
+      "gt": "Tôi cảm thấy mình rất tự do."
+    },
+    {
+      "src": "Freedom is not free.",
+      "gt": "Tự do không đồng nghĩa với được tự do."
+    },
+    {
+      "src": "I want an MP3 player!",
+      "gt": "Tôi muốn có máy MP3!"
+    },
+    {
+      "src": "My brother is very important. At least he thinks he is.",
+      "gt": "Em trai tôi rất là tự tin. Ít nhất chính nó nghĩ như vậy."
+    },
+    {
+      "src": "No, I cannot let you in, there's one person too many.",
+      "gt": "Không, tôi không cho bạn vào được. Đã nhiều người quá rồi."
+    },
+    {
+      "src": "Where are you?",
+      "gt": "Bạn đang ở đâu?"
+    },
+    {
+      "src": "You piss me off!",
+      "gt": "Mày làm tao tức quá!"
+    },
+    {
+      "src": "To share one's passion is to live it fully.",
+      "gt": "Chia sẻ đam mê của ai đó chính là sống thật trọn vẹn với nó."
+    },
+    {
+      "src": "Life is not long, it is wide!",
+      "gt": "Cuộc đời không dài nhưng rộng!"
+    },
+    {
+      "src": "When I was your age, Pluto was a planet.",
+      "gt": "Hồi tôi bằng tuổi cậu, Diêm Vương vẫn còn là một hành tinh."
+    },
+    {
+      "src": "I usually take a shower in the evening.",
+      "gt": "Tôi thường tắm vào buổi tối."
+    },
+    {
+      "src": "You have been thinking about this problem the whole morning. Take a break; go eat lunch.",
+      "gt": "Bạn đã suy nghĩ về vấn đề này hết cả buổi sáng rồi. Đi ăn trưa đi."
+    },
+    {
+      "src": "If I don't do it now, I never will.",
+      "gt": "Nếu tôi không làm bay giờ thì tôi sẽ không bao giờ làm hết."
+    },
+    {
+      "src": "Good night. Sweet dreams.",
+      "gt": "Ngủ ngon. Chúc bạn nhiều giấc mơ đẹp."
+    },
+    {
+      "src": "Perhaps you are right, I have been selfish.",
+      "gt": "Có lẽ bạn nói đúng, tôi đã quá ích kỷ."
+    },
+    {
+      "src": "I'm running out of ideas.",
+      "gt": "Tôi sắp cạn ý tưởng rồi."
+    },
+    {
+      "src": "There are also nightclubs where you dance flamenco.",
+      "gt": "Cũng có những hộp đêm mà bạn có thể nhảy flamenco."
+    },
+    {
+      "src": "I need your advice.",
+      "gt": "Tôi cần lời chỉ bảo của bạn."
+    },
+    {
+      "src": "Better late than never.",
+      "gt": "Chậm còn hơn không."
+    },
+    {
+      "src": "Like father, like son.",
+      "gt": "Cha nào con nấy."
+    },
+    {
+      "src": "Don't listen to him, he's talking nonsense.",
+      "gt": "Đừng nghe nó, nó đang nói nhảm."
+    },
+    {
+      "src": "Don't forget the ticket.",
+      "gt": "Xin đừng quên vé."
+    },
+    {
+      "src": "During winter I sleep with two blankets.",
+      "gt": "Suốt mùa đông, tôi ngủ với hai cái chăn"
+    },
+    {
+      "src": "You have to learn standard English.",
+      "gt": "Bạn phải học tiếng Anh tiêu chuẩn."
+    },
+    {
+      "src": "You have to learn standard English.",
+      "gt": "Bạn phải học tiếng Anh chuẩn."
+    },
+    {
+      "src": "All you have to do is follow his advice.",
+      "gt": "Mọi thứ bạn phải làm là thực hiện theo lời khuyên của anh ấy."
+    },
+    {
+      "src": "You know the answer?",
+      "gt": "bạn có biết câu trả lới không?"
+    },
+    {
+      "src": "You know the answer?",
+      "gt": "bạn có biết đáp án không?"
+    },
+    {
+      "src": "You did not come to school yesterday.",
+      "gt": "Hôm qua bạn không đi học."
+    },
+    {
+      "src": "Have you ever read any Chinese poems?",
+      "gt": "Bạn đã từng đọc thơ Trung Quốc nào chưa?"
+    },
+    {
+      "src": "What do you want now?",
+      "gt": "Bạn muốn gì nào?"
+    },
+    {
+      "src": "What do you want now?",
+      "gt": "Bây giờ anh muốn cái gì?"
+    },
+    {
+      "src": "What do you want now?",
+      "gt": "Bây giờ mày muốn cái gì?"
+    },
+    {
+      "src": "What do you want now?",
+      "gt": "Bây giờ chị muốn cái gì?"
+    },
+    {
+      "src": "You have a good sense of humor.",
+      "gt": "Bạn có tính hài hước tốt."
+    },
+    {
+      "src": "All you have to do is to work harder.",
+      "gt": "Những gì bạn phải làm là làm việc chăm chỉ hơn."
+    },
+    {
+      "src": "How tall you are!",
+      "gt": "Bạn cao thiệt!"
+    },
+    {
+      "src": "Which club do you belong to?",
+      "gt": "Bạn ở trong câu lạc bộ nào vậy?"
+    },
+    {
+      "src": "You shouldn't have eaten the fish raw.",
+      "gt": "Đáng lẽ bạn không nên ăn cá sống."
+    },
+    {
+      "src": "Can you make sense of this poem?",
+      "gt": "Bạn có thể giải thích nghĩa của bài thơ này không?"
+    },
+    {
+      "src": "You are always as busy as a bee.",
+      "gt": "Mày lúc nào cũng chăm chỉ như con ong."
+    },
+    {
+      "src": "You are always as busy as a bee.",
+      "gt": "Bạn lúc nào cũng chăm chỉ như một con ong."
+    },
+    {
+      "src": "It is better for you to do it now.",
+      "gt": "Làm điều đó ngay bây giờ thì sẽ tốt hơn cho bạn."
+    },
+    {
+      "src": "Omit needless words!",
+      "gt": "Đừng nói cái không cần thiết phải nói."
+    },
+    {
+      "src": "Your hair really does look untidy.",
+      "gt": "Tóc của mày thật sự trông bù xù."
+    },
+    {
+      "src": "Compared with yours, my car is small.",
+      "gt": "So với chiếc xe của anh, xe tôi nhỏ hơn."
+    },
+    {
+      "src": "Your question is not relevant to the subject.",
+      "gt": "Câu hỏi của bạn không liên quan gì đến chủ đề."
+    },
+    {
+      "src": "Your essay has some mistakes, but as a whole it is very good.",
+      "gt": "Bài luận của bạn có vài lỗi, nhưng tổng thể thì làm rất tốt."
+    },
+    {
+      "src": "I can not make out at all what you say.",
+      "gt": "Tôi chẳng hiểu bạn nói gì hết."
+    },
+    {
+      "src": "I took your umbrella by mistake.",
+      "gt": "Tôi đã cầm nhầm cây dù của bạn."
+    },
+    {
+      "src": "I cannot approve of your going out with him.",
+      "gt": "Tôi không tán thành việc bạn đi chơi với anh ấy."
+    },
+    {
+      "src": "I cannot approve of your going out with him.",
+      "gt": "Tao không tán thành việc mày đi chơi với nó."
+    },
+    {
+      "src": "I don't have as much money as you think.",
+      "gt": "Tôi không có nhiều tiền như bạn nghĩ."
+    },
+    {
+      "src": "I don't have as much money as you think.",
+      "gt": "Tao không có nhiều tiền như mày nghĩ."
+    },
+    {
+      "src": "I am not any more foolish than you are.",
+      "gt": "Tôi không ngu ngốc vì em nữa đâu."
+    },
+    {
+      "src": "I will help him no matter what you say.",
+      "gt": "Tôi sẽ giúp anh ta bất kể bạn nói gì."
+    },
+    {
+      "src": "It is a great pity that you don't know it.",
+      "gt": "Quá tiếc khi bạn không biết nó."
+    },
+    {
+      "src": "It is right that you should write it.",
+      "gt": "Đúng ra là bạn nên viết nó ra."
+    },
+    {
+      "src": "I had no notion that you were coming.",
+      "gt": "Tôi không hề biết là anh sẽ đến."
+    },
+    {
+      "src": "The shoes are worn out.",
+      "gt": "Đôi giày đã sờn cũ."
+    },
+    {
+      "src": "How far is it to the airport?",
+      "gt": "Đến sân bay xa bao nhiêu?"
+    },
+    {
+      "src": "Where do I get an airport bus?",
+      "gt": "Tôi có thể tìm một chiếc xe buýt đưa đón cho sân bay ở đâu?"
+    },
+    {
+      "src": "How long does the airport bus take to the airport?",
+      "gt": "Xe buýt sân bay tới sân bay mất bao nhiêu lâu?"
+    },
+    {
+      "src": "Is there a vacant seat?",
+      "gt": "Có ghế nào trống không?"
+    },
+    {
+      "src": "Why didn't modern technology develop in China?",
+      "gt": "Tại sao công nghệ hiện đại lại không phát triển ở Trung Quốc?"
+    },
+    {
+      "src": "To my surprise, he got married to a very beautiful actress.",
+      "gt": "Tôi bất ngờ vì anh ta lại kết hôn với một nữ diễn viên rất xinh đẹp."
+    },
+    {
+      "src": "Don't scare me like that!",
+      "gt": "Đừng dọa tôi như vậy nữa!"
+    },
+    {
+      "src": "All the church bells started ringing together.",
+      "gt": "Tất cả chiếc chuông nhà thờ đồng loạt bắt đầu vang lên."
+    },
+    {
+      "src": "A strong yen is shaking the economy.",
+      "gt": "Đồng yên mạnh đang khuynh đảo nền kinh tế."
+    },
+    {
+      "src": "You should visit Kyoto, which is famous for its old temples and shrines.",
+      "gt": "Bạn nên đến Tokyo, nơi nổi tiếng với những địa danh như ngôi chùa cổ, đền Shinto..."
+    },
+    {
+      "src": "There seems no need to hurry.",
+      "gt": "Ở đó dường như không cần phải vội đâu."
+    },
+    {
+      "src": "We needn't have hurried.",
+      "gt": "Chúng ta không cần vội."
+    },
+    {
+      "src": "During the vacation, I read the entire works of Milton.",
+      "gt": "Trong chuyến đi nghỉ, tôi đọc toàn bộ các tác phẩm của Milton."
+    },
+    {
+      "src": "All that glitters is not gold.",
+      "gt": "Mớ kim loại đó không phải vàng."
+    },
+    {
+      "src": "You are beautiful.",
+      "gt": "Bạn đẹp quá."
+    },
+    {
+      "src": "You should see this film if you get the opportunity.",
+      "gt": "Bạn nên xem phim này nếu có cơ hội."
+    },
+    {
+      "src": "Don't laugh at him for making a mistake.",
+      "gt": "Đừng cười nó vì đã phạm sai lầm."
+    },
+    {
+      "src": "To make mistakes is not always wrong.",
+      "gt": "Gây ra lỗi lầm không phải lúc nào cũng là điều sa trái."
+    },
+    {
+      "src": "I want to get a sightseeing visa.",
+      "gt": "Tôi muốn có một thị thực du lịch."
+    },
+    {
+      "src": "I want something sweet.",
+      "gt": "Tôi muốn thứ gì đó ngọt."
+    },
+    {
+      "src": "I don't want to let my emotions out.",
+      "gt": "Tôi không muốn biểu lộ tình cảm."
+    },
+    {
+      "src": "I don't want to let my emotions out.",
+      "gt": "Tôi không muốn thổ lộ tình cảm."
+    },
+    {
+      "src": "As long as it doesn't get cold, it's okay.",
+      "gt": "Miễn sao nó không bị cảm lạnh là được."
+    },
+    {
+      "src": "The stock market is very active.",
+      "gt": "Thị trường chứng khoáng rất năng động."
+    },
+    {
+      "src": "This is a store that caters specially to students.",
+      "gt": "Cửa hàng này chỉ phục vụ học sinh sinh viên."
+    },
+    {
+      "src": "The students learned many poems by heart.",
+      "gt": "Các sinh viên đã học thuộc lòng rất nhiều bài thơ."
+    },
+    {
+      "src": "The students learned this poem by heart.",
+      "gt": "Các sinh viên đã học thuộc lòng bài thơ này."
+    },
+    {
+      "src": "The school is two kilometers ahead.",
+      "gt": "Ngôi trường ở phía trước 2 cây số."
+    },
+    {
+      "src": "The exchange rates for foreign currency change daily.",
+      "gt": "Tỷ giá hối đoái của ngoại tệ thay đổi mỗi ngày."
+    },
+    {
+      "src": "I broke your ashtray.",
+      "gt": "Tôi đã làm vỡ đồ gạt tàn của bạn rồi."
+    },
+    {
+      "src": "I broke your ashtray.",
+      "gt": "Tao đã làm bể đồ gạt tàn thuốc của mày rồi."
+    },
+    {
+      "src": "Which way is the beach?",
+      "gt": "Ra bãi biển đi lối nào?"
+    },
+    {
+      "src": "We all knelt down to pray.",
+      "gt": "Chúng tôi đều quỳ xuống cầu nguyện."
+    },
+    {
+      "src": "We went astray in the woods.",
+      "gt": "Chúng tôi đã đi lạc trong rừng."
+    },
+    {
+      "src": "We must always be prepared for the worst.",
+      "gt": "Chúng ta luôn phải sẵn sàng cho những điều tệ hại nhất."
+    },
+    {
+      "src": "We are suffering from a severe water shortage this summer.",
+      "gt": "Chúng tôi bị thiếu nước trầm trọng trong mùa hè này."
+    },
+    {
+      "src": "We began to sail in the direction of the port.",
+      "gt": "Chúng tôi bắt đầu lái thuyền về hướng cảng."
+    },
+    {
+      "src": "We have every advantage over them.",
+      "gt": "Chúng tôi lợi dụng tụi nó mọi thứ."
+    },
+    {
+      "src": "Our showroom made a hit with young ladies.",
+      "gt": "Phòng trưng bày của chúng tôi gây tiếng vang bởi các quý cô trẻ."
+    },
+    {
+      "src": "No poverty can catch up with industry.",
+      "gt": "Đói nghèo không thể bắt kịp nền công nghiệp."
+    },
+    {
+      "src": "Fire! Run!",
+      "gt": "Cháy! Chạy mau!"
+    },
+    {
+      "src": "The fire alarm rang.",
+      "gt": "Chuông báo cháy vang lên."
+    },
+    {
+      "src": "Read this book at your leisure.",
+      "gt": "Đọc quyển sách này khi rảnh rỗi."
+    },
+    {
+      "src": "What do you do in your free time?",
+      "gt": "Bạn làm gì trong thời gian rảnh?"
+    },
+    {
+      "src": "What do you do in your free time?",
+      "gt": "Bạn làm gì lúc rảnh?"
+    },
+    {
+      "src": "What do you do in your free time?",
+      "gt": "Mày làm gì khi rảnh rỗi?"
+    },
+    {
+      "src": "What do you do in your free time?",
+      "gt": "Bạn làm gì khi rảnh rỗi?"
+    },
+    {
+      "src": "The aim of science is, as has often been said, to foresee, not to understand.",
+      "gt": "Mục đích của khoa học là, như thường được nói, là để tiên đoán chứ không phải để hiểu"
+    },
+    {
+      "src": "If science makes progress, we'll be able to solve such problems.",
+      "gt": "Nếu khoa học tiến bộ, chúng ta sẽ có thể giải quyết những vấn đề như vậy."
+    },
+    {
+      "src": "May I ask about your family?",
+      "gt": "Tôi có thể hỏi về gia đình bạn được không?"
+    },
+    {
+      "src": "The fronts of the houses were hung with flags.",
+      "gt": "mặt tiền các ngôi nhà đều đã được treo cờ."
+    },
+    {
+      "src": "We live in the country during the summer.",
+      "gt": "Chúng tôi sống ở nông thôn trong suốt mùa hè."
+    },
+    {
+      "src": "Years ago, she used to hang around with a bunch of bikers.",
+      "gt": "Vài năm trước, cô ta từng chơi với một đám lái mô-tô."
+    },
+    {
+      "src": "Why didn't you tell it to me in advance?",
+      "gt": "tại sao không chịu nói điều đó với tôi trước ?"
+    },
+    {
+      "src": "What did you make?",
+      "gt": "Bạn đã tạo ra cái gì rồi ?"
+    },
+    {
+      "src": "You should put safety before everything else.",
+      "gt": "An toàn là trên hết."
+    },
+    {
+      "src": "We just got to first base.",
+      "gt": "Chúng tôi chỉ mới có căn cứ đầu tiên."
+    },
+    {
+      "src": "Silent waters run deep.",
+      "gt": "Nước lặn là nước sâu."
+    },
+    {
+      "src": "What is the name of the building whose roof you can see?",
+      "gt": "Cái nhà mà bạn có thể thấy được mái tên là gì?"
+    },
+    {
+      "src": "The king abused his power.",
+      "gt": "Vị vua đã lạm dụng quyền hành."
+    },
+    {
+      "src": "The king governed the country.",
+      "gt": "Đức vua trị vì vương quốc."
+    },
+    {
+      "src": "You may take the book home so long as you don't get it dirty.",
+      "gt": "Bạn có thể mang cuốn sách về nhà miễn là bạn đừng làm dơ nó."
+    },
+    {
+      "src": "You may take the book home so long as you don't get it dirty.",
+      "gt": "Bạn có thể đem quyển sách về nhà bao lâu cũng được miễn sao bạn đừng làm dơ nó."
+    },
+    {
+      "src": "Salt water is more buoyant than fresh water.",
+      "gt": "Nước biển thì dễ làm vật nổi hơn so với nước ngọt."
+    },
+    {
+      "src": "Salt water is more buoyant than fresh water.",
+      "gt": "Nước muối có lực đẩy mạnh hơn nước ngọt."
+    },
+    {
+      "src": "Salt water is more buoyant than fresh water.",
+      "gt": "Nổi trên nước muối dễ hơn nước ngọt."
+    },
+    {
+      "src": "Don't beat about the bush.",
+      "gt": "Đừng nói quanh co."
+    },
+    {
+      "src": "In the distance you can see Mt. Fuji through the morning mist.",
+      "gt": "Xa xa, bạn có thể mờ mờ thấy núi Phú Sĩ qua màn suơng sớm."
+    },
+    {
+      "src": "We sprinkle salt for purification.",
+      "gt": "Chúng tôi rắc muối để tẩy uế."
+    },
+    {
+      "src": "Arriving at the station, I found my train gone.",
+      "gt": "Đến nhà ga thì tôi mới phát hiện chuyến tàu đã khởi hành rồi."
+    },
+    {
+      "src": "England proper does not include Wales.",
+      "gt": "Anh quốc thực tế là không tính luôn u"
+    },
+    {
+      "src": "England proper does not include Wales.",
+      "gt": "Anh quốc thực tế là không tính luôn xứ Wales."
+    },
+    {
+      "src": "You had to study English.",
+      "gt": "Bạn phải học tiếng Anh."
+    },
+    {
+      "src": "English is taught almost all over the world today.",
+      "gt": "Khắp nơi trên thế giới người ta đều dạy tiếng Anh."
+    },
+    {
+      "src": "Where is English spoken?",
+      "gt": "Tiếng Anh được dùng ở đâu?"
+    },
+    {
+      "src": "Many English words are derived from Latin.",
+      "gt": "Nhiều từ tiếng Anh có nguồn gốc La tinh."
+    },
+    {
+      "src": "You can't eat it just because it is nutritious.",
+      "gt": "Bạn khônf thể ăn nó vì nó rất bổ dưỡng."
+    },
+    {
+      "src": "He went out in spite of the rain.",
+      "gt": "Anh ta đi ra ngoài bất chấp cơn mưa."
+    },
+    {
+      "src": "Gravity binds the planets to the Sun.",
+      "gt": "Lực hấp dẫn giữ các hành tinh quanh mặt trời."
+    },
+    {
+      "src": "I felt cold and uneasy all night.",
+      "gt": "Tôi cảm thấy lạnh và khó chịu suốt đêm."
+    },
+    {
+      "src": "I felt cold and uneasy all night.",
+      "gt": "Tôi cảm thấy lanh và khó chịu suốt đếm."
+    },
+    {
+      "src": "There was little water in the well.",
+      "gt": "Có một ít nước trong giếng."
+    },
+    {
+      "src": "Doctors do not always live long.",
+      "gt": "Không phải bác sỹ nào cũng sống thọ."
+    },
+    {
+      "src": "Doctors do not always live long.",
+      "gt": "Bác sỹ không phải luôn luôn sống thọ."
+    },
+    {
+      "src": "The doctor forbade me from taking part in the marathon.",
+      "gt": "Bác sĩ đã cấm tôi tham dự cuộc đua marathon."
+    },
+    {
+      "src": "The doctor forbade me from taking part in the marathon.",
+      "gt": "Bác sĩ đã cấm tôi tham gia chạy việt dã."
+    },
+    {
+      "src": "The situation has improved considerably compared with what it was.",
+      "gt": "Tình huống đã được cải thiện đáng kể so với trước đây."
+    },
+    {
+      "src": "Have a safe trip.",
+      "gt": "Thượng lộ bình an."
+    },
+    {
+      "src": "Have a safe trip.",
+      "gt": "Có một chuyến đi an toàn nhé."
+    },
+    {
+      "src": "I'm managing scraping along on a small salary.",
+      "gt": "Tôi đang xoay sở để giành tiền với đồng lương ít ỏi."
+    },
+    {
+      "src": "Easy living corrupted the warrior spirit.",
+      "gt": "Cuộc sống dễ dãi băng hoại tinh thần binh sĩ."
+    },
+    {
+      "src": "Wishing you peace and happiness at Christmas.",
+      "gt": "Chúc bạn bình an và hạnh phúc nhân mùa giáng sinh."
+    },
+    {
+      "src": "Bad weather prevented me from setting out.",
+      "gt": "Thời tiết xấu đã ngăn tôi khởi hành."
+    },
+    {
+      "src": "Never associate with bad fellows.",
+      "gt": "Đừng bao giờ dang díu vớ những gã xấu."
+    },
+    {
+      "src": "Once you've got into a bad habit, it can be difficult to get out of it.",
+      "gt": "Một khi đã mắc một tật xấu thì có thể khó mà từ bỏ nó."
+    },
+    {
+      "src": "Charity begins at home.",
+      "gt": "Trước khi thương người, hãy thương lấy người nhà mình."
+    },
+    {
+      "src": "Parents aren't rational because love isn't rational.",
+      "gt": "Cha mẹ không có lý vì tình yêu không dựa trên lý trí."
+    },
+    {
+      "src": "We asked him to face the press but he refused to.",
+      "gt": "Tôi đã nói nó đối mặt với báo chí nhưng nó từ chối."
+    },
+    {
+      "src": "We could get over the difficulty.",
+      "gt": "Chúng ta có thể vượt qia khó khăn."
+    },
+    {
+      "src": "At best we can only hope for a small profit.",
+      "gt": "Trong trường hợp khả quan nhất, chúng ta chỉ có thể hy vọng lợi nhuận nhỏ."
+    },
+    {
+      "src": "We narrowly missed the accident.",
+      "gt": "Chúng tôi thoát nạn trong gang tấc."
+    },
+    {
+      "src": "We found out a secret door behind the curtain.",
+      "gt": "Chúng tôi đã tìm thấy cánh cửa bí mật sau màn rèm."
+    },
+    {
+      "src": "Language as we know is a human invention.",
+      "gt": "Như chúng ta biết, ngôn ngữ là phát minh của nhân loại."
+    },
+    {
+      "src": "It should not be possible for us to enjoy them.",
+      "gt": "Chúng tôi không thể hưởng thụ những điều đó."
+    },
+    {
+      "src": "We all learned the poem by heart.",
+      "gt": "Tất cả chúng ta đã học thuốc bài thơ này."
+    },
+    {
+      "src": "I want a wife and children, and so I need a house.",
+      "gt": "Tôi muốn có vợ và con cho nên tôi cần một căn nhà."
+    },
+    {
+      "src": "I want to go with you.",
+      "gt": "Tôi muốn đi cùng với bạn."
+    },
+    {
+      "src": "I built a new house in view of the mountain.",
+      "gt": "Tôi đã xây một căn nhà với tầm nhìn hườn ra núi."
+    },
+    {
+      "src": "I can understand your language.",
+      "gt": "Tôi có thể hiểu ngôn ngữ của bạn."
+    },
+    {
+      "src": "I can understand your language.",
+      "gt": "Tao có thể hiểu ngôn ngữ của mày."
+    },
+    {
+      "src": "I can understand your language.",
+      "gt": "Tớ có thể hiểu tiếng của cậu."
+    },
+    {
+      "src": "We took a taxi so as to reach there on time.",
+      "gt": "Chúng ta đi taxi để có thể đến đó kịp lúc"
+    },
+    {
+      "src": "We took a taxi so as to reach there on time.",
+      "gt": "Chúng ta đi taxi để có thể đến đó đúng giờ."
+    },
+    {
+      "src": "Our country is in a crisis.",
+      "gt": "Đất nước của chúng tôi đang trong thời kỳ khủng hoảng."
+    },
+    {
+      "src": "Our country is in a crisis.",
+      "gt": "Đất nước của chúng tao đang trong thời kỳ khủng hoảng."
+    },
+    {
+      "src": "Our country is in a crisis.",
+      "gt": "Đất nước của chúng tớ đang trong thời kỳ khủng hoảng."
+    },
+    {
+      "src": "Our people thirst for independence.",
+      "gt": "Người dân của chúng tôi đang khát khao sự độc lập."
+    },
+    {
+      "src": "Computer science has made rapid progress in our country.",
+      "gt": "Ngành khoa học máy tính đã tạo được sự tiến bô nhanh chóng ở đất nước chúng tôi."
+    },
+    {
+      "src": "Ok, let's give it a try.",
+      "gt": "Ok, cho nó thử lần nữa."
+    },
+    {
+      "src": "Ok, let's give it a try.",
+      "gt": "Được thôi, cho nó thử lần nữa."
+    },
+    {
+      "src": "Wine is not harmful in itself.",
+      "gt": "Rượu bản thân nó không có hại."
+    },
+    {
+      "src": "Heavy taxes are laid on wine.",
+      "gt": "Thuế cao được áp cho mặt hàng rượu."
+    },
+    {
+      "src": "Heavy taxes are laid on wine.",
+      "gt": "Rượu bị đánh thuế cao."
+    },
+    {
+      "src": "Mr Wilder gave me your e-mail address.",
+      "gt": "Mr Wilder đã đưa cho tôi địa chỉ e-mail của bạn."
+    },
+    {
+      "src": "Mr Wilder gave me your e-mail address.",
+      "gt": "Mr Wilder đã đưa cho tao địa chỉ e-mail của mày."
+    },
+    {
+      "src": "What number bus do I take to get to Waikiki?",
+      "gt": "Tôi lên xe buýt số mấy để tới Waikiki?"
+    },
+    {
+      "src": "Look up the trains to London in the timetable.",
+      "gt": "Hãy tìm các chuyến xe lửa đến London trong bảng lịch trình."
+    },
+    {
+      "src": "London is among the largest cities in the world.",
+      "gt": "London nằm trong số những thành phố lớn nhất thế giới."
+    },
+    {
+      "src": "London is different from Tokyo climatically.",
+      "gt": "London khác với Tokyo về mặt khí hậu."
+    },
+    {
+      "src": "London is no longer a city of fog.",
+      "gt": "London chẳng còn là thành phố sương mù nữa."
+    },
+    {
+      "src": "London is no longer a city of fog.",
+      "gt": "Luân đôn không còn là xứ sở sương mù nữa."
+    },
+    {
+      "src": "Can you recommend a place to stay in London?",
+      "gt": "Bạn có thể giới thiệu tôi chỗ ở tại Luân đôn không?"
+    },
+    {
+      "src": "Mr Long and Mr Smith spoke to each other.",
+      "gt": "Ông Long và ông Smith đã nói chuyện với nhau."
+    },
+    {
+      "src": "Long dresses stayed in fashion.",
+      "gt": "Váy dài đang là mốt."
+    },
+    {
+      "src": "Don't forget to ask after Mr Long's wife when you see him.",
+      "gt": "Đừng quên hỏi thăm vợ của ông Long khi mày gặp ổng."
+    },
+    {
+      "src": "Don't forget to ask after Mr Long's wife when you see him.",
+      "gt": "Đừng quên hỏi thăm vợ của ông Long khi bạn gặp ông ấy."
+    },
+    {
+      "src": "Robots can withstand dangerous conditions.",
+      "gt": "Robot có thể hoạt động trong điều kiện nguy hiểm."
+    },
+    {
+      "src": "Lobsters belong to a class of marine animals.",
+      "gt": "Tôm hùm thuộc lớp động vật biển."
+    },
+    {
+      "src": "Rock is the music of the young.",
+      "gt": "Rock là loại nhạc của giới trẻ."
+    },
+    {
+      "src": "Rock is the music of the young.",
+      "gt": "Rock là dòng nhạc của giới trẻ."
+    },
+    {
+      "src": "The rocket put a communications satellite into orbit.",
+      "gt": "Tên lửa đã đưa vệ tinh viễn thông vào quỹ đạo."
+    },
+    {
+      "src": "The rocket went up smoothly.",
+      "gt": "Tên lửa êm ái bay lên."
+    },
+    {
+      "src": "Rome is worthy of a visit.",
+      "gt": "Thành phố Rome đáng để viếng thăm."
+    },
+    {
+      "src": "I want a knife with which to cut the rope.",
+      "gt": "Tôi cần một con dao để cắt dây thừng."
+    },
+    {
+      "src": "Lions live on other animals.",
+      "gt": "Sư tử sống dựa trên những loài động vật khác."
+    },
+    {
+      "src": "Many retired people move to the Sunbelt to enjoy sports such as golf or tennis in a milder climate.",
+      "gt": "Nhiều người đã nghỉ hưu chuyển đến vùng Sunbelt để có thể thưởng thức các môn thể thao như gôn hay quần vợt ở vùng khí hậu ôn hòa hơn."
+    },
+    {
+      "src": "Finally, I have time to reply to the mail that I have received these past three weeks.",
+      "gt": "Cuối cùng tôi có thời gian để trả lời thư mà tôi đã nhận trong 3 tuần qua."
+    },
+    {
+      "src": "The rain stopped at last.",
+      "gt": "Cuối cùng mưa cũng ngưng."
+    },
+    {
+      "src": "The rain stopped at last.",
+      "gt": "Cuối cùng mưa cũng tạnh."
+    },
+    {
+      "src": "I wish we had more time.",
+      "gt": "Tôi ước gì chúng ta có thêm thời gian."
+    },
+    {
+      "src": "Come closer and have a good look at this picture.",
+      "gt": "Hãy đến gần hơn và xem kỹ bức tranh này."
+    },
+    {
+      "src": "Will you please advise him to work harder?",
+      "gt": "Bạn sẽ vui lòng khuyên anh ấy làm việc chăm chỉ hơn không?"
+    },
+    {
+      "src": "Will you please advise him to work harder?",
+      "gt": "Bạn sẽ vui lòng khuyên nó làm việc chăm chỉ hơn không?"
+    },
+    {
+      "src": "Will you please advise him to work harder?",
+      "gt": "Bạn sẽ vui lòng khuyên hắn làm việc chăm chỉ hơn không?"
+    },
+    {
+      "src": "If it should rain tomorrow, we would go by bus.",
+      "gt": "Nếu ngày mai trời mưa, chúng tôi sẽ đi bằng xe buýt."
+    },
+    {
+      "src": "If it should rain tomorrow, the excursion will be canceled.",
+      "gt": "Nếu ngày mai trời mưa, buổi hành quyết sẽ bị hủy."
+    },
+    {
+      "src": "If I should fail again, I would give up the plan.",
+      "gt": "Nếu tôi thất bại lần nữa, tôi sẽ từ bỏ kế hoạch."
+    },
+    {
+      "src": "If I should fail, what would my parents say?",
+      "gt": "Nếu tôi thất bại, ba mẹ của tôi sẽ nói gì."
+    },
+    {
+      "src": "If I should fail, what would my parents say?",
+      "gt": "Nếu ta thất bại, ba mẹ của tao sẽ nói gì."
+    },
+    {
+      "src": "If I were not ill, I would join you.",
+      "gt": "Nếu tôi không bệnh, tôi sẽ tham gia với bạn."
+    },
+    {
+      "src": "Let me help you, if necessary.",
+      "gt": "Hãy để tôi giúp bạn, nếu cần."
+    },
+    {
+      "src": "If I knew her name and address, I could write to her.",
+      "gt": "Nếu tôi biết tên và địa chỉ của cô ấy, tôi sẽ viết thư cho cô ấy."
+    },
+    {
+      "src": "If he had stayed at home that day, he would not have met with disaster.",
+      "gt": "Nếu ngày hôm đó anh ta ở nhà, thì anh ta đã không phải gặp tai họa."
+    },
+    {
+      "src": "You may take the book if you can read it.",
+      "gt": "Bạn có thể lấy quyển sách nếu bạn có thể đọc nó."
+    },
+    {
+      "src": "You may take the book if you can read it.",
+      "gt": "Bạn có thể lấy quyển sách nếu bạn biết đọc nó."
+    },
+    {
+      "src": "I mean to go tomorrow if the weather is fine.",
+      "gt": "Tôi tính đi vào ngày mai nếu thời tiết tốt."
+    },
+    {
+      "src": "I mean to go tomorrow if the weather is fine.",
+      "gt": "Tôi tính ngày mai đi nếu thời tiết tốt."
+    },
+    {
+      "src": "Were I in your position, I would oppose that plan.",
+      "gt": "Nếu tôi ở vị trí của bạn, tôi sẽ phản đối kế hoạch đó."
+    },
+    {
+      "src": "If you will help us, we will be very glad.",
+      "gt": "Nếu bạn giúp chúng tôi, chúng tôi sẽ rất vui."
+    },
+    {
+      "src": "You're playing with fire if you insist on riding your motorcycle without a helmet on.",
+      "gt": "Bạn đang đùa với lửa nếu bạn nhất quyết chạy xe máy mà không đội mũ bảo hiểm."
+    },
+    {
+      "src": "Had you run all the way, you'd have got there in time.",
+      "gt": "Nếu mày chạy liên tục, mày có lẽ đã đến đó kịp giờ."
+    },
+    {
+      "src": "Hello, is this the personnel department?",
+      "gt": "Xin chào, đây là phòng nhân sự phải không?"
+    },
+    {
+      "src": "I'm sick and tired of his lack of taste.",
+      "gt": "Tôi phát bệnh và chán nản vì sự thiếu thẩm mỹ của hắn."
+    },
+    {
+      "src": "Does Mary live next door to the bus driver with whom John worked?",
+      "gt": "Có phải Mary sống cạnh nhà tài xế xe buýt - người đã làm việc với Join không?"
+    },
+    {
+      "src": "Have you ever been to Mexico?",
+      "gt": "Bạn đã từng đến Mexico phải không?"
+    },
+    {
+      "src": "May Day is also a festival day for the workers in the world.",
+      "gt": "Ngày Quốc tế lao động cũng là ngày lễ dành cho người lao động trên toàn thế giới."
+    },
+    {
+      "src": "We are having fish for our main course.",
+      "gt": "Chúng ta/Chúng tôi có cá trong món chính."
+    },
+    {
+      "src": "Can you tell me where Main Street is?",
+      "gt": "Bạn có thể cho tôi biết đường lớn ở đâu không?"
+    },
+    {
+      "src": "Each child has an individual way of thinking.",
+      "gt": "Mỗi đứa trẻ có một cách suy nghĩ khác nhau."
+    },
+    {
+      "src": "Each has his own taste.",
+      "gt": "Mỗi người có khẩu vị riêng"
+    },
+    {
+      "src": "Mary is a bookworm.",
+      "gt": "Mary là một con mọt sách."
+    },
+    {
+      "src": "Mary looks like her mother.",
+      "gt": "Mary nhìn giống mẹ cô ấy."
+    },
+    {
+      "src": "Mary spoke Japanese slowly.",
+      "gt": "Mary nói Tiếng Nhật chậm."
+    },
+    {
+      "src": "I don't like any of them.",
+      "gt": "Tôi không thích bất kỳ ai trong số họ."
+    },
+    {
+      "src": "Everyone always asks me that.",
+      "gt": "Mọi người luôn hỏi tôi về điều đó."
+    },
+    {
+      "src": "You talk as if you knew everything.",
+      "gt": "Bạn nói như thể bạn đã biết mọi thứ."
+    },
+    {
+      "src": "Mayuko eats bread for breakfast.",
+      "gt": "Mayuko ăn bánh mì cho bữa sáng."
+    },
+    {
+      "src": "It is me that is wrong.",
+      "gt": "Tại vì tôi nhầm hay là điều đó sai vậy?"
+    },
+    {
+      "src": "I haven't put on the jacket yet.",
+      "gt": "Tôi chưa mặc áo khoác vào."
+    },
+    {
+      "src": "I'll see you later.",
+      "gt": "Hẹn gặp lại bạn nhé."
+    },
+    {
+      "src": "Did you hear that, Mike?",
+      "gt": "Bạn có nghe nó không Mike?"
+    },
+    {
+      "src": "Here comes the bus!",
+      "gt": "Xe buýt đến rồi."
+    },
+    {
+      "src": "It's been raining for around a week.",
+      "gt": "Trời mưa khoảng 1 tuần nay rồi."
+    },
+    {
+      "src": "Bob asked the teacher some questions.",
+      "gt": "Bob hỏi giáo viên một vài câu hỏi."
+    },
+    {
+      "src": "Bob saw him again.",
+      "gt": "Bob nhìn thấy anh ta lần nữa."
+    }
+  ]
 }

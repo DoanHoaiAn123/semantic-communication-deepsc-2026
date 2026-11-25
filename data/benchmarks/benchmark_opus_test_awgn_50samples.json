@@ -288,5 +288,207 @@
         "ber": 0.0
       }
     ]
-  }
+  },
+  "test_samples": [
+    {
+      "src": "We are in a dive.",
+      "gt": "Chúng ta đang lao xuống."
+    },
+    {
+      "src": "She brought us the job in the first place.",
+      "gt": "Anh ngủ với cô ta chưa Teddy?"
+    },
+    {
+      "src": "- No.",
+      "gt": "- Không."
+    },
+    {
+      "src": "Beautiful country.",
+      "gt": "Một đất nước đẹp tuyệt."
+    },
+    {
+      "src": "Go save Riley.",
+      "gt": "Đi cứu Riley đi."
+    },
+    {
+      "src": "I'm pleased to inform you that the War Department is interested in your explosive.",
+      "gt": "Tôi hân hạnh thông báo với ông rằng Bộ Chiến Tranh rất quan tâm tới chất nổ của ông."
+    },
+    {
+      "src": "Barney wants to be with you.",
+      "gt": "Barney vẫn muốn ở bên cậu."
+    },
+    {
+      "src": "I was just trying to find out what she knows.",
+      "gt": "Hãy tới một chỗ nào nơi chúng ta có thể một mình."
+    },
+    {
+      "src": "Ostedes variegata is a species of beetle in the family Cerambycidae.",
+      "gt": "Ostedes variegata là một loài bọ cánh cứng trong họ Cerambycidae."
+    },
+    {
+      "src": "It's... it's just a stage prop.",
+      "gt": "Nó chỉ là đạo cụ thôi mà."
+    },
+    {
+      "src": "Hello. My name is Jordan Belfort.",
+      "gt": "Chào, tôi là Jordan Belfort."
+    },
+    {
+      "src": "Scott, something evil and vicious has taken hold of you.",
+      "gt": "Scott, có thứ độc ác và xấu xa đã chiếm lấy con."
+    },
+    {
+      "src": "You know what happens when you're nice.Nothing.",
+      "gt": "Cô biết là sẽ ra sao khi cô tỏ ra tử tế rồi đấy."
+    },
+    {
+      "src": "Go see your friends.",
+      "gt": "Đi gặp bạn mày đi."
+    },
+    {
+      "src": "Thank God.",
+      "gt": "Dây điện thoại bị cắt rồi."
+    },
+    {
+      "src": "Let Ba Chu go and forget about the old man, all right?",
+      "gt": "Thả nó đi và không nhắc tới chuyện ông Mã nữa, được chưa?"
+    },
+    {
+      "src": "But as time went on, It evolved into something very different.",
+      "gt": "Rồi thời gian trôi qua nó chuyển biến sang một điều hoàn toàn khác"
+    },
+    {
+      "src": "Third Uncle, we would like to go into the courtyard and talk privately.",
+      "gt": "Chú Ba, tụi con muốn đi... ra sân và nói chuyện riêng."
+    },
+    {
+      "src": "So they prayed harder and longer and fought more wars in his name.",
+      "gt": "Họ siêng năng cầu nguyện nhiều hơn và chiến tranh cũng nhiều hơn dưới tên ông ta."
+    },
+    {
+      "src": "Gotta hand it to you, B.",
+      "gt": "Cậu lo cái này."
+    },
+    {
+      "src": "I am \"Porsche-ing\" around.",
+      "gt": "Em đang \"Porsche Ing\" lang thang."
+    },
+    {
+      "src": "- Greg, shut up.",
+      "gt": "- Greg, yên lặng đi."
+    },
+    {
+      "src": "We're just gonna take my little friend to your home and forget this ever happened.",
+      "gt": "Chúng tôi đưa bạn mình về nhà và quên mọi việc đã xảy ra mà."
+    },
+    {
+      "src": "If he hadn't motivated me...",
+      "gt": "Nếu không có anh ấy động viên..."
+    },
+    {
+      "src": "- I swear, you scored her, man.",
+      "gt": "- Cậu khéo đấy."
+    },
+    {
+      "src": "Yeah.",
+      "gt": "Ừ."
+    },
+    {
+      "src": "But now it is time for me to be someone else.",
+      "gt": "Nhưng giờ là lúc tôi trở thành một người khác."
+    },
+    {
+      "src": "The rest when you deliver the girl.",
+      "gt": "Số còn lại anh có khi nào anh đưa cô gái về."
+    },
+    {
+      "src": "Hey, Cliff, for what it's worth, I think you're a good guy.",
+      "gt": "Này, Cliff, không biết có ích không, chứ tôi nghĩ ông là người tốt."
+    },
+    {
+      "src": "It's a muscular guy.",
+      "gt": "Anh chàng cơ bắp."
+    },
+    {
+      "src": "You see it that way because you feel guilty.",
+      "gt": "Em thấy mọi chuyện như thế bởi vì em cảm thấy tội lỗi."
+    },
+    {
+      "src": "The genus name has become a synonym of \"Cantharidus\" Montfort, 1810This genus is only known to occur in New Zealand.",
+      "gt": "The genus name has become a synonym of \"Cantharidus\" Montfort, 1810This genus is only known to occur in New Zealand."
+    },
+    {
+      "src": "- Could you talk to her?",
+      "gt": "- Anh đi nói với cô ấy đi"
+    },
+    {
+      "src": "- He's a good old fella.",
+      "gt": "- Nó là một anh bạn già."
+    },
+    {
+      "src": "Shall we, Mrs. Lamb?",
+      "gt": "Xin mời bà, bà Lamb?"
+    },
+    {
+      "src": "To enrich my life",
+      "gt": "# Cho đời em sung sướng"
+    },
+    {
+      "src": "What more do you want? I'll tell you what I want, okay?",
+      "gt": "Tôi cho anh biết nhé"
+    },
+    {
+      "src": "- You're commanding me!",
+      "gt": "- Cha đang ra lệnh cho con!"
+    },
+    {
+      "src": "To 钱啊 you",
+      "gt": "Đưa tiền mau"
+    },
+    {
+      "src": "Wrap myself around you--",
+      "gt": "Wrap myself around you"
+    },
+    {
+      "src": "You have somethin' to say from that book for every occasion.",
+      "gt": "Bất cứ tình huống nào cô cũng có gì đó trong cuốn sách đó để nói, phải không? Ây-dà."
+    },
+    {
+      "src": "Okay. Maddie just ran away.",
+      "gt": "Maddie mới chạy đi."
+    },
+    {
+      "src": "Talked nonstop walking here",
+      "gt": "Vừa đi vừa trò chuyện"
+    },
+    {
+      "src": "You must get off this train.",
+      "gt": "Cậu phải ra khỏi con tàu này."
+    },
+    {
+      "src": "- Mm-hm. Mm-hm.",
+      "gt": "Có, con nhớ."
+    },
+    {
+      "src": "\"'...shall snuff it.\"'",
+      "gt": "\"chúng sẽ ngủm cù đèo.\""
+    },
+    {
+      "src": "I'll show you how to handle these situations.",
+      "gt": "Tao sẽ cho mày thấy phải làm sao."
+    },
+    {
+      "src": "Nina, you don't have to tell me.",
+      "gt": "Nina, em không phải kể anh biết."
+    },
+    {
+      "src": "He could have a bunch.",
+      "gt": "Có khi hắn quen cả đàn cớm."
+    },
+    {
+      "src": "\"What is the purpose of your visit?\"",
+      "gt": "Em tới Mĩ làm gì."
+    }
+  ]
 }
