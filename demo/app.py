@@ -1592,9 +1592,6 @@ Văn Bản Giải Mã Nhận Được:
 <div style="font-size: 0.95rem; line-height: 1.6; color: {colors['text']}; background: #F9FAFB; padding: 12px; border-radius: 4px; min-height: 95px; border: 1px solid #D1D5DB; word-break: break-word;">
 {sem_safe_text}
 </div>
-<div style="font-size: 0.78rem; color: #6B7280; margin-top: 8px; font-style: italic;">
-* {res3['semantic']['phenom']}
-</div>
 </div>
 <div style="margin-top: 16px; border-top: 1px solid #EEEEEE; padding-top: 14px;">
 <div style="font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
@@ -1654,9 +1651,6 @@ Văn Bản Giải Mã Nhận Được:
 <div style="font-size: 0.95rem; line-height: 1.6; color: {text_col_trans}; background: #F9FAFB; padding: 12px; border-radius: 4px; min-height: 95px; border: 1px solid {border_trans}; word-break: break-word;">
 {trans_safe_text}
 </div>
-<div style="font-size: 0.78rem; color: #6B7280; margin-top: 8px; font-style: italic;">
-* {res3['transformer']['phenom']}
-</div>
 </div>
 <div style="margin-top: 16px; border-top: 1px solid #EEEEEE; padding-top: 14px;">
 <div style="font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
@@ -1709,9 +1703,6 @@ Văn Bản Giải Mã Nhận Được:
 </div>
 <div style="font-size: 0.95rem; line-height: 1.6; color: {colors['text']}; background: #FFF5F5; padding: 12px; border-radius: 4px; min-height: 95px; border: 1px solid #FECACA; font-weight: 600; word-break: break-word;">
 {deepsc_safe_text}
-</div>
-<div style="font-size: 0.78rem; color: {colors['accent']}; margin-top: 8px; font-style: italic;">
-* {res3['deepsc']['phenom']}
 </div>
 </div>
 <div style="margin-top: 16px; border-top: 1px solid #EEEEEE; padding-top: 14px;">
@@ -1863,9 +1854,6 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
     <div style="font-size: 0.98rem; line-height: 1.6; color: {text_col_trad}; background: #F9FAFB; padding: 12px; border-radius: 4px; min-height: 95px; border: 1px solid {border_trad}; word-break: break-word; font-family: monospace;">
     {trad_safe_text}
     </div>
-    <div style="font-size: 0.78rem; color: #6B7280; margin-top: 8px; font-style: italic;">
-    * {res_td['traditional']['phenom']}
-    </div>
     </div>
     <div style="margin-top: 16px; border-top: 1px solid #EEEEEE; padding-top: 14px;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -1923,9 +1911,6 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
     </div>
     <div style="font-size: 0.98rem; line-height: 1.6; color: {colors['text']}; background: #FFF5F5; padding: 12px; border-radius: 4px; min-height: 95px; border: 1px solid #FECACA; font-weight: 600; word-break: break-word;">
     {deepsc_td_safe_text}
-    </div>
-    <div style="font-size: 0.78rem; color: {colors['accent']}; margin-top: 8px; font-style: italic;">
-    * {res_td['deepsc']['phenom']}
     </div>
     </div>
     <div style="margin-top: 16px; border-top: 1px solid #EEEEEE; padding-top: 14px;">
