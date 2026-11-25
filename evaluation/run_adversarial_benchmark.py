@@ -42,7 +42,13 @@ import numpy as np
 import pandas as pd
 
 from evaluation.metrics import calculate_bleu, calculate_semantic_similarity
-from training.dataset import SimpleTokenizer, load_supplementary_dataset
+from training.dataset import (
+    SimpleTokenizer,
+    load_supplementary_dataset,
+    load_raw_opus_dataset,
+    load_raw_tatoeba_dataset,
+    _deduplicate_train_data,
+)
 from training.config import get_default_config
 
 
@@ -134,56 +140,34 @@ def load_test_data(dataset_type: str = "tatoeba", max_samples: int = 100, custom
         return tat_pairs + opus_pairs
 
     if dataset_type.lower() in ["harouzie", "tap1"]:
-        # Tập 1: Ưu tiên nạp từ OPUS-100 Test (Chuyên ngành & Kỹ thuật số)
-        en_p = os.path.join(BASE_DIR, 'data', 'raw', 'opus-100-corpus-v1.0', 'opus-100-corpus', 'v1.0', 'supervised', 'en-vi', 'opus.en-vi-test.en')
-        vi_p = os.path.join(BASE_DIR, 'data', 'raw', 'opus-100-corpus-v1.0', 'opus-100-corpus', 'v1.0', 'supervised', 'en-vi', 'opus.en-vi-test.vi')
-        if os.path.exists(en_p) and os.path.exists(vi_p):
-            with open(en_p, 'r', encoding='utf-8', errors='ignore') as f_en, open(vi_p, 'r', encoding='utf-8', errors='ignore') as f_vi:
-                for e, v in zip(f_en, f_vi):
-                    e, v = e.strip(), v.strip()
-                    if e and v:
-                        pairs.append((e, v))
-                    if max_samples > 0 and len(pairs) >= max_samples:
-                        break
-        # Nếu chưa đủ mẫu, nạp thêm từ dataset2_tatoeba_wmt.csv
-        if len(pairs) < max_samples:
+        # Tập 1: Nạp từ OPUS-100 Test đã qua bộ lọc chuẩn hóa của training.dataset
+        pairs = load_raw_opus_dataset(max_samples=max_samples if max_samples > 0 else 0, direction='en-vi', split='test')
+        if max_samples > len(pairs):
+            d_extra = _deduplicate_train_data(load_raw_opus_dataset(max_samples=0, direction='en-vi', split='dev'), pairs)
+            pairs.extend(d_extra)
+        if max_samples > 0 and len(pairs) < max_samples:
             csv_p = os.path.join(BASE_DIR, 'data', 'processed', 'dataset2_tatoeba_wmt.csv')
             if os.path.exists(csv_p):
                 extra = load_supplementary_dataset(csv_path=csv_p, direction='en-vi')
-                pairs.extend(extra)
+                pairs.extend(_deduplicate_train_data(extra, pairs))
 
     elif dataset_type.lower() in ["tatoeba", "tap2"]:
-        # Tập 2: Nạp từ dataset2_tatoeba_wmt.csv và raw Tatoeba TSV
+        # Tập 2: Nạp từ dataset2_tatoeba_wmt.csv và raw Tatoeba TSV đã qua bộ lọc chuẩn hóa
         csv_p = os.path.join(BASE_DIR, 'data', 'processed', 'dataset2_tatoeba_wmt.csv')
         if os.path.exists(csv_p):
             pairs = load_supplementary_dataset(csv_path=csv_p, direction='en-vi')
-        
-        if len(pairs) < max_samples:
-            tatoeba_tsv = os.path.join(BASE_DIR, 'data', 'raw', 'tatoeba', 'Các cặp câu trong Tiếng Anh - Tiếng Việt - 2026-10-14.tsv')
-            if os.path.exists(tatoeba_tsv):
-                seen_pairs = set(pairs)
-                with open(tatoeba_tsv, 'r', encoding='utf-8', errors='ignore') as f:
-                    for line in f:
-                        parts = line.strip().split('\t')
-                        if len(parts) >= 4:
-                            e, v = parts[1].strip(), parts[3].strip()
-                            if e and v and (e, v) not in seen_pairs:
-                                seen_pairs.add((e, v))
-                                pairs.append((e, v))
-                        if max_samples > 0 and len(pairs) >= max_samples:
-                            break
+        if max_samples <= 0 or len(pairs) < max_samples:
+            tat_clean = load_raw_tatoeba_dataset(max_samples=max_samples if max_samples > 0 else 0, direction='en-vi')
+            if pairs:
+                pairs.extend(_deduplicate_train_data(tat_clean, pairs))
+            else:
+                pairs = tat_clean
     else:
-        # Mặc định nạp OPUS-100 Test
-        en_p = os.path.join(BASE_DIR, 'data', 'raw', 'opus-100-corpus-v1.0', 'opus-100-corpus', 'v1.0', 'supervised', 'en-vi', 'opus.en-vi-test.en')
-        vi_p = os.path.join(BASE_DIR, 'data', 'raw', 'opus-100-corpus-v1.0', 'opus-100-corpus', 'v1.0', 'supervised', 'en-vi', 'opus.en-vi-test.vi')
-        if os.path.exists(en_p) and os.path.exists(vi_p):
-            with open(en_p, 'r', encoding='utf-8', errors='ignore') as f_en, open(vi_p, 'r', encoding='utf-8', errors='ignore') as f_vi:
-                for e, v in zip(f_en, f_vi):
-                    e, v = e.strip(), v.strip()
-                    if e and v:
-                        pairs.append((e, v))
-                    if max_samples > 0 and len(pairs) >= max_samples:
-                        break
+        # Mặc định nạp OPUS-100 Test đã qua bộ lọc chuẩn hóa
+        pairs = load_raw_opus_dataset(max_samples=max_samples if max_samples > 0 else 0, direction='en-vi', split='test')
+        if max_samples > len(pairs):
+            d_extra = _deduplicate_train_data(load_raw_opus_dataset(max_samples=0, direction='en-vi', split='dev'), pairs)
+            pairs.extend(d_extra)
 
     if max_samples > 0:
         pairs = pairs[:max_samples]

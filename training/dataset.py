@@ -337,8 +337,20 @@ def _load_harouzie_dataset(max_samples: int = 3000, direction: str = 'en-vi') ->
     return data
 
 
+_HTML_NOISE_RE = re.compile(r'<[^>]+>|&(?:quot|amp|lt|gt|nbsp);|♪')
+
+
+def _normalize_for_dedup(text: str) -> str:
+    """Chuẩn hóa chuỗi sau khi loại bỏ dấu câu (đồng nhất 100% với SimpleTokenizer._tokenize) để khử trùng tuyệt đối."""
+    if not text:
+        return ""
+    text = unicodedata.normalize('NFC', str(text).strip().lower())
+    cleaned = re.sub(r'[^\w\s\u00C0-\u024F\u1E00-\u1EFF\u3400-\u4DBF\u4E00-\u9FFF]', '', text)
+    return ' '.join(cleaned.split())
+
+
 def _count_effective_tokens(text: str) -> int:
-    """Đếm số từ (Anh/Việt) hoặc ký tự chữ Hán (Trung) sau chuẩn hóa NFC."""
+    """Đếm số từ (Anh/Việt) hoặc ký tự chữ Hán (Trung) sau chuẩn hóa NFC (đồng nhất với SimpleTokenizer._tokenize)."""
     if not text:
         return 0
     text = unicodedata.normalize('NFC', text.strip())
@@ -351,7 +363,7 @@ def _count_effective_tokens(text: str) -> int:
         else:
             non_cjk_chars.append(c)
     non_cjk_str = ''.join(non_cjk_chars)
-    cleaned = re.sub(r'[^\w\s\u00C0-\u024F\u1E00-\u1EFF]', ' ', non_cjk_str)
+    cleaned = re.sub(r'[^\w\s\u00C0-\u024F\u1E00-\u1EFF]', '', non_cjk_str)
     word_cnt = len(cleaned.split())
     return len(cjk_chars) + word_cnt
 
@@ -390,13 +402,21 @@ def load_raw_opus_dataset(max_samples: int = 5000, direction: str = 'en-vi', raw
         for en, vi in zip(f_en, f_vi):
             en = unicodedata.normalize('NFC', en.strip())
             vi = unicodedata.normalize('NFC', vi.strip())
-            if not en or not vi or en.lower() == vi.lower():
+            if not en or not vi:
+                continue
+            if _HTML_NOISE_RE.search(en) or _HTML_NOISE_RE.search(vi):
+                continue
+            norm_en = _normalize_for_dedup(en)
+            norm_vi = _normalize_for_dedup(vi)
+            if not norm_en or not norm_vi or norm_en == norm_vi:
                 continue
             len_en = _count_effective_tokens(en)
             len_vi = _count_effective_tokens(vi)
             if 2 <= len_en <= 50 and 2 <= len_vi <= 50:
+                if max(len_en, len_vi) >= 8 and (max(len_en, len_vi) / max(1, min(len_en, len_vi))) >= 4.0:
+                    continue
                 pair = (vi, en) if direction == 'vi-en' else (en, vi)
-                pair_key = (pair[0].lower(), pair[1].lower())
+                pair_key = (norm_vi, norm_en) if direction == 'vi-en' else (norm_en, norm_vi)
                 if pair_key in seen_pairs:
                     continue
                 seen_pairs.add(pair_key)
@@ -431,13 +451,21 @@ def load_raw_tatoeba_dataset(max_samples: int = 5000, direction: str = 'en-vi', 
             if len(parts) >= 4:
                 en = unicodedata.normalize('NFC', parts[1].strip())
                 vi = unicodedata.normalize('NFC', parts[3].strip())
-                if not en or not vi or en.lower() == vi.lower():
+                if not en or not vi:
+                    continue
+                if _HTML_NOISE_RE.search(en) or _HTML_NOISE_RE.search(vi):
+                    continue
+                norm_en = _normalize_for_dedup(en)
+                norm_vi = _normalize_for_dedup(vi)
+                if not norm_en or not norm_vi or norm_en == norm_vi:
                     continue
                 len_en = _count_effective_tokens(en)
                 len_vi = _count_effective_tokens(vi)
                 if 2 <= len_en <= 50 and 2 <= len_vi <= 50:
+                    if max(len_en, len_vi) >= 8 and (max(len_en, len_vi) / max(1, min(len_en, len_vi))) >= 4.0:
+                        continue
                     pair = (vi, en) if direction == 'vi-en' else (en, vi)
-                    pair_key = (pair[0].lower(), pair[1].lower())
+                    pair_key = (norm_vi, norm_en) if direction == 'vi-en' else (norm_en, norm_vi)
                     if pair_key in seen_pairs:
                         continue
                     seen_pairs.add(pair_key)
@@ -463,27 +491,30 @@ def _deduplicate_train_data(
     train_data: List[Tuple[str, str]],
     *excluded_splits: List[Tuple[str, str]]
 ) -> List[Tuple[str, str]]:
-    """Loại bỏ các cặp câu trong train_data bị trùng câu nguồn (src) HOẶC câu đích (tgt) với val/test/tatoeba."""
+    """Loại bỏ các cặp câu trong train_data bị trùng câu nguồn (src) HOẶC câu đích (tgt) (cả nguyên bản lẫn sau khi tách dấu câu) với val/test/tatoeba."""
     excluded_srcs = set()
     excluded_tgts = set()
     for split_data in excluded_splits:
         if not split_data:
             continue
         for src, tgt in split_data:
-            excluded_srcs.add(unicodedata.normalize('NFC', src.strip().lower()))
-            excluded_tgts.add(unicodedata.normalize('NFC', tgt.strip().lower()))
+            ns = _normalize_for_dedup(src) or unicodedata.normalize('NFC', src.strip().lower())
+            nt = _normalize_for_dedup(tgt) or unicodedata.normalize('NFC', tgt.strip().lower())
+            excluded_srcs.add(ns)
+            excluded_tgts.add(nt)
 
     if not excluded_srcs and not excluded_tgts:
         return train_data
 
-    cleaned = [
-        pair for pair in train_data
-        if unicodedata.normalize('NFC', pair[0].strip().lower()) not in excluded_srcs
-        and unicodedata.normalize('NFC', pair[1].strip().lower()) not in excluded_tgts
-    ]
+    cleaned = []
+    for pair in train_data:
+        ns = _normalize_for_dedup(pair[0]) or unicodedata.normalize('NFC', pair[0].strip().lower())
+        nt = _normalize_for_dedup(pair[1]) or unicodedata.normalize('NFC', pair[1].strip().lower())
+        if ns not in excluded_srcs and nt not in excluded_tgts:
+            cleaned.append(pair)
     removed = len(train_data) - len(cleaned)
     if removed > 0:
-        print(f"  [Deduplication] Đã loại bỏ {removed:,} câu trùng lặp (cả src & tgt) giữa Train với Val/Test/Tatoeba.")
+        print(f"  [Deduplication] Đã loại bỏ {removed:,} câu trùng lặp (cả src & tgt sau tách từ) giữa Train với Val/Test/Tatoeba.")
     return cleaned
 
 

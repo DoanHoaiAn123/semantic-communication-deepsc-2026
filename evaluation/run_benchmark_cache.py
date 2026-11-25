@@ -21,53 +21,31 @@ if BASE_DIR not in sys.path:
 from models.semantic_model import SemanticCommModel
 from channel.traditional import TraditionalPipeline
 from evaluation.metrics import calculate_bleu, calculate_semantic_similarity
-from training.dataset import SimpleTokenizer
+from training.dataset import (
+    SimpleTokenizer,
+    load_raw_opus_dataset,
+    load_raw_tatoeba_dataset,
+    _deduplicate_train_data,
+)
 from training.config import get_default_config
 
 
 def load_dataset_pairs(dataset_name: str = "opus_test", max_samples: int = 0):
-    """Nạp dữ liệu thực tế trực tiếp từ file disk."""
+    """Nạp dữ liệu kiểm thử đã qua bộ lọc chuẩn hóa của training.dataset (loại bỏ dòng chưa dịch, <2 từ, ♪/HTML, lệch phụ đề >=4x)."""
     pairs = []
     dn = dataset_name.lower()
-    raw_opus_dir = os.path.join(BASE_DIR, 'data', 'raw', 'opus-100-corpus-v1.0', 'opus-100-corpus', 'v1.0', 'supervised', 'en-vi')
-    tatoeba_path = os.path.join(BASE_DIR, 'data', 'raw', 'tatoeba', 'Các cặp câu trong Tiếng Anh - Tiếng Việt - 2026-10-14.tsv')
-    
+
     # Xử lý trường hợp nạp CẢ 2 LOẠI DATASET (OPUS-100 + Tatoeba)
     if "all" in dn or "tất cả" in dn or "cả 2" in dn or "tổng hợp" in dn:
-        # Nếu có yêu cầu gồm cả 1 triệu câu train
         include_train = ("full" in dn or "train" in dn or "triệu" in dn or "1027" in dn)
-        
-        opus_pairs = []
-        tatoeba_pairs = []
-        
-        # 1. Nạp từ Tatoeba
-        tp = os.path.normpath(tatoeba_path)
-        if os.path.exists(tp):
-            with open(tp, 'r', encoding='utf-8', errors='ignore') as f:
-                for line in f:
-                    parts = line.strip().split('\t')
-                    if len(parts) >= 4:
-                        e, v = parts[1].strip(), parts[3].strip()
-                        if e and v:
-                            tatoeba_pairs.append((e, v))
-                            
-        # 2. Nạp từ OPUS-100
-        opus_files = [
-            (os.path.join(raw_opus_dir, 'opus.en-vi-test.en'), os.path.join(raw_opus_dir, 'opus.en-vi-test.vi')),
-            (os.path.join(raw_opus_dir, 'opus.en-vi-dev.en'), os.path.join(raw_opus_dir, 'opus.en-vi-dev.vi'))
-        ]
+        tatoeba_pairs = load_raw_tatoeba_dataset(max_samples=max_samples if max_samples > 0 else 0, direction='en-vi')
+        opus_test = load_raw_opus_dataset(max_samples=0, direction='en-vi', split='test')
+        opus_dev = _deduplicate_train_data(load_raw_opus_dataset(max_samples=0, direction='en-vi', split='dev'), opus_test)
+        opus_pairs = opus_test + opus_dev
         if include_train:
-            opus_files.append((os.path.join(raw_opus_dir, 'opus.en-vi-train.en'), os.path.join(raw_opus_dir, 'opus.en-vi-train.vi')))
-            
-        for en_p, vi_p in opus_files:
-            if os.path.exists(en_p) and os.path.exists(vi_p):
-                with open(en_p, 'r', encoding='utf-8', errors='ignore') as fe, open(vi_p, 'r', encoding='utf-8', errors='ignore') as fv:
-                    for e, v in zip(fe, fv):
-                        e, v = e.strip(), v.strip()
-                        if e and v:
-                            opus_pairs.append((e, v))
-                            
-        # Kết hợp cân bằng cả 2 loại data
+            opus_train = load_raw_opus_dataset(max_samples=max_samples if max_samples > 0 else 0, direction='en-vi', split='train')
+            opus_pairs.extend(_deduplicate_train_data(opus_train, opus_test, opus_dev, tatoeba_pairs))
+
         if max_samples and max_samples > 0:
             half = max_samples // 2
             half_opus = min(half, len(opus_pairs))
@@ -75,50 +53,31 @@ def load_dataset_pairs(dataset_name: str = "opus_test", max_samples: int = 0):
             pairs = opus_pairs[:half_opus] + tatoeba_pairs[:half_tatoeba]
         else:
             pairs = opus_pairs + tatoeba_pairs
-            
         return pairs
 
-    # Các trường hợp nạp từng dataset riêng lẻ
-    files_to_read = []
     if "toàn bộ opus" in dn or "opus_all" in dn:
-        files_to_read.append(('opus', os.path.join(raw_opus_dir, 'opus.en-vi-train.en'), os.path.join(raw_opus_dir, 'opus.en-vi-train.vi')))
-        files_to_read.append(('opus', os.path.join(raw_opus_dir, 'opus.en-vi-dev.en'), os.path.join(raw_opus_dir, 'opus.en-vi-dev.vi')))
-        files_to_read.append(('opus', os.path.join(raw_opus_dir, 'opus.en-vi-test.en'), os.path.join(raw_opus_dir, 'opus.en-vi-test.vi')))
+        t_pairs = load_raw_opus_dataset(max_samples=0, direction='en-vi', split='test')
+        d_pairs = _deduplicate_train_data(load_raw_opus_dataset(max_samples=0, direction='en-vi', split='dev'), t_pairs)
+        tr_pairs = _deduplicate_train_data(
+            load_raw_opus_dataset(max_samples=max_samples if max_samples > 0 else 0, direction='en-vi', split='train'),
+            t_pairs, d_pairs
+        )
+        pairs = t_pairs + d_pairs + tr_pairs
     elif "tatoeba" in dn:
-        files_to_read.append(('tatoeba', tatoeba_path, ''))
+        pairs = load_raw_tatoeba_dataset(max_samples=max_samples if max_samples > 0 else 0, direction='en-vi')
     elif "train" in dn or "opus_train" in dn:
-        files_to_read.append(('opus', os.path.join(raw_opus_dir, 'opus.en-vi-train.en'), os.path.join(raw_opus_dir, 'opus.en-vi-train.vi')))
+        pairs = load_raw_opus_dataset(max_samples=max_samples if max_samples > 0 else 0, direction='en-vi', split='train')
     elif "dev" in dn or "opus_dev" in dn:
-        files_to_read.append(('opus', os.path.join(raw_opus_dir, 'opus.en-vi-dev.en'), os.path.join(raw_opus_dir, 'opus.en-vi-dev.vi')))
+        pairs = load_raw_opus_dataset(max_samples=max_samples if max_samples > 0 else 0, direction='en-vi', split='dev')
     else:
-        files_to_read.append(('opus', os.path.join(raw_opus_dir, 'opus.en-vi-test.en'), os.path.join(raw_opus_dir, 'opus.en-vi-test.vi')))
-        
-    for ftype, en_p, vi_p in files_to_read:
-        if ftype == 'tatoeba':
-            tp = os.path.normpath(en_p)
-            if os.path.exists(tp):
-                with open(tp, 'r', encoding='utf-8', errors='ignore') as f:
-                    for line in f:
-                        parts = line.strip().split('\t')
-                        if len(parts) >= 4:
-                            e, v = parts[1].strip(), parts[3].strip()
-                            if e and v:
-                                pairs.append((e, v))
-                                if max_samples and max_samples > 0 and len(pairs) >= max_samples:
-                                    break
-        else:
-            en_p, vi_p = os.path.normpath(en_p), os.path.normpath(vi_p)
-            if os.path.exists(en_p) and os.path.exists(vi_p):
-                with open(en_p, 'r', encoding='utf-8', errors='ignore') as fe, open(vi_p, 'r', encoding='utf-8', errors='ignore') as fv:
-                    for e, v in zip(fe, fv):
-                        e, v = e.strip(), v.strip()
-                        if e and v:
-                            pairs.append((e, v))
-                            if max_samples and max_samples > 0 and len(pairs) >= max_samples:
-                                break
-        if max_samples and max_samples > 0 and len(pairs) >= max_samples:
-            break
-            
+        pairs = load_raw_opus_dataset(max_samples=max_samples if max_samples > 0 else 0, direction='en-vi', split='test')
+        if max_samples and max_samples > len(pairs):
+            d_extra = _deduplicate_train_data(load_raw_opus_dataset(max_samples=0, direction='en-vi', split='dev'), pairs)
+            pairs = (pairs + d_extra)[:max_samples]
+
+    if max_samples and max_samples > 0:
+        pairs = pairs[:max_samples]
+
     if not pairs:
         pairs = [
             ("I just don't know what to say.", "Tôi không biết nên nói gì cả."),
