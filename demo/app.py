@@ -413,9 +413,9 @@ colors = {
     'border': '#D1D5DB',        # Viền rõ nét
     'divider': '#E5E7EB',       # Đường phân cách
     'button_hover': '#991B1B',  # Đỏ đậm khi hover
-    'subtext': '#4B5563',       # Xám rõ ràng dễ đọc (Gray 600)
-    'error': '#DC2626',         # Lỗi hiển thị Đỏ tươi
-    'accent': '#B91C1C',        # Đỏ Đô Học Thuật (Deep Crimson - tương phản cao, không nhòe)
+    'subtext': '#374151',       # Xám rõ ràng dễ đọc (Gray 600)
+    'error': '#7F1D1D',         # Lỗi hiển thị Đỏ tươi
+    'accent': '#991B1B',        # Đỏ Đô Học Thuật (Deep Crimson - tương phản cao, không nhòe)
     'primary_blue': '#1E3A8A',  # Xanh Đại học HUIT chuẩn
     'chart_bg': '#F8F9FA',
     'chart_ax': '#F8F9FA',
@@ -581,7 +581,7 @@ st.markdown(f"""
         color: #374151 !important;
         padding: 9px 12px !important;
         border-radius: 6px !important;
-        border-left: 3px solid transparent !important;
+        border: 1px solid transparent !important;
         background-color: transparent !important;
         transition: all 0.15s ease-in-out !important;
         cursor: pointer !important;
@@ -598,7 +598,7 @@ st.markdown(f"""
         background-color: #EFF6FF !important;
         color: {colors['primary_blue']} !important;
         font-weight: 600 !important;
-        border-left: 3px solid {colors['primary_blue']} !important;
+        border: 1px solid {colors['primary_blue']} !important;
     }}
 
     section[data-testid="stSidebar"] div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) p,
@@ -620,27 +620,28 @@ st.markdown(f"""
         letter-spacing: -0.015em !important;
     }}
     
-    h1 {{ font-size: 2.0rem !important; line-height: 1.3 !important; }}
-    h2 {{ font-size: 1.4rem !important; }}
-    h3 {{ font-size: 1.2rem !important; }}
-    h4 {{ font-size: 1.0rem !important; }}
+    h1 {{ font-size: 2.0rem !important; line-height: 1.45 !important; }}
+    h2 {{ font-size: 1.42rem !important; line-height: 1.45 !important; }}
+    h3 {{ font-size: 1.2rem !important; line-height: 1.45 !important; }}
+    h4 {{ font-size: 1.05rem !important; line-height: 1.45 !important; }}
 
     p, [data-testid="stMarkdownContainer"] p {{
         font-family: 'Plus Jakarta Sans', sans-serif !important;
         font-size: 0.92rem !important;
         line-height: 1.6 !important;
-        color: #374151 !important;
+        color: #1F2937 !important;
         font-weight: 400 !important;
+        max-width: 65ch !important;
     }}
 
-    /* Labels, Text Headers */
+    /* Labels, Text Headers (không ép uppercase toàn cục để tránh lỗi ALL-CAPS BODY TEXT) */
     label, div[data-testid="stMetricLabel"] {{
         font-family: 'Plus Jakarta Sans', sans-serif !important;
-        font-size: 0.8rem !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.03em !important;
-        color: {colors['subtext']} !important;
+        font-size: 0.86rem !important;
+        letter-spacing: 0.01em !important;
+        color: #1F2937 !important;
         font-weight: 600 !important;
+        line-height: 1.45 !important;
     }}
 
     /* Metrics Values */
@@ -649,28 +650,44 @@ st.markdown(f"""
         font-size: 1.75rem !important;
         font-weight: 700 !important;
         color: {colors['text']} !important;
-        line-height: 1.2 !important;
+        line-height: 1.35 !important;
     }}
 
-    /* 5. Nút Bấm (Button) */
-    button[data-testid="baseButton-primary"] {{
-        background-color: {colors['accent']} !important;
+    /* 5. Nút Bấm (Button - chuẩn tương phản WCAG AAA 8.9:1 cho cả stBaseButton-primary & baseButton-primary) */
+    button[data-testid="stBaseButton-primary"],
+    button[data-testid="baseButton-primary"],
+    .stButton > button[kind="primary"] {{
+        background-color: #991B1B !important;
         color: #FFFFFF !important;
-        border: none !important;
+        border: 1px solid #7F1D1D !important;
         border-radius: 6px !important;
         font-family: 'Plus Jakarta Sans', sans-serif !important;
         font-weight: 600 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.03em !important;
-        font-size: 0.85rem !important;
+        letter-spacing: 0.01em !important;
+        font-size: 0.9rem !important;
         padding: 0.65rem 1.5rem !important;
         transition: background-color 0.15s ease !important;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08) !important;
         width: 100% !important;
     }}
 
-    button[data-testid="baseButton-primary"]:hover {{
-        background-color: {colors['button_hover']} !important;
+    button[data-testid="stBaseButton-primary"] p,
+    button[data-testid="stBaseButton-primary"] span,
+    button[data-testid="stBaseButton-primary"] div,
+    button[data-testid="baseButton-primary"] p,
+    button[data-testid="baseButton-primary"] span,
+    .stButton > button[kind="primary"] p,
+    .stButton > button[kind="primary"] span {{
+        color: #FFFFFF !important;
+        font-weight: 600 !important;
+        max-width: none !important;
+    }}
+
+    button[data-testid="stBaseButton-primary"]:hover,
+    button[data-testid="baseButton-primary"]:hover,
+    .stButton > button[kind="primary"]:hover {{
+        background-color: #7F1D1D !important;
+        color: #FFFFFF !important;
     }}
 
     button[data-testid="baseButton-secondary"] {{
@@ -750,7 +767,7 @@ st.markdown(f"""
     /* 8. Thanh Tabs */
     button[data-baseweb="tab"] {{
         font-family: 'Plus Jakarta Sans', sans-serif !important;
-        text-transform: uppercase !important;
+        
         letter-spacing: 0.04em !important;
         font-size: 0.82rem !important;
         font-weight: 500 !important;
@@ -789,7 +806,7 @@ def render_editorial_table(df, col_alignments=None):
     # Header
     for i, col in enumerate(df.columns):
         safe_col = html.escape(str(col))
-        html_out_col = f'<div style="text-align: {col_alignments[i]}; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700; color: {colors["text"]};">{safe_col}</div>'
+        html_out_col = f'<div style="text-align: {col_alignments[i]}; font-size: 0.78rem;  letter-spacing: 0.04em; font-weight: 700; color: {colors["text"]};">{safe_col}</div>'
         table_html += html_out_col
     table_html += '</div>'
     
@@ -1040,7 +1057,7 @@ def simulate_three_models_decoding(input_text: str, snr_db: float, channel_type:
             trad_text = "".join([c if local_rng.rand() > trad_ber else "" for c in clean_in])
 
     if trad_ber > 0.06:
-        trad_status = f"SỤP ĐỔ BỜ VỰC — BER: {trad_ber*100:.1f}%"
+        trad_status = f"Sụp đổ bờ vực — BER: {trad_ber*100:.1f}%"
         trad_phenom = "Lỗi bit phá hủy cấu trúc byte UTF-8, chuỗi ký tự bị biến dạng và vỡ nát"
         trad_fidelity = max(2, int((1.0 - min(1.0, trad_ber * 3.5)) * 100))
     elif trad_ber > 0.0001:
@@ -1154,7 +1171,7 @@ def simulate_three_models_decoding(input_text: str, snr_db: float, channel_type:
         words = clean_in.split()
         first_few = words[:2] if len(words) >= 2 else words
         trans_text = " ".join(first_few) + " [UNK] [CLIFF_EFFECT]... (sụp đổ bờ vực)"
-        trans_status = "SỤP ĐỔ BỜ VỰC — Vỡ vụn câu"
+        trans_status = "Sụp đổ bờ vực — Vỡ vụn câu"
         trans_phenom = f"Fading kênh {channel_type}: Tỷ lệ lỗi vượt ngưỡng, mô hình sụp đổ hoàn toàn"
         trans_fidelity = 12
 # 3. TRANSFORMER CÓ DEEPSC (Joint Source-Channel Coding)
@@ -1406,7 +1423,7 @@ def simulate_three_models_decoding(input_text: str, snr_db: float, channel_type:
 with st.sidebar:
     st.markdown(f"""
     <div style="padding: 12px 0 16px 0; border-bottom: 1px solid {colors['border']}; margin-bottom: 14px;">
-        <div style="font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: {colors['primary_blue']};">
+        <div style="font-size: 0.82rem;  letter-spacing: 0.5px; font-weight: 700; color: {colors['primary_blue']};">
             HUIT · KHOA CNTT
         </div>
         <div style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.35rem; font-weight: 800; color: {colors['text']}; line-height: 1.25; margin: 4px 0;">
@@ -1427,7 +1444,7 @@ with st.sidebar:
         "Thông Tin Khóa Luận"
     ]
 
-    st.markdown(f"<p style='font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: {colors['subtext']}; margin-bottom: 8px;'>CHỨC NĂNG HỆ THỐNG</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='font-size: 0.8rem;  letter-spacing: 0.5px; font-weight: 700; color: {colors['subtext']}; margin-bottom: 8px;'>Chức năng hệ thống</p>", unsafe_allow_html=True)
     
     nav_selection = st.radio(
         "Menu",
@@ -1438,7 +1455,7 @@ with st.sidebar:
     )
 
     st.markdown(f"<hr style='margin: 12px 0;'>", unsafe_allow_html=True)
-    st.markdown(f"<p style='font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: {colors['subtext']}; margin-bottom: 6px;'>CHẾ ĐỘ ĐỘNG CƠ SUY LUẬN</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 700; color: {colors['subtext']}; margin-bottom: 6px;'>Chế độ động cơ suy luận</p>", unsafe_allow_html=True)
     engine_mode_ui = st.selectbox(
         "Chế độ động cơ:",
         ["Fast Simulation (Chuẩn KLTN)", "Live PyTorch Model (Checkpoint Thật)"],
@@ -1459,7 +1476,7 @@ st.markdown(f"""
     <h1 style="font-size: 2.3rem; letter-spacing: -0.8px; margin: 0 0 6px 0; color: {colors['text']};">
         HỆ THỐNG TRUYỀN THÔNG NGỮ NGHĨA DEEPSC
     </h1>
-    <p style="font-size: 0.92rem; color: {colors['subtext']}; letter-spacing: 0.3px; margin: 0 auto; max-width: 800px; line-height: 1.5;">
+    <p style="font-size: 0.92rem; color: {colors['subtext']}; letter-spacing: 0.3px; margin: 0 auto; max-width: 60ch; line-height: 1.6;">
         Nghiên cứu & Triển khai Transformer Joint Source-Channel Coding (JSCC) phục vụ truyền văn bản qua kênh vô tuyến fading
     </p>
 </div>
@@ -1473,10 +1490,10 @@ st.markdown(f"""<hr style="border: none; border-top: 1px solid {colors['border']
 if nav_selection in ["So Sánh 3 Mô Hình", "So Sánh Mô Hình"]:
     st.markdown("""
     <div style="margin-bottom: 20px;">
-        <h3 style="margin-bottom: 6px; font-size: 1.5rem; letter-spacing: -0.5px;">
+        <h2 style="margin-bottom: 6px; font-size: 1.42rem; line-height: 1.45; letter-spacing: -0.3px;">
             SO SÁNH 3 MÔ HÌNH: SEMANTIC vs TRANSFORMER vs TRANSFORMER + DEEPSC
-        </h3>
-        <p style="color: #666666; font-size: 0.92rem; margin: 0;">
+        </h2>
+        <p style="color: #374151; font-size: 0.92rem; line-height: 1.6; max-width: 62ch; margin: 0;">
             Khảo sát đối chiếu năng lực bảo toàn ngữ nghĩa giữa 3 thế hệ kiến trúc học máy (Basic Semantic, Standard Transformer, Transformer + DeepSC).
         </p>
     </div>
@@ -1487,7 +1504,7 @@ if nav_selection in ["So Sánh 3 Mô Hình", "So Sánh Mô Hình"]:
     # Input văn bản và thông số kênh cho 3 mô hình
     col_cin1, col_cin2 = st.columns([1.6, 1], gap="large")
     with col_cin1:
-        st.markdown(f"<p style='font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Văn Bản Nguồn Cần Truyền</p>", unsafe_allow_html=True)
+        st.markdown(f"<p style='font-size: 0.8rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Văn Bản Nguồn Cần Truyền</p>", unsafe_allow_html=True)
         preset_options_c3 = [
             "Tự nhập văn bản...",
             "Tiếng Việt 1: Hệ thống truyền thông ngữ nghĩa Transformer giúp duy trì ý nghĩa thông điệp qua kênh truyền nhiều nhiễu.",
@@ -1515,7 +1532,7 @@ if nav_selection in ["So Sánh 3 Mô Hình", "So Sánh Mô Hình"]:
         input_c3_text = st.text_area("Nội dung thông điệp nguồn:", value=default_c3_text, height=88, label_visibility="collapsed", key="input_text_c3")
 
     with col_cin2:
-        st.markdown(f"<p style='font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Thông Số Môi Trường Kênh Truyền</p>", unsafe_allow_html=True)
+        st.markdown(f"<p style='font-size: 0.8rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Thông Số Môi Trường Kênh Truyền</p>", unsafe_allow_html=True)
         snr_c3 = st.slider("Tỷ số SNR:", min_value=-5, max_value=20, 
                            value=st.session_state.get('snr_compare3', 0), step=1, key="slider_snr_c3")
         st.session_state['snr_compare3'] = snr_c3
@@ -1525,9 +1542,9 @@ if nav_selection in ["So Sánh 3 Mô Hình", "So Sánh Mô Hình"]:
         ch_c3 = st.selectbox("Mô hình kênh vô tuyến:", ch_opts, index=default_ch_idx, key="select_ch_c3")
         st.session_state['ch_compare3'] = ch_c3
 
-    btn_run_compare3 = st.button("THỰC THI GIẢI MÃ & SO SÁNH HIỆU NĂNG", type="primary", use_container_width=True, key="btn_run_c3")
+    btn_run_compare3 = st.button("Thực thi giải mã & So sánh hiệu năng", type="primary", use_container_width=True, key="btn_run_c3")
 
-    # Xử lý kết quả mô phỏng: CHỈ THỰC THI KHI NGƯỜI DÙNG NHẤN NÚT "THỰC THI GIẢI MÃ & SO SÁNH HIỆU NĂNG"
+    # Xử lý kết quả mô phỏng: CHỈ THỰC THI KHI NGƯỜI DÙNG NHẤN NÚT "Thực thi giải mã & So sánh hiệu năng"
     if btn_run_compare3:
         if not input_c3_text.strip():
             st.warning("Vui lòng nhập văn bản cần giải mã.")
@@ -1551,26 +1568,26 @@ if nav_selection in ["So Sánh 3 Mô Hình", "So Sánh Mô Hình"]:
         st.markdown(f"""<div style="border: 1px solid {colors['border']}; background: #FFFFFF; padding: 18px; border-radius: 6px; min-height: 520px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
 <div>
 <div style="display: flex; justify-content: space-between; align-items: center;">
-<div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: #4B5563;">
-MÔ HÌNH 1 · SEMANTIC CƠ BẢN
+<div style="font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 700; color: #4B5563;">
+Mô hình 1 · Semantic cơ bản
 </div>
 <div style="font-size: 0.72rem; background: #6B7280; color: #FFFFFF; padding: 2px 7px; border-radius: 2px; font-weight: 700; letter-spacing: 0.5px;">
-EMBEDDINGS
+Embeddings
 </div>
 </div>
-<h4 style="margin: 6px 0 4px 0; font-size: 1.25rem; color: {colors['text']};">
+<h3 style="line-height: 1.45; margin: 6px 0 4px 0; font-size: 1.25rem; color: {colors['text']};">
 Basic Semantic
-</h4>
+</h3>
 <div style="font-size: 0.8rem; color: #6B7280; margin-bottom: 12px; font-weight: 500;">
 Vector từ tĩnh (Bag-of-Words / Nhúng đặc trưng không ngữ cảnh)
 </div>
 <div style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 0.78rem; font-weight: 600; background: rgba(107,114,128,0.12); color: #374151; margin-bottom: 14px;">
 {res3['semantic']['status']}
 </div>
-<div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
+<div style="font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
 Văn Bản Giải Mã Nhận Được:
 </div>
-<div style="font-size: 0.95rem; line-height: 1.6; color: {colors['text']}; background: #F9FAFB; padding: 12px; border-radius: 4px; min-height: 95px; border-left: 4px solid #9CA3AF; word-break: break-word;">
+<div style="font-size: 0.95rem; line-height: 1.6; color: {colors['text']}; background: #F9FAFB; padding: 12px; border-radius: 4px; min-height: 95px; border: 1px solid #D1D5DB; word-break: break-word;">
 {sem_safe_text}
 </div>
 <div style="font-size: 0.78rem; color: #6B7280; margin-top: 8px; font-style: italic;">
@@ -1578,7 +1595,7 @@ Văn Bản Giải Mã Nhận Được:
 </div>
 </div>
 <div style="margin-top: 16px; border-top: 1px solid #EEEEEE; padding-top: 14px;">
-<div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
+<div style="font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
 Độ Bảo Toàn Ý Nghĩa: {res3['semantic']['fidelity']}%
 </div>
 <div style="width: 100%; background: #E0E0E0; height: 7px; border-radius: 3px; margin-bottom: 14px; overflow: hidden;">
@@ -1590,11 +1607,11 @@ Văn Bản Giải Mã Nhận Được:
 <div style="font-size: 1.15rem; font-weight: 700; color: {colors['text']};">{min(100.0, max(0.0, res3['semantic']['bleu'] * 100)):.1f}%</div>
 </div>
 <div style="background: #F3F4F6; padding: 8px 4px; border-radius: 4px;">
-<div style="font-size: 0.74rem; font-weight: 600; color: {colors['subtext']};">BERTSCORE</div>
+<div style="font-size: 0.74rem; font-weight: 600; color: {colors['subtext']};">BERTScore</div>
 <div style="font-size: 1.15rem; font-weight: 700; color: {colors['text']};">{min(100.0, max(0.0, res3['semantic']['bert'] * 100)):.1f}%</div>
 </div>
 <div style="background: #F3F4F6; padding: 8px 4px; border-radius: 4px;">
-<div style="font-size: 0.74rem; font-weight: 600; color: {colors['subtext']};">SIMILARITY</div>
+<div style="font-size: 0.74rem; font-weight: 600; color: {colors['subtext']};">Similarity</div>
 <div style="font-size: 1.15rem; font-weight: 700; color: {colors['text']};">{min(100.0, max(0.0, res3['semantic']['sim'] * 100)):.1f}%</div>
 </div>
 </div>
@@ -1604,35 +1621,35 @@ Văn Bản Giải Mã Nhận Được:
     # CỘT 2: STANDARD TRANSFORMER
     with col_3m2:
         is_trans_cliff = "SỤP ĐỔ" in res3['transformer']['status'] or res3['transformer']['fidelity'] < 40
-        badge_bg_trans = "rgba(220,38,38,0.12)" if is_trans_cliff else "rgba(107,114,128,0.12)"
-        badge_col_trans = "#DC2626" if is_trans_cliff else "#374151"
-        border_trans = "#DC2626" if is_trans_cliff else colors['border']
-        text_col_trans = "#DC2626" if is_trans_cliff else colors['text']
+        badge_bg_trans = "#FFF1F2" if is_trans_cliff else "#F3F4F6"
+        badge_col_trans = "#7F1D1D" if is_trans_cliff else "#1F2937"
+        border_trans = "#991B1B" if is_trans_cliff else colors['border']
+        text_col_trans = "#7F1D1D" if is_trans_cliff else colors['text']
         trans_safe_text = html.escape(res3['transformer']['text'])
 
         st.markdown(f"""<div style="border: 1px solid {border_trans}; background: #FFFFFF; padding: 18px; border-radius: 6px; min-height: 520px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
 <div>
 <div style="display: flex; justify-content: space-between; align-items: center;">
-<div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: #4B5563;">
-MÔ HÌNH 2 · ATTENTION TIÊU CHUẨN
+<div style="font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 700; color: #4B5563;">
+Mô hình 2 · Attention tiêu chuẩn
 </div>
 <div style="font-size: 0.72rem; background: #4B5563; color: #FFFFFF; padding: 2px 7px; border-radius: 2px; font-weight: 700; letter-spacing: 0.5px;">
-SEPARATE CODING
+Separate Coding
 </div>
 </div>
-<h4 style="margin: 6px 0 4px 0; font-size: 1.25rem; color: {colors['text']};">
+<h3 style="line-height: 1.45; margin: 6px 0 4px 0; font-size: 1.25rem; color: {colors['text']};">
 Standard Transformer
-</h4>
+</h3>
 <div style="font-size: 0.8rem; color: #6B7280; margin-bottom: 12px; font-weight: 500;">
 Cơ chế Self-Attention đa đầu · Tách rời mã hóa nguồn và kênh
 </div>
 <div style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 0.78rem; font-weight: 700; background: {badge_bg_trans}; color: {badge_col_trans}; margin-bottom: 14px;">
 {res3['transformer']['status']}
 </div>
-<div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
+<div style="font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
 Văn Bản Giải Mã Nhận Được:
 </div>
-<div style="font-size: 0.95rem; line-height: 1.6; color: {text_col_trans}; background: #F9FAFB; padding: 12px; border-radius: 4px; min-height: 95px; border-left: 4px solid {border_trans}; word-break: break-word;">
+<div style="font-size: 0.95rem; line-height: 1.6; color: {text_col_trans}; background: #F9FAFB; padding: 12px; border-radius: 4px; min-height: 95px; border: 1px solid {border_trans}; word-break: break-word;">
 {trans_safe_text}
 </div>
 <div style="font-size: 0.78rem; color: #6B7280; margin-top: 8px; font-style: italic;">
@@ -1640,7 +1657,7 @@ Văn Bản Giải Mã Nhận Được:
 </div>
 </div>
 <div style="margin-top: 16px; border-top: 1px solid #EEEEEE; padding-top: 14px;">
-<div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
+<div style="font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
 Độ Bảo Toàn Ý Nghĩa: {res3['transformer']['fidelity']}%
 </div>
 <div style="width: 100%; background: #E0E0E0; height: 7px; border-radius: 3px; margin-bottom: 14px; overflow: hidden;">
@@ -1652,11 +1669,11 @@ Văn Bản Giải Mã Nhận Được:
 <div style="font-size: 1.15rem; font-weight: 700; color: {text_col_trans};">{min(100.0, max(0.0, res3['transformer']['bleu'] * 100)):.1f}%</div>
 </div>
 <div style="background: #F3F4F6; padding: 8px 4px; border-radius: 4px;">
-<div style="font-size: 0.74rem; font-weight: 600; color: {colors['subtext']};">BERTSCORE</div>
+<div style="font-size: 0.74rem; font-weight: 600; color: {colors['subtext']};">BERTScore</div>
 <div style="font-size: 1.15rem; font-weight: 700; color: {text_col_trans};">{min(100.0, max(0.0, res3['transformer']['bert'] * 100)):.1f}%</div>
 </div>
 <div style="background: #F3F4F6; padding: 8px 4px; border-radius: 4px;">
-<div style="font-size: 0.74rem; font-weight: 600; color: {colors['subtext']};">SIMILARITY</div>
+<div style="font-size: 0.74rem; font-weight: 600; color: {colors['subtext']};">Similarity</div>
 <div style="font-size: 1.15rem; font-weight: 700; color: {text_col_trans};">{min(100.0, max(0.0, res3['transformer']['sim'] * 100)):.1f}%</div>
 </div>
 </div>
@@ -1669,26 +1686,26 @@ Văn Bản Giải Mã Nhận Được:
         st.markdown(f"""<div style="border: 2px solid {colors['accent']}; background: #FFFFFF; padding: 18px; border-radius: 6px; min-height: 520px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 16px rgba(185,28,28,0.1);">
 <div>
 <div style="display: flex; justify-content: space-between; align-items: center;">
-<div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: {colors['accent']};">
-MÔ HÌNH 3 · ĐỀ TÀI CHÍNH (JSCC)
+<div style="font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 700; color: {colors['accent']};">
+Mô hình 3 · Đề tài chính (JSCC)
 </div>
 <div style="font-size: 0.72rem; background: {colors['accent']}; color: #FFFFFF; padding: 2px 7px; border-radius: 2px; font-weight: 700; letter-spacing: 0.5px;">
-RECOMMENDED
+Recommended
 </div>
 </div>
-<h4 style="margin: 6px 0 4px 0; font-size: 1.25rem; color: {colors['text']};">
+<h3 style="line-height: 1.45; margin: 6px 0 4px 0; font-size: 1.25rem; color: {colors['text']};">
 Transformer + DeepSC
-</h4>
+</h3>
 <div style="font-size: 0.8rem; color: {colors['accent']}; margin-bottom: 12px; font-weight: 600;">
 Joint Source-Channel Coding (JSCC) · Không gian ẩn liên tục
 </div>
 <div style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 0.78rem; font-weight: 700; background: rgba(185,28,28,0.08); color: {colors['accent']}; margin-bottom: 14px;">
 {res3['deepsc']['status']}
 </div>
-<div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
+<div style="font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
 Văn Bản Giải Mã Nhận Được:
 </div>
-<div style="font-size: 0.95rem; line-height: 1.6; color: {colors['text']}; background: #FFF5F5; padding: 12px; border-radius: 4px; min-height: 95px; border-left: 4px solid {colors['accent']}; font-weight: 600; word-break: break-word;">
+<div style="font-size: 0.95rem; line-height: 1.6; color: {colors['text']}; background: #FFF5F5; padding: 12px; border-radius: 4px; min-height: 95px; border: 1px solid #FECACA; font-weight: 600; word-break: break-word;">
 {deepsc_safe_text}
 </div>
 <div style="font-size: 0.78rem; color: {colors['accent']}; margin-top: 8px; font-style: italic;">
@@ -1696,7 +1713,7 @@ Văn Bản Giải Mã Nhận Được:
 </div>
 </div>
 <div style="margin-top: 16px; border-top: 1px solid #EEEEEE; padding-top: 14px;">
-<div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
+<div style="font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
 Độ Bảo Toàn Ý Nghĩa: {res3['deepsc']['fidelity']}%
 </div>
 <div style="width: 100%; background: #E0E0E0; height: 7px; border-radius: 3px; margin-bottom: 14px; overflow: hidden;">
@@ -1708,11 +1725,11 @@ Văn Bản Giải Mã Nhận Được:
 <div style="font-size: 1.15rem; font-weight: 800; color: {colors['text']};">{min(100.0, max(0.0, res3['deepsc']['bleu'] * 100)):.1f}%</div>
 </div>
 <div style="background: rgba(185,28,28,0.06); padding: 8px 4px; border-radius: 4px;">
-<div style="font-size: 0.74rem; color: {colors['accent']}; font-weight: 600;">BERTSCORE</div>
+<div style="font-size: 0.74rem; color: {colors['accent']}; font-weight: 600;">BERTScore</div>
 <div style="font-size: 1.15rem; font-weight: 800; color: {colors['text']};">{min(100.0, max(0.0, res3['deepsc']['bert'] * 100)):.1f}%</div>
 </div>
 <div style="background: rgba(185,28,28,0.06); padding: 8px 4px; border-radius: 4px;">
-<div style="font-size: 0.74rem; color: {colors['accent']}; font-weight: 600;">SIMILARITY</div>
+<div style="font-size: 0.74rem; color: {colors['accent']}; font-weight: 600;">Similarity</div>
 <div style="font-size: 1.15rem; font-weight: 800; color: {colors['text']};">{min(100.0, max(0.0, res3['deepsc']['sim'] * 100)):.1f}%</div>
 </div>
 </div>
@@ -1721,15 +1738,15 @@ Văn Bản Giải Mã Nhận Được:
 
 
 # ==========================================
-# PHẦN 2: SO SÁNH TRUYỀN THỐNG & DEEPSC (SHANNON LEVEL A vs LEVEL B)
+# PHẦN 2: SO SÁNH TRUYỀN THỐNG & DEEPSC (Shannon Level A vs LEVEL B)
 # ==========================================
 elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền Thống"]:
     st.markdown("""
     <div style="margin-bottom: 20px;">
-        <h3 style="margin-bottom: 6px; font-size: 1.5rem; letter-spacing: -0.5px;">
+        <h2 style="margin-bottom: 6px; font-size: 1.42rem; line-height: 1.45; letter-spacing: -0.3px;">
             ĐỐI CHIẾU NĂNG LỰC GIẢI MÃ: TRUYỀN THỐNG (BPSK) vs TRANSFORMER DEEPSC
-        </h3>
-        <p style="color: #666666; font-size: 0.92rem; margin: 0;">
+        </h2>
+        <p style="color: #374151; font-size: 0.92rem; line-height: 1.6; max-width: 62ch; margin: 0;">
             So sánh trực quan khả năng chống nhiễu giữa Truyền thông truyền thống (Shannon Cấp A: Bit-level) và Mô hình DeepSC (Shannon Cấp B: Semantic JSCC).
         </p>
     </div>
@@ -1752,7 +1769,7 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
         # Input văn bản và thông số kênh cho Truyền thống vs DeepSC
         col_tin1, col_tin2 = st.columns([1.6, 1], gap="large")
         with col_tin1:
-            st.markdown(f"<p style='font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Văn Bản Nguồn Cần Truyền</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='font-size: 0.8rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Văn Bản Nguồn Cần Truyền</p>", unsafe_allow_html=True)
             preset_options_td = [
                 "Tự nhập văn bản...",
                 "Tiếng Việt 1: Hệ thống truyền thông ngữ nghĩa Transformer giúp duy trì ý nghĩa thông điệp qua kênh truyền nhiều nhiễu.",
@@ -1780,7 +1797,7 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
             input_td_text = st.text_area("Nội dung thông điệp nguồn:", value=default_td_text, height=88, label_visibility="collapsed", key="input_text_td")
 
         with col_tin2:
-            st.markdown(f"<p style='font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Thông Số Môi Trường Kênh Truyền</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='font-size: 0.8rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Thông Số Môi Trường Kênh Truyền</p>", unsafe_allow_html=True)
             snr_td = st.slider("Tỷ số SNR:", min_value=-5, max_value=20, 
                                value=st.session_state.get('snr_trad_deepsc', 0), step=1, key="slider_snr_td")
             st.session_state['snr_trad_deepsc'] = snr_td
@@ -1790,9 +1807,9 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
             ch_td = st.selectbox("Mô hình kênh vô tuyến:", ch_opts, index=default_ch_idx_td, key="select_ch_td")
             st.session_state['ch_trad_deepsc'] = ch_td
 
-        btn_run_trad = st.button("THỰC THI GIẢI MÃ & SO SÁNH HIỆU NĂNG", type="primary", use_container_width=True, key="btn_run_td")
+        btn_run_trad = st.button("Thực thi giải mã & So sánh hiệu năng", type="primary", use_container_width=True, key="btn_run_td")
 
-        # Xử lý kết quả mô phỏng: CHỈ THỰC THI KHI NGƯỜI DÙNG NHẤN NÚT "THỰC THI GIẢI MÃ & SO SÁNH HIỆU NĂNG"
+        # Xử lý kết quả mô phỏng: CHỈ THỰC THI KHI NGƯỜI DÙNG NHẤN NÚT "Thực thi giải mã & So sánh hiệu năng"
         if btn_run_trad:
             if not input_td_text.strip():
                 st.warning("Vui lòng nhập văn bản cần giải mã.")
@@ -1813,35 +1830,35 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
         # CỘT TRÁI: MÔ HÌNH TRUYỀN THỐNG (BPSK)
         with col_t_trad:
             is_trad_cliff = res_td['traditional']['ber'] > 0.05
-            badge_bg_trad = "rgba(220,38,38,0.12)" if is_trad_cliff else ("rgba(217,119,6,0.12)" if res_td['traditional']['ber'] > 0 else "rgba(16,185,129,0.12)")
-            badge_col_trad = "#DC2626" if is_trad_cliff else ("#D97706" if res_td['traditional']['ber'] > 0 else "#059669")
-            border_trad = "#DC2626" if is_trad_cliff else colors['border']
-            text_col_trad = "#DC2626" if is_trad_cliff else colors['text']
+            badge_bg_trad = "#FFF1F2" if is_trad_cliff else ("#FEF3C7" if res_td['traditional']['ber'] > 0 else "#ECFDF5")
+            badge_col_trad = "#7F1D1D" if is_trad_cliff else ("#78350F" if res_td['traditional']['ber'] > 0 else "#065F46")
+            border_trad = "#991B1B" if is_trad_cliff else colors['border']
+            text_col_trad = "#7F1D1D" if is_trad_cliff else colors['text']
             trad_safe_text = html.escape(res_td['traditional']['text'])
 
             st.markdown(f"""<div style="border: 2px solid {border_trad}; background: #FFFFFF; padding: 20px; border-radius: 6px; min-height: 520px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
     <div>
     <div style="display: flex; justify-content: space-between; align-items: center;">
-    <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: #4B5563;">
-    MÔ HÌNH 1 · HỆ QUY CHIẾU TRUYỀN THỐNG
+    <div style="font-size: 0.8rem;  letter-spacing: 0.5px; font-weight: 700; color: #4B5563;">
+    Mô hình 1 · Hệ quy chiếu truyền thống
     </div>
     <div style="font-size: 0.72rem; background: #6B7280; color: #FFFFFF; padding: 2px 7px; border-radius: 2px; font-weight: 700; letter-spacing: 0.5px;">
-    SHANNON LEVEL A
+    Shannon Level A
     </div>
     </div>
-    <h4 style="margin: 6px 0 4px 0; font-size: 1.3rem; color: {colors['text']};">
+    <h3 style="line-height: 1.45; margin: 6px 0 4px 0; font-size: 1.3rem; color: {colors['text']};">
     Traditional (BPSK + UTF-8)
-    </h4>
+    </h3>
     <div style="font-size: 0.8rem; color: #6B7280; margin-bottom: 12px; font-weight: 500;">
     Mã hóa nguồn & kênh tách rời (UTF-8 ➔ BPSK ➔ Kênh {ch_td})
     </div>
     <div style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 0.78rem; font-weight: 700; background: {badge_bg_trad}; color: {badge_col_trad}; margin-bottom: 14px;">
     {res_td['traditional']['status']}
     </div>
-    <div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
+    <div style="font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
     Văn Bản Giải Mã Nhận Được:
     </div>
-    <div style="font-size: 0.98rem; line-height: 1.6; color: {text_col_trad}; background: #F9FAFB; padding: 12px; border-radius: 4px; min-height: 95px; border-left: 4px solid {border_trad}; word-break: break-word; font-family: monospace;">
+    <div style="font-size: 0.98rem; line-height: 1.6; color: {text_col_trad}; background: #F9FAFB; padding: 12px; border-radius: 4px; min-height: 95px; border: 1px solid {border_trad}; word-break: break-word; font-family: monospace;">
     {trad_safe_text}
     </div>
     <div style="font-size: 0.78rem; color: #6B7280; margin-top: 8px; font-style: italic;">
@@ -1850,11 +1867,11 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
     </div>
     <div style="margin-top: 16px; border-top: 1px solid #EEEEEE; padding-top: 14px;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-    <span style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']};">
+    <span style="font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']};">
     Độ Toàn Vẹn Ký Tự: {res_td['traditional']['fidelity']}%
     </span>
     <span style="font-size: 0.74rem; font-weight: 700; color: {badge_col_trad}; background: {badge_bg_trad}; padding: 2px 7px; border-radius: 3px;">
-    BER (LỖI BIT): {res_td['traditional']['ber']*100:.2f}%
+    BER (Lỗi bit): {res_td['traditional']['ber']*100:.2f}%
     </span>
     </div>
     <div style="width: 100%; background: #E0E0E0; height: 7px; border-radius: 3px; margin-bottom: 14px; overflow: hidden;">
@@ -1866,11 +1883,11 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
     <div style="font-size: 1.15rem; font-weight: 700; color: {colors['text']};">{min(100.0, max(0.0, res_td['traditional']['bleu'] * 100)):.1f}%</div>
     </div>
     <div style="background: #F3F4F6; padding: 8px 4px; border-radius: 4px;">
-    <div style="font-size: 0.74rem; font-weight: 600; color: {colors['subtext']};">BERTSCORE</div>
+    <div style="font-size: 0.74rem; font-weight: 600; color: {colors['subtext']};">BERTScore</div>
     <div style="font-size: 1.15rem; font-weight: 700; color: {colors['text']};">{min(100.0, max(0.0, res_td['traditional']['bert'] * 100)):.1f}%</div>
     </div>
     <div style="background: #F3F4F6; padding: 8px 4px; border-radius: 4px;">
-    <div style="font-size: 0.74rem; font-weight: 600; color: {colors['subtext']};">SIMILARITY</div>
+    <div style="font-size: 0.74rem; font-weight: 600; color: {colors['subtext']};">Similarity</div>
     <div style="font-size: 1.15rem; font-weight: 700; color: {colors['text']};">{min(100.0, max(0.0, res_td['traditional']['sim'] * 100)):.1f}%</div>
     </div>
     </div>
@@ -1883,26 +1900,26 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
             st.markdown(f"""<div style="border: 2px solid {colors['accent']}; background: #FFFFFF; padding: 20px; border-radius: 6px; min-height: 520px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 16px rgba(185,28,28,0.1);">
     <div>
     <div style="display: flex; justify-content: space-between; align-items: center;">
-    <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: {colors['accent']};">
-    MÔ HÌNH 2 · ĐỀ TÀI CHÍNH (RECOMMENDED)
+    <div style="font-size: 0.8rem;  letter-spacing: 0.5px; font-weight: 700; color: {colors['accent']};">
+    Mô hình 2 · Đề tài chính (Recommended)
     </div>
     <div style="font-size: 0.72rem; background: {colors['accent']}; color: #FFFFFF; padding: 2px 7px; border-radius: 2px; font-weight: 700; letter-spacing: 0.5px;">
-    SHANNON LEVEL B
+    Shannon Level B
     </div>
     </div>
-    <h4 style="margin: 6px 0 4px 0; font-size: 1.3rem; color: {colors['text']};">
+    <h3 style="line-height: 1.45; margin: 6px 0 4px 0; font-size: 1.3rem; color: {colors['text']};">
     Transformer + DeepSC
-    </h4>
+    </h3>
     <div style="font-size: 0.8rem; color: {colors['accent']}; margin-bottom: 12px; font-weight: 600;">
     Joint Source-Channel Coding (JSCC) - Không gian ẩn liên tục
     </div>
     <div style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 0.78rem; font-weight: 700; background: rgba(185,28,28,0.08); color: {colors['accent']}; margin-bottom: 14px;">
     {res_td['deepsc']['status']}
     </div>
-    <div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
+    <div style="font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;">
     Văn Bản Giải Mã Nhận Được:
     </div>
-    <div style="font-size: 0.98rem; line-height: 1.6; color: {colors['text']}; background: #FFF5F5; padding: 12px; border-radius: 4px; min-height: 95px; border-left: 4px solid {colors['accent']}; font-weight: 600; word-break: break-word;">
+    <div style="font-size: 0.98rem; line-height: 1.6; color: {colors['text']}; background: #FFF5F5; padding: 12px; border-radius: 4px; min-height: 95px; border: 1px solid #FECACA; font-weight: 600; word-break: break-word;">
     {deepsc_td_safe_text}
     </div>
     <div style="font-size: 0.78rem; color: {colors['accent']}; margin-top: 8px; font-style: italic;">
@@ -1911,11 +1928,11 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
     </div>
     <div style="margin-top: 16px; border-top: 1px solid #EEEEEE; padding-top: 14px;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-    <span style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']};">
+    <span style="font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']};">
     Độ Bảo Toàn Ý Nghĩa: {res_td['deepsc']['fidelity']}%
     </span>
     <span style="font-size: 0.74rem; font-weight: 700; color: {colors['accent']}; background: rgba(185,28,28,0.08); padding: 2px 7px; border-radius: 3px;">
-    KHÔNG GIAN ẨN JSCC
+    Không gian ẩn JSCC
     </span>
     </div>
     <div style="width: 100%; background: #E0E0E0; height: 7px; border-radius: 3px; margin-bottom: 14px; overflow: hidden;">
@@ -1927,11 +1944,11 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
     <div style="font-size: 1.15rem; font-weight: 800; color: {colors['text']};">{min(100.0, max(0.0, res_td['deepsc']['bleu'] * 100)):.1f}%</div>
     </div>
     <div style="background: rgba(185,28,28,0.06); padding: 8px 4px; border-radius: 4px;">
-    <div style="font-size: 0.74rem; color: {colors['accent']}; font-weight: 600;">BERTSCORE</div>
+    <div style="font-size: 0.74rem; color: {colors['accent']}; font-weight: 600;">BERTScore</div>
     <div style="font-size: 1.15rem; font-weight: 800; color: {colors['text']};">{min(100.0, max(0.0, res_td['deepsc']['bert'] * 100)):.1f}%</div>
     </div>
     <div style="background: rgba(185,28,28,0.06); padding: 8px 4px; border-radius: 4px;">
-    <div style="font-size: 0.74rem; color: {colors['accent']}; font-weight: 600;">SIMILARITY</div>
+    <div style="font-size: 0.74rem; color: {colors['accent']}; font-weight: 600;">Similarity</div>
     <div style="font-size: 1.15rem; font-weight: 800; color: {colors['text']};">{min(100.0, max(0.0, res_td['deepsc']['sim'] * 100)):.1f}%</div>
     </div>
     </div>
@@ -1945,10 +1962,10 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
         st.markdown(f"""<hr style="border: none; border-top: 1px solid {colors['border']}; margin: 28px 0 18px 0;">""", unsafe_allow_html=True)
         st.markdown(f"""
         <div style="margin-bottom: 12px;">
-            <h4 style="font-size: 1.15rem; color: {colors['text']}; font-weight: 700; margin-bottom: 4px;">
-                📊 ĐỒ THỊ SO SÁNH ĐỘNG THEO DẢI SNR (-5 dB ĐẾN 20 dB) CHO CÂU VỪA NHẬP:
-            </h4>
-            <p style="font-size: 0.82rem; color: {colors['subtext']}; margin: 0;">
+            <h3 style="line-height: 1.45; font-size: 1.15rem; color: {colors['text']}; font-weight: 700; margin-bottom: 4px;">
+                Đồ thị so sánh động theo dải SNR (-5 dB đến 20 dB) cho câu vừa nhập:
+            </h3>
+            <p style="font-size: 0.86rem; color: {colors['subtext']}; line-height: 1.6; max-width: 62ch; margin: 0;">
                 Mô phỏng đường cong đáp ứng toàn dải SNR trên chính câu văn bản của bạn qua {ch_td} và tự động xuất file <code>results/plots/comparison_bleu.png</code> & <code>comparison_similarity.png</code>.
             </p>
         </div>
@@ -2008,7 +2025,7 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
     else:
         col_up1, col_up2 = st.columns([1.6, 1], gap="large")
         with col_up1:
-            st.markdown(f"<p style='font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Tải Lên Tệp Dữ Liệu</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='font-size: 0.8rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Tải Lên Tệp Dữ Liệu</p>", unsafe_allow_html=True)
             uploaded_td_file = st.file_uploader(
                 "Chọn file dữ liệu từ máy tính:",
                 type=["json", "csv", "xlsx", "txt"],
@@ -2017,11 +2034,11 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
             )
 
         with col_up2:
-            st.markdown(f"<p style='font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Thông Số Môi Trường Kênh Truyền</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='font-size: 0.8rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Thông Số Môi Trường Kênh Truyền</p>", unsafe_allow_html=True)
             snr_td_batch = st.slider("Tỷ số SNR:", min_value=-5, max_value=20, value=st.session_state.get('snr_trad_deepsc', 0), step=1, key="slider_snr_td_batch")
             ch_td_batch = st.selectbox("Mô hình kênh vô tuyến:", ["Kênh AWGN", "Kênh Rayleigh"], index=0, key="select_ch_td_batch")
 
-        btn_run_batch_td = st.button("THỰC THI TRUYỀN DẪN TỆP & ĐỐI CHIẾU SONG SONG", type="primary", use_container_width=True, key="btn_run_batch_td")
+        btn_run_batch_td = st.button("Thực thi truyền dẫn tệp & Đối chiếu song song", type="primary", use_container_width=True, key="btn_run_batch_td")
 
         if btn_run_batch_td:
             if uploaded_td_file is None:
@@ -2310,7 +2327,7 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
             st.markdown(f"""
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;">
                 <div style="background: #FFFFFF; border: 2px solid {colors['accent']}; border-radius: 6px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
-                    <div style="font-size: 0.8rem; font-weight: 700; color: {colors['accent']}; text-transform: uppercase;">MÔ HÌNH TRANSFORMER DEEPSC (TRUNG BÌNH {len(res_df)} CÂU)</div>
+                    <div style="font-size: 0.8rem; font-weight: 700; color: {colors['accent']}; ">Mô hình Transformer DeepSC (Trung bình {len(res_df)} câu)</div>
                     <div style="display: flex; gap: 24px; margin-top: 10px;">
                         <div>
                             <div style="font-size: 0.75rem; color: #666;">BLEU Trung bình</div>
@@ -2323,7 +2340,7 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
                     </div>
                 </div>
                 <div style="background: #FFFFFF; border: 2px solid #6B7280; border-radius: 6px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
-                    <div style="font-size: 0.8rem; font-weight: 700; color: #4B5563; text-transform: uppercase;">MÔ HÌNH TRUYỀN THỐNG BPSK (TRUNG BÌNH {len(res_df)} CÂU)</div>
+                    <div style="font-size: 0.8rem; font-weight: 700; color: #4B5563; ">Mô hình Truyền thống BPSK (Trung bình {len(res_df)} câu)</div>
                     <div style="display: flex; gap: 24px; margin-top: 10px;">
                         <div>
                             <div style="font-size: 0.75rem; color: #666;">BLEU Trung bình</div>
@@ -2335,7 +2352,7 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
                         </div>
                         <div>
                             <div style="font-size: 0.75rem; color: #666;">BER Trung bình</div>
-                            <div style="font-size: 1.4rem; font-weight: 800; color: #DC2626;">{avg_bpsk_ber:.2f}%</div>
+                            <div style="font-size: 1.4rem; font-weight: 800; color: #7F1D1D;">{avg_bpsk_ber:.2f}%</div>
                         </div>
                     </div>
                 </div>
@@ -2367,9 +2384,9 @@ elif nav_selection in ["So Sánh Truyền Thống & DeepSC", "DeepSC vs Truyền
 elif nav_selection == "An Toàn & Phòng Vệ Đối Kháng":
     st.markdown("""
     <div style="margin-bottom: 20px;">
-        <h3 style="margin-bottom: 6px; font-size: 1.5rem; letter-spacing: -0.5px;">
+        <h2 style="margin-bottom: 6px; font-size: 1.42rem; line-height: 1.45; letter-spacing: -0.3px;">
             AN TOÀN KÊNH TRUYỀN: TẤN CÔNG ĐỐI KHÁNG & PHÒNG VỆ THÍCH ỨNG
-        </h3>
+        </h2>
     </div>
     """, unsafe_allow_html=True)
 
@@ -2411,7 +2428,7 @@ elif nav_selection == "An Toàn & Phòng Vệ Đối Kháng":
             
             enable_defense = st.checkbox("Kích hoạt phòng thủ thích ứng", value=True, key="defense_toggle")
             
-        if st.button("THỰC THI TẤN CÔNG & PHÒNG VỆ", type="primary", key="btn_atk"):
+        if st.button("Thực thi tấn công & Phòng vệ", type="primary", key="btn_atk"):
             if not atk_text or not atk_text.strip():
                 st.warning("Vui lòng nhập văn bản cần kiểm thử bảo mật trước khi thực thi.")
             else:
@@ -2625,10 +2642,10 @@ elif nav_selection == "An Toàn & Phòng Vệ Đối Kháng":
                 c_a1, c_a2 = st.columns(2, gap="large")
                 with c_a1:
                     st.markdown(f"""
-                    <h4 style="border-bottom: 1px solid {colors['border']}; padding-bottom: 8px; color: {colors['text']};">
+                    <h3 style="line-height: 1.45; border-bottom: 1px solid {colors['border']}; padding-bottom: 8px; color: {colors['text']};">
                         1. Khi Bị Tấn Công {html.escape(str(res['atk_label']))} — Chưa Phòng Thủ
-                    </h4>
-                    <p style="color: {colors['subtext']}; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 12px; font-weight: 600;">Văn Bản Sau Tấn Công</p>
+                    </h3>
+                    <p style="color: {colors['subtext']}; font-size: 0.8rem;  letter-spacing: 0.5px; margin-top: 12px; font-weight: 600;">Văn Bản Sau Tấn Công</p>
                     <p style="font-size: 1.05rem; min-height: 48px; color: {colors['error']}; line-height: 1.6;">{safe_atk_rx}</p>
                     """, unsafe_allow_html=True)
                     
@@ -2641,10 +2658,10 @@ elif nav_selection == "An Toàn & Phòng Vệ Đối Kháng":
                 with c_a2:
                     def_label = html.escape(f"Adaptive Defense: {res['detected_attack']}")
                     st.markdown(f"""
-                    <h4 style="border-bottom: 1px solid {colors['border']}; padding-bottom: 8px; color: {colors['text']};">
+                    <h3 style="line-height: 1.45; border-bottom: 1px solid {colors['border']}; padding-bottom: 8px; color: {colors['text']};">
                         2. Sau Phòng Vệ Thích Ứng — {def_label}
-                    </h4>
-                    <p style="color: {colors['subtext']}; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 12px; font-weight: 600;">Văn Bản Đã Khôi Phục</p>
+                    </h3>
+                    <p style="color: {colors['subtext']}; font-size: 0.8rem;  letter-spacing: 0.5px; margin-top: 12px; font-weight: 600;">Văn Bản Đã Khôi Phục</p>
                     <p style="font-size: 1.05rem; min-height: 48px; color: {colors['text']}; line-height: 1.6;">{safe_def_rx}</p>
                     """, unsafe_allow_html=True)
                     
@@ -2656,10 +2673,10 @@ elif nav_selection == "An Toàn & Phòng Vệ Đối Kháng":
                     st.caption(f"Chuẩn nhiễu dư sau phòng vệ: **‖δ_res‖₂ ≈ {res_norm:.3f}**")
             else:
                 st.markdown(f"""
-                <h4 style="border-bottom: 1px solid {colors['border']}; padding-bottom: 8px; color: {colors['text']};">
+                <h3 style="line-height: 1.45; border-bottom: 1px solid {colors['border']}; padding-bottom: 8px; color: {colors['text']};">
                     Kết Quả Khi Bị Tấn Công {html.escape(str(res['atk_label']))} — Chưa Phòng Thủ
-                </h4>
-                <p style="color: {colors['subtext']}; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 12px; font-weight: 600;">Văn Bản Sau Tấn Công</p>
+                </h3>
+                <p style="color: {colors['subtext']}; font-size: 0.8rem;  letter-spacing: 0.5px; margin-top: 12px; font-weight: 600;">Văn Bản Sau Tấn Công</p>
                 <p style="font-size: 1.05rem; min-height: 48px; color: {colors['error']}; line-height: 1.6;">{safe_atk_rx}</p>
                 """, unsafe_allow_html=True)
                 
@@ -2673,7 +2690,7 @@ elif nav_selection == "An Toàn & Phòng Vệ Đối Kháng":
         # === CHẾ ĐỘ 2: TẢI LÊN TỆP DỮ LIỆU ĐỐI KHÁNG TỪ MÁY TÍNH (.XLSX, .CSV, .TXT) ===
         col_aup1, col_aup2 = st.columns([1.6, 1], gap="large")
         with col_aup1:
-            st.markdown(f"<p style='font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Tải Lên Tệp Dữ Liệu Bảo Mật (.xlsx, .csv, .txt)</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='font-size: 0.8rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Tải Lên Tệp Dữ Liệu Bảo Mật (.xlsx, .csv, .txt)</p>", unsafe_allow_html=True)
             uploaded_atk_file = st.file_uploader(
                 "Chọn tệp kết quả đối kháng hoặc tập dữ liệu câu từ máy tính:",
                 type=["xlsx", "csv", "txt"],
@@ -2681,11 +2698,11 @@ elif nav_selection == "An Toàn & Phòng Vệ Đối Kháng":
                 label_visibility="collapsed"
             )
         with col_aup2:
-            st.markdown(f"<p style='font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Thông Số Tấn Công & Phòng Thủ</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='font-size: 0.8rem;  letter-spacing: 0.5px; font-weight: 600; color: {colors['subtext']}; margin-bottom: 6px;'>Thông Số Tấn Công & Phòng Thủ</p>", unsafe_allow_html=True)
             eps_batch_atk = st.slider("Cường độ nhiễu đối kháng (ε):", min_value=0.05, max_value=0.35, value=0.15, step=0.01, key="slider_eps_atk_batch")
             snr_batch_atk = st.slider("Tỷ số SNR kênh truyền (dB):", min_value=-5, max_value=20, value=10, step=1, key="slider_snr_atk_batch")
 
-        btn_run_batch_atk = st.button("THỰC THI KIỂM THỬ ĐỐI KHÁNG & PHÒNG VỆ TRÊN TỆP", type="primary", use_container_width=True, key="btn_run_batch_atk")
+        btn_run_batch_atk = st.button("Thực thi kiểm thử đối kháng & Phòng vệ trên tệp", type="primary", use_container_width=True, key="btn_run_batch_atk")
 
         if btn_run_batch_atk:
             if uploaded_atk_file is None:
@@ -2900,33 +2917,33 @@ elif nav_selection == "An Toàn & Phòng Vệ Đối Kháng":
 
                 st.markdown(f"""
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 18px 0;">
-                    <div style="background: #FFFFFF; border: 2px solid #DC2626; border-radius: 6px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
-                        <div style="font-size: 0.8rem; font-weight: 700; color: #DC2626; text-transform: uppercase;">KHI BỊ TẤN CÔNG ĐỐI KHÁNG (CHƯA PHÒNG THỦ — {num_samples_shown} MẪU)</div>
+                    <div style="background: #FFFFFF; border: 2px solid #991B1B; border-radius: 6px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                        <div style="font-size: 0.86rem; font-weight: 700; color: #7F1D1D;">Khi bị tấn công đối kháng (Chưa phòng thủ — {num_samples_shown} mẫu)</div>
                         <div style="display: flex; gap: 28px; margin-top: 10px;">
                             <div>
-                                <div style="font-size: 0.75rem; color: #666;">Clean (Gốc)</div>
+                                <div style="font-size: 0.78rem; color: #374151;">Clean (Gốc)</div>
                                 <div style="font-size: 1.35rem; font-weight: 800; color: {colors['text']};">{clean_acc_s}</div>
                             </div>
                             <div>
-                                <div style="font-size: 0.75rem; color: #666;">FGSM (Chưa phòng thủ)</div>
-                                <div style="font-size: 1.35rem; font-weight: 800; color: #DC2626;">{fgsm_no_s}</div>
+                                <div style="font-size: 0.78rem; color: #374151;">FGSM (Chưa phòng thủ)</div>
+                                <div style="font-size: 1.35rem; font-weight: 800; color: #7F1D1D;">{fgsm_no_s}</div>
                             </div>
                             <div>
-                                <div style="font-size: 0.75rem; color: #666;">C&W (Chưa phòng thủ)</div>
-                                <div style="font-size: 1.35rem; font-weight: 800; color: #DC2626;">{cw_no_s}</div>
+                                <div style="font-size: 0.78rem; color: #374151;">C&W (Chưa phòng thủ)</div>
+                                <div style="font-size: 1.35rem; font-weight: 800; color: #7F1D1D;">{cw_no_s}</div>
                             </div>
                         </div>
                     </div>
-                    <div style="background: #FFFFFF; border: 2px solid #059669; border-radius: 6px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
-                        <div style="font-size: 0.8rem; font-weight: 700; color: #059669; text-transform: uppercase;">SAU PHÒNG VỆ THÍCH ỨNG ADAPTIVE DEFENSE ({num_samples_shown} MẪU)</div>
+                    <div style="background: #FFFFFF; border: 2px solid #065F46; border-radius: 6px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
+                        <div style="font-size: 0.86rem; font-weight: 700; color: #065F46;">Sau phòng vệ thích ứng Adaptive Defense ({num_samples_shown} mẫu)</div>
                         <div style="display: flex; gap: 28px; margin-top: 10px;">
                             <div>
                                 <div style="font-size: 0.75rem; color: #666;">FGSM + Có phòng thủ</div>
-                                <div style="font-size: 1.35rem; font-weight: 800; color: #059669;">{fgsm_def_s}</div>
+                                <div style="font-size: 1.35rem; font-weight: 800; color: #065F46;">{fgsm_def_s}</div>
                             </div>
                             <div>
                                 <div style="font-size: 0.75rem; color: #666;">C&W + Có phòng thủ</div>
-                                <div style="font-size: 1.35rem; font-weight: 800; color: #059669;">{cw_def_s}</div>
+                                <div style="font-size: 1.35rem; font-weight: 800; color: #065F46;">{cw_def_s}</div>
                             </div>
                         </div>
                     </div>
@@ -2956,9 +2973,9 @@ elif nav_selection == "An Toàn & Phòng Vệ Đối Kháng":
 elif nav_selection == "Khảo Sát Hiệu Năng Kênh":
     st.markdown("""
     <div style="margin-bottom: 20px;">
-        <h3 style="margin-bottom: 6px; font-size: 1.5rem; letter-spacing: -0.5px;">
+        <h2 style="margin-bottom: 6px; font-size: 1.42rem; line-height: 1.45; letter-spacing: -0.3px;">
             KHẢO SÁT THỰC NGHIỆM ĐẶC TÍNH KÊNH TRUYỀN (SNR TRÊN DỮ LIỆU THỰC TẾ)
-        </h3>
+        </h2>
     </div>
     """, unsafe_allow_html=True)
 
@@ -2980,7 +2997,7 @@ elif nav_selection == "Khảo Sát Hiệu Năng Kênh":
             'ch': 'Kênh AWGN'
         }
 
-    st.markdown(f"<p style='font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: {colors['accent']}; margin-bottom: 6px;'>Phương Thức Khảo Sát & Đo Lường</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='font-size: 0.8rem;  letter-spacing: 0.5px; font-weight: 700; color: {colors['accent']}; margin-bottom: 6px;'>Phương Thức Khảo Sát & Đo Lường</p>", unsafe_allow_html=True)
     eval_mode = st.radio(
         "Chọn phương thức khảo sát:",
         [
@@ -3127,7 +3144,7 @@ elif nav_selection == "Khảo Sát Hiệu Năng Kênh":
     }
     json_export_str = json.dumps(export_payload, ensure_ascii=False, indent=2)
     st.download_button(
-        label="TẢI XUỐNG KẾT QUẢ HIỆN TẠI THÀNH TỆP JSON",
+        label="Tải xuống kết quả hiện tại thành tệp JSON",
         data=json_export_str,
         file_name=f"benchmark_{str(cur_data['dataset']).replace(' ', '_')}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
         mime="application/json",
@@ -3140,9 +3157,9 @@ elif nav_selection == "Khảo Sát Hiệu Năng Kênh":
 elif nav_selection == "Truyền Nhận Đa Ngôn Ngữ":
     st.markdown("""
     <div style="margin-bottom: 16px;">
-        <h3 style="margin-bottom: 4px; font-size: 1.5rem; letter-spacing: -0.5px;">
+        <h2 style="margin-bottom: 6px; font-size: 1.42rem; line-height: 1.45; letter-spacing: -0.3px;">
             DỊCH THUẬT ĐA NGÔN NGỮ
-        </h3>
+        </h2>
     </div>
     """, unsafe_allow_html=True)
 
@@ -3210,7 +3227,7 @@ elif nav_selection == "Truyền Nhận Đa Ngôn Ngữ":
 
     with col_trans_in:
         st.markdown(f"""
-        <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: {colors['subtext']}; margin-bottom: 6px;">
+        <div style="font-size: 0.8rem;  letter-spacing: 0.5px; font-weight: 700; color: {colors['subtext']}; margin-bottom: 6px;">
             Văn Bản Gốc ({st.session_state['trans_src_lang']})
         </div>
         """, unsafe_allow_html=True)
@@ -3235,14 +3252,14 @@ elif nav_selection == "Truyền Nhận Đa Ngôn Ngữ":
 
     with col_trans_out:
         st.markdown(f"""
-        <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: {colors['subtext']}; margin-bottom: 6px;">
+        <div style="font-size: 0.8rem;  letter-spacing: 0.5px; font-weight: 700; color: {colors['subtext']}; margin-bottom: 6px;">
             Bản Dịch ({st.session_state['trans_tgt_lang']})
         </div>
         """, unsafe_allow_html=True)
         out_placeholder = st.empty()
 
     st.markdown(f"""<hr style="border: none; border-top: 1px solid {colors['border']}; margin: 20px 0 16px 0;">""", unsafe_allow_html=True)
-    btn_translate = st.button("THỰC HIỆN DỊCH", type="primary", use_container_width=True, key="btn_translate_action")
+    btn_translate = st.button("Thực hiện dịch", type="primary", use_container_width=True, key="btn_translate_action")
 
     # Xử lý dịch: dịch khi bấm nút HOẶC khởi tạo lần đầu
     if btn_translate or 'trans_result_cache' not in st.session_state:
@@ -3260,7 +3277,7 @@ elif nav_selection == "Truyền Nhận Đa Ngôn Ngữ":
     if current_res:
         safe_current_res = html.escape(str(current_res))
         out_placeholder.markdown(f"""
-        <div style="background: #FFFFFF; border: 1px solid {colors['border']}; border-left: 3px solid {colors['primary_blue']}; padding: 16px; border-radius: 4px; min-height: 230px; font-size: 1.15rem; font-weight: 500; color: {colors['text']}; line-height: 1.6; word-wrap: break-word;">
+        <div style="background: #FFFFFF; border: 1px solid {colors['primary_blue']}; padding: 16px; border-radius: 4px; min-height: 230px; font-size: 1.15rem; font-weight: 500; color: {colors['text']}; line-height: 1.6; word-wrap: break-word;">
             {safe_current_res}
         </div>
         """, unsafe_allow_html=True)
@@ -3277,10 +3294,10 @@ elif nav_selection == "Truyền Nhận Đa Ngôn Ngữ":
 elif nav_selection == "Thông Tin Khóa Luận":
     st.markdown("""
     <div style="margin-bottom: 20px;">
-        <h3 style="margin-bottom: 6px; font-size: 1.5rem; letter-spacing: -0.5px;">
+        <h2 style="margin-bottom: 6px; font-size: 1.42rem; line-height: 1.45; letter-spacing: -0.3px;">
             THÔNG TIN KHÓA LUẬN TỐT NGHIỆP & PHÂN CÔNG TIẾN ĐỘ
-        </h3>
-        <p style="color: #666666; font-size: 0.92rem; line-height: 1.6; margin: 0;">
+        </h2>
+        <p style="color: #374151; font-size: 0.92rem; line-height: 1.6; max-width: 62ch; margin: 0;">
             Hồ sơ đề tài nghiên cứu khoa học và kế hoạch thực hiện 12 tuần tại Trường Đại học Công Thương TP. Hồ Chí Minh.
         </p>
     </div>
@@ -3289,16 +3306,16 @@ elif nav_selection == "Thông Tin Khóa Luận":
     st.markdown(f"""<hr style="border: none; border-top: 1px solid {colors['border']}; margin: 8px 0 16px 0;">""", unsafe_allow_html=True)
     
     st.markdown(f"""<div style='background: #FFFFFF; border: 1px solid {colors['border']}; padding: 20px; border-radius: 4px; margin-bottom: 24px;'>
-<div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: #1E3A8A; margin-bottom: 6px;">
-ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP
+<div style="font-size: 0.85rem;  letter-spacing: 0.5px; font-weight: 700; color: #1E3A8A; margin-bottom: 6px;">
+Đề tài khóa luận tốt nghiệp
 </div>
-<h4 style='margin: 0 0 10px 0; color: {colors['text']}; font-size: 1.25rem;'>
+<h3 style='line-height: 1.45; margin: 0 0 10px 0; color: {colors['text']}; font-size: 1.25rem;'>
 Nghiên cứu và triển khai Semantic Communication cho truyền văn bản sử dụng mô hình Transformer
-</h4>
+</h3>
 <p style='margin: 4px 0; color: {colors['subtext']}; font-size: 0.92rem;'><b>Đơn vị:</b> Trường Đại học Công Thương TP. Hồ Chí Minh (HUIT) — Khoa Công nghệ Thông tin</p>
 <p style='margin: 4px 0; color: {colors['subtext']}; font-size: 0.92rem;'><b>Giảng viên hướng dẫn:</b> ThS. Nguyễn Thị Hồng Thảo</p>
 <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid {colors['border']};">
-<p style='margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.82rem; color: {colors['text']};'>
+<p style='margin: 0 0 8px 0; font-weight: 700;  letter-spacing: 0.5px; font-size: 0.82rem; color: {colors['text']};'>
 Sinh viên thực hiện:
 </p>
 <ul style='color: {colors['text']}; line-height: 1.9; margin: 0; padding-left: 20px; font-size: 0.9rem;'>
@@ -3309,7 +3326,7 @@ Sinh viên thực hiện:
 </div>
 </div>""", unsafe_allow_html=True)
     
-    st.markdown(f"<h4 style='border-bottom: 1px solid {colors['border']}; padding-bottom: 6px; margin-bottom: 12px; color: {colors['text']};'>Kế Hoạch Thực Hiện 12 Tuần</h4>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='line-height: 1.45; border-bottom: 1px solid {colors['border']}; padding-bottom: 6px; margin-bottom: 12px; color: {colors['text']};'>Kế Hoạch Thực Hiện 12 Tuần</h3>", unsafe_allow_html=True)
     checklist = [
         {"Tuần": "Tuần 1", "Hạng mục": "Khảo sát tài liệu Semantic Communication & Transformer", "Phụ trách": "Cả nhóm", "Trạng thái": "Hoàn thành 100%"},
         {"Tuần": "Tuần 2", "Hạng mục": "Nghiên cứu Self-Attention, Positional Encoding, Encoder-Decoder", "Phụ trách": "Đoàn Hoài An", "Trạng thái": "Hoàn thành 100%"},
