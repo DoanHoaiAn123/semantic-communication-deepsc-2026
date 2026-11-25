@@ -2940,7 +2940,8 @@ elif nav_selection == "Khảo Sát Hiệu Năng Kênh":
     snr_vals = [item['snr'] for item in res_items]
     sem_bleu_vals = [item['sem_bleu'] for item in res_items]
     trad_bleu_vals = [item['trad_bleu'] for item in res_items]
-    trad_ber_vals = [max(1e-5, item['trad_ber']) for item in res_items]
+    raw_trad_ber_vals = [float(item['trad_ber']) for item in res_items]
+    trad_ber_vals = [max(1e-5, v) for v in raw_trad_ber_vals]
     sem_sim_vals = [item['sem_sim'] for item in res_items]
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4.5), facecolor=colors['chart_bg'])
@@ -3002,7 +3003,7 @@ elif nav_selection == "Khảo Sát Hiệu Năng Kênh":
         "DeepSC BLEU": [f"{min(100.0, max(0.0, v * 100)):.1f}%" for v in sem_bleu_vals],
         "DeepSC Tương Đồng": [f"{min(100.0, max(0.0, v * 100)):.1f}%" for v in sem_sim_vals],
         "Truyền Thống BLEU": [f"{min(100.0, max(0.0, v * 100)):.1f}%" for v in trad_bleu_vals],
-        "Truyền Thống BER": [f"{v * 100:.2f}%" if v * 100 >= 0.01 else (f"{v * 100:.4f}%" if v > 0 else "0.00%") for v in trad_ber_vals],
+        "Truyền Thống BER": [f"{v * 100:.2f}%" for v in raw_trad_ber_vals],
         "Đánh Giá": eval_labels
     })
     st.markdown(render_editorial_table(df_eval_display, col_alignments=["left", "right", "right", "right", "right", "right"]), unsafe_allow_html=True)
