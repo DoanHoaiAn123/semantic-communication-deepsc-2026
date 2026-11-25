@@ -185,20 +185,16 @@ def main():
     print(f"  ✓ Kênh truyền vô tuyến: AWGN / Rayleigh Fading (SNR: {train_cfg.snr_min} dB → {train_cfg.snr_max} dB)")
     print(f"  ✓ Tổng tham số mô hình: {total_params:,} ({total_params * 4 / (1024**2):.1f} MB)")
 
+    # 4. Huấn luyện chuẩn
+    print(f"\n🏋️ [BƯỚC 3/4] BẮT ĐẦU HUẤN LUYỆN CHUẨN (STANDARD TRAINING) — {train_cfg.epochs} EPOCHS...")
+    trainer = Trainer(model, train_loader, val_loader, tokenizer, config)
     if args.resume:
         for r_name in ['last_model.pth', 'best_model.pth']:
             r_path = os.path.join(ckpt_dir, r_name)
             if os.path.exists(r_path):
-                print(f"  🔄 Đang nạp tiếp tục trọng số từ checkpoint: {r_name}")
-                ck = torch.load(r_path, map_location='cpu')
-                sd = ck['model_state_dict'] if isinstance(ck, dict) and 'model_state_dict' in ck else ck
-                model.load_state_dict(sd, strict=False)
-                print(f"  ✓ Đã nạp thành công trọng số trước đó.")
+                print(f"  🔄 Đang khôi phục đầy đủ trạng thái huấn luyện từ checkpoint: {r_name}")
+                trainer.load_checkpoint(r_path)
                 break
-
-    # 4. Huấn luyện chuẩn
-    print(f"\n🏋️ [BƯỚC 3/4] BẮT ĐẦU HUẤN LUYỆN CHUẨN (STANDARD TRAINING) — {train_cfg.epochs} EPOCHS...")
-    trainer = Trainer(model, train_loader, val_loader, tokenizer, config)
     t0_train = time.time()
     history = trainer.train(num_epochs=train_cfg.epochs)
     t1_train = time.time()

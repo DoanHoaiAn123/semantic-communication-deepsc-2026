@@ -36,6 +36,17 @@ class AttackDetector(nn.Module):
             
             nn.Linear(hidden_dim // 2, num_classes)
         )
+        # Nhánh phân tích đặc trưng thống kê bậc cao (L2 norm, Linf, std, kurtosis, frac_eps...)
+        # giúp bảo toàn thông tin biên độ và hình thái đạo hàm sign(grad)*eps vốn bị LayerNorm triệt tiêu
+        self.stat_dim = 10
+        self.stat_head = nn.Sequential(
+            nn.Linear(self.stat_dim, 64),
+            nn.LayerNorm(64),
+            nn.GELU(),
+            nn.Linear(64, 32),
+            nn.GELU(),
+            nn.Linear(32, num_classes)
+        )
         self._init_weights()
     
     def _init_weights(self):
@@ -44,6 +55,24 @@ class AttackDetector(nn.Module):
                 nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
                 if m.bias is not None:
                     nn.init.zeros_(m.bias)
+
+    def _extract_stats(self, latent: torch.Tensor) -> torch.Tensor:
+        """Trích xuất 10 đặc trưng thống kê biên độ và phổ lưới 0.15 của latent vector [B, 10]."""
+        eps = 1e-6
+        mean = latent.mean(dim=-1, keepdim=True)
+        centered = latent - mean
+        std = latent.std(dim=-1, keepdim=True).clamp(min=eps)
+        l2 = torch.norm(latent, p=2, dim=-1, keepdim=True) / 30.0
+        l1 = torch.norm(latent, p=1, dim=-1, keepdim=True) / 300.0
+        linf = latent.abs().amax(dim=-1, keepdim=True) / 10.0
+        z = centered / std
+        kurt = (z ** 4).mean(dim=-1, keepdim=True) / 5.0
+        # Đặc trưng phổ chu kỳ 0.15 và 0.05 (đặc trưng cho nhiễu cộng đồng nhất dạng ±epsilon của FGSM)
+        cos_015 = torch.cos(latent * (2.0 * 3.14159265 / 0.15)).mean(dim=-1, keepdim=True)
+        sin_015 = torch.sin(latent * (2.0 * 3.14159265 / 0.15)).mean(dim=-1, keepdim=True)
+        diff1 = (latent[:, 1:] - latent[:, :-1]).abs().mean(dim=-1, keepdim=True)
+        high_tail = (z.abs() > 2.0).to(latent.dtype).mean(dim=-1, keepdim=True)
+        return torch.cat([mean, std / 5.0, l2, l1, linf, kurt, cos_015, sin_015, diff1, high_tail], dim=-1)
     
     def forward(self, latent: torch.Tensor) -> torch.Tensor:
         """Phân loại loại tấn công.
@@ -52,7 +81,10 @@ class AttackDetector(nn.Module):
         Returns:
             logits: [B, num_classes] — logits cho 3 lớp
         """
-        return self.classifier(latent)
+        base_logits = self.classifier(latent)
+        stat_features = self._extract_stats(latent)
+        stat_logits = self.stat_head(stat_features)
+        return base_logits + stat_logits
     
     def predict(self, latent: torch.Tensor):
         """Dự đoán loại tấn công với confidence.

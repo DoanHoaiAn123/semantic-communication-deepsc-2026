@@ -152,13 +152,14 @@ class Trainer:
     def train(self, num_epochs=None):
         """Thực hiện toàn bộ quá trình huấn luyện có hỗ trợ dừng khẩn cấp và tiếp tục."""
         epochs = num_epochs or self.config.epochs
-        best_val_loss = float('inf')
-        history = {'train_loss': [], 'val_loss': []}
+        best_val_loss = getattr(self, 'best_val_loss', float('inf'))
+        start_epoch = getattr(self, 'start_epoch', 1)
+        history = {'train_loss': [], 'val_loss': [], 'best_val_loss': best_val_loss}
         
         print(f"Bắt đầu huấn luyện trên thiết bị: {self.device}")
         
         try:
-            for epoch in range(1, epochs + 1):
+            for epoch in range(start_epoch, epochs + 1):
                 print(f"\nEpoch {epoch}/{epochs}")
                 
                 train_loss = self.train_epoch(epoch_idx=epoch)
@@ -172,6 +173,8 @@ class Trainer:
                 # Lưu checkpoint tốt nhất
                 if val_loss < best_val_loss:
                     best_val_loss = val_loss
+                    self.best_val_loss = best_val_loss
+                    history['best_val_loss'] = best_val_loss
                     checkpoint_path = os.path.join(self.config.checkpoint_dir, 'best_model.pth')
                     self.save_checkpoint(checkpoint_path, epoch=epoch)
                     print(f"⭐ Đã lưu mô hình tốt nhất (best_model.pth) tại epoch {epoch}")
@@ -192,7 +195,13 @@ class Trainer:
         return history
         
     def save_checkpoint(self, path, epoch=None, step=None):
-        """Lưu trạng thái mô hình (hỗ trợ pause/resume)."""
+        """Lưu trạng thái mô hình (hỗ trợ pause/resume và kiểm tra đồng bộ vocab_sha256)."""
+        import hashlib
+        vocab_path = os.path.join(self.config.checkpoint_dir, 'vocab.json')
+        vocab_sha256 = None
+        if os.path.exists(vocab_path):
+            with open(vocab_path, 'rb') as f:
+                vocab_sha256 = hashlib.sha256(f.read()).hexdigest()
         checkpoint = {
             'model_state_dict': self.model.state_dict(),
             'optimizer_state_dict': self.optimizer.state_dict(),
@@ -200,17 +209,32 @@ class Trainer:
             'config': getattr(self.model, 'config', None),
             'epoch': epoch,
             'step': step,
+            'best_val_loss': getattr(self, 'best_val_loss', float('inf')),
+            'vocab_sha256': vocab_sha256,
+            'vocab_size': getattr(self.tokenizer, 'vocab_size', None)
         }
         torch.save(checkpoint, path)
         
     def load_checkpoint(self, path):
-        """Tải trạng thái mô hình."""
+        """Tải trạng thái mô hình đầy đủ (model, optimizer, scheduler, epoch, best_val_loss)."""
         checkpoint = torch.load(path, map_location=self.device)
-        self.model.load_state_dict(checkpoint['model_state_dict'])
-        if 'optimizer_state_dict' in checkpoint:
-            self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-        if 'scheduler_state_dict' in checkpoint:
-            self.scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
+        state_dict = checkpoint['model_state_dict'] if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint else checkpoint
+        self.model.load_state_dict(state_dict, strict=True)
+        if isinstance(checkpoint, dict):
+            if 'optimizer_state_dict' in checkpoint:
+                try:
+                    self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+                except Exception:
+                    pass
+            if 'scheduler_state_dict' in checkpoint:
+                try:
+                    self.scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
+                except Exception:
+                    pass
+            if checkpoint.get('epoch') is not None:
+                self.start_epoch = int(checkpoint['epoch']) + 1
+            if checkpoint.get('best_val_loss') is not None:
+                self.best_val_loss = float(checkpoint['best_val_loss'])
         print(f"Đã tải checkpoint từ {path}")
 
 if __name__ == "__main__":

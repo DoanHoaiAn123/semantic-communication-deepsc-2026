@@ -14,7 +14,7 @@ cfg['data'].dataset_name = 'harouzie/vi_en-translation'
 cfg['data'].max_samples = 1500
 
 print("Nạp dữ liệu 1500 mẫu và trích xuất từ điển chuẩn...")
-_, _, _, tokenizer = create_dataloaders(cfg['data'], batch_size=2)
+_, _, _, tokenizer = create_dataloaders(cfg['data'], batch_size=2, rebuild_vocab=True, save_vocab=True)
 print(f"Vocab size thực tế: {tokenizer.vocab_size}")
 
 ckpt_dir = r"c:\Users\doanh\OneDrive\Desktop\Tốt Nghiệp 2026\semantic-communication\checkpoints"

@@ -198,15 +198,52 @@ def get_supplementary_dataset_info() -> Dict:
 # PHẦN 2: Tính Metrics (Accuracy, F1, BLEU, Semantic Similarity)
 # ══════════════════════════════════════════════════════════════════════════════
 
+def _strip_special_ids(seq: List[int], pad_id: int = 0, sos_id: int = 1, eos_id: int = 2) -> List[int]:
+    """Loại bỏ [SOS] ở đầu và cắt chuỗi ngay tại [EOS] đầu tiên (hoặc [PAD])."""
+    out = []
+    for tok in seq:
+        t = int(tok)
+        if t == eos_id:
+            break
+        if t in (pad_id, sos_id):
+            continue
+        out.append(t)
+    return out
+
+
+def align_sentence_pairs_to_tokens(
+    all_ref_seqs: List[List[int]],
+    all_pred_seqs: List[List[int]],
+    pad_id: int = 0,
+    sos_id: int = 1,
+    eos_id: int = 2
+) -> Tuple[List[int], List[int]]:
+    """
+    Căn chỉnh độ dài từng cặp câu (ref, pred) độc lập trước khi gộp phẳng toàn tập.
+    Khắc phục triệt để lỗi trượt pha chuỗi (sequence phase shift) khi một câu sinh thiếu/dư từ.
+    """
+    refs_aligned: List[int] = []
+    preds_aligned: List[int] = []
+    for ref_seq, pred_seq in zip(all_ref_seqs, all_pred_seqs):
+        r_clean = _strip_special_ids(ref_seq, pad_id=pad_id, sos_id=sos_id, eos_id=eos_id)
+        p_clean = _strip_special_ids(pred_seq, pad_id=pad_id, sos_id=sos_id, eos_id=eos_id)
+        if not r_clean:
+            continue
+        # Đối chiếu chính xác theo độ dài câu đích r_clean (nếu pred ngắn hơn thì điền pad_id)
+        for idx, r_tok in enumerate(r_clean):
+            refs_aligned.append(r_tok)
+            preds_aligned.append(p_clean[idx] if idx < len(p_clean) else pad_id)
+    return refs_aligned, preds_aligned
+
+
 def token_accuracy_f1(ref_ids: List[int], pred_ids: List[int], pad_id: int = 0) -> Tuple[float, float, float, float]:
     """
-    Tính Accuracy và Macro-F1 ở cấp độ token.
-    Loại bỏ padding (pad_id) trước khi tính.
+    Tính Accuracy, Macro-F1, Macro-Precision và Macro-Recall ở cấp độ token.
+    Loại bỏ vị trí mà ref == pad_id trước khi tính.
 
     Returns:
         accuracy, f1_macro, precision_macro, recall_macro
     """
-    # Cắt bằng chiều dài ngắn hơn
     min_len = min(len(ref_ids), len(pred_ids))
     if min_len == 0:
         return 0.0, 0.0, 0.0, 0.0
@@ -214,26 +251,45 @@ def token_accuracy_f1(ref_ids: List[int], pred_ids: List[int], pad_id: int = 0) 
     ref_trim = ref_ids[:min_len]
     pred_trim = pred_ids[:min_len]
 
-    # Loại bỏ vị trí PAD trong ref
-    non_pad = [(r, p) for r, p in zip(ref_trim, pred_trim) if r != pad_id]
+    non_pad = [(int(r), int(p)) for r, p in zip(ref_trim, pred_trim) if int(r) != pad_id]
     if not non_pad:
         return 0.0, 0.0, 0.0, 0.0
 
     refs = [r for r, _ in non_pad]
     preds = [p for _, p in non_pad]
 
+    # Tính trên hợp các lớp thực tế (loại pad_id ở phía pred khỏi danh sách lớp trung bình nếu pad chỉ là thiếu từ)
+    active_labels = sorted(set(refs) | (set(preds) - {pad_id}))
+    if not active_labels:
+        active_labels = sorted(set(refs))
+
     if HAS_SKLEARN:
         acc = accuracy_score(refs, preds)
-        # zero_division=0 để tránh warning khi một lớp không có dự đoán
-        f1 = f1_score(refs, preds, average='macro', zero_division=0)
-        prec = precision_score(refs, preds, average='macro', zero_division=0)
-        rec = recall_score(refs, preds, average='macro', zero_division=0)
+        f1 = f1_score(refs, preds, labels=active_labels, average='macro', zero_division=0)
+        prec = precision_score(refs, preds, labels=active_labels, average='macro', zero_division=0)
+        rec = recall_score(refs, preds, labels=active_labels, average='macro', zero_division=0)
         return float(acc), float(f1), float(prec), float(rec)
     else:
-        # Fallback thủ công
+        from collections import Counter
         correct = sum(1 for r, p in zip(refs, preds) if r == p)
         acc = correct / len(refs)
-        return acc, acc, acc, acc  # simplified
+        tp, fp, fn = Counter(), Counter(), Counter()
+        for r, p in zip(refs, preds):
+            if r == p:
+                tp[r] += 1
+            else:
+                fn[r] += 1
+                if p != pad_id:
+                    fp[p] += 1
+        precs, recs, f1s = [], [], []
+        for c in active_labels:
+            p_c = tp[c] / (tp[c] + fp[c]) if (tp[c] + fp[c]) > 0 else 0.0
+            r_c = tp[c] / (tp[c] + fn[c]) if (tp[c] + fn[c]) > 0 else 0.0
+            f1_c = (2 * p_c * r_c / (p_c + r_c)) if (p_c + r_c) > 0 else 0.0
+            precs.append(p_c)
+            recs.append(r_c)
+            f1s.append(f1_c)
+        return float(acc), float(np.mean(f1s)), float(np.mean(precs)), float(np.mean(recs))
 
 
 def simple_bleu_score(reference: str, hypothesis: str) -> float:
@@ -347,16 +403,24 @@ class AttackEvaluator:
             curr_mask = tgt_mask[:, :-1] if tgt_mask is not None else None
 
             if scenario == 'clean':
+                raw_attacked_latent = clean_latent
                 latent_to_use = clean_latent
                 det_label = 0
 
+            elif scenario == 'clean_defended':
+                raw_attacked_latent = clean_latent
+                latent_to_use = self.defense.defend(clean_latent, force_attack_type=None)
+                det_label = 0
+
             elif scenario == 'fgsm':
-                latent_to_use, _ = fgsm_attack(
+                fgsm_lat, _ = fgsm_attack(
                     model=self.model, latent=clean_latent,
                     target_ids=target_ids_gt, tgt_ids_input=input_tgt,
                     tgt_mask=curr_mask, criterion=self.criterion,
                     epsilon=self.epsilon_fgsm, snr_db=self.snr_db
                 )
+                raw_attacked_latent = fgsm_lat
+                latent_to_use = fgsm_lat
                 det_label = 1
 
             elif scenario == 'fgsm_defended':
@@ -366,16 +430,19 @@ class AttackEvaluator:
                     tgt_mask=curr_mask, criterion=self.criterion,
                     epsilon=self.epsilon_fgsm, snr_db=self.snr_db
                 )
-                latent_to_use = self.defense.defend(fgsm_lat, force_attack_type=1)
+                raw_attacked_latent = fgsm_lat
+                latent_to_use = self.defense.defend(fgsm_lat, force_attack_type=None)
                 det_label = 1
 
             elif scenario == 'cw':
-                latent_to_use, _ = cw_attack(
+                cw_lat, _ = cw_attack(
                     model=self.model, latent=clean_latent,
                     target_ids=target_ids_gt, tgt_ids_input=input_tgt,
                     tgt_mask=curr_mask, criterion=self.criterion,
                     c=self.cw_c, max_iter=self.cw_steps, snr_db=self.snr_db
                 )
+                raw_attacked_latent = cw_lat
+                latent_to_use = cw_lat
                 det_label = 2
 
             elif scenario == 'cw_defended':
@@ -385,16 +452,18 @@ class AttackEvaluator:
                     tgt_mask=curr_mask, criterion=self.criterion,
                     c=self.cw_c, max_iter=self.cw_steps, snr_db=self.snr_db
                 )
-                latent_to_use = self.defense.defend(cw_lat, force_attack_type=2)
+                raw_attacked_latent = cw_lat
+                latent_to_use = self.defense.defend(cw_lat, force_attack_type=None)
                 det_label = 2
 
             else:
+                raw_attacked_latent = clean_latent
                 latent_to_use = clean_latent
                 det_label = 0
 
-            # Detector prediction
+            # Detector prediction phải thực hiện trên tín hiệu TRƯỚC khi khử nhiễu (raw_attacked_latent)
             with torch.no_grad():
-                det_logits = self.detector(latent_to_use)
+                det_logits = self.detector(raw_attacked_latent)
                 det_pred = det_logits.argmax(dim=-1).cpu().tolist()
 
             detect_labels.extend([det_label] * len(src_batch))
@@ -416,22 +485,20 @@ class AttackEvaluator:
                 all_bleu.append(simple_bleu_score(ref_text, pred_text))
                 all_sim.append(jaccard_similarity(ref_text, pred_text))
 
-        # Tổng hợp token-level metrics (flatten all sequences)
-        flat_ref = [tok for seq in all_ref_ids for tok in seq]
-        flat_pred = [tok for seq in all_pred_ids for tok in seq]
-
-        # Pad pred đến chiều ref nếu cần
-        if len(flat_pred) < len(flat_ref):
-            flat_pred += [self.tokenizer.pad_id] * (len(flat_ref) - len(flat_pred))
-        elif len(flat_pred) > len(flat_ref):
-            flat_pred = flat_pred[:len(flat_ref)]
+        # Tổng hợp token-level metrics: căn chỉnh theo từng cặp câu trước khi gộp phẳng
+        flat_ref, flat_pred = align_sentence_pairs_to_tokens(
+            all_ref_ids, all_pred_ids,
+            pad_id=self.tokenizer.pad_id,
+            sos_id=self.tokenizer.sos_id,
+            eos_id=self.tokenizer.eos_id
+        )
 
         acc, f1, prec, rec = token_accuracy_f1(flat_ref, flat_pred, self.tokenizer.pad_id)
 
-        # Detection metrics
-        if HAS_SKLEARN and len(set(detect_labels)) > 1:
+        # Detection metrics (tính F1 cho lớp đích hiện tại hoặc macro khi nhiều lớp)
+        if HAS_SKLEARN:
             det_acc = accuracy_score(detect_labels, detect_preds)
-            det_f1 = f1_score(detect_labels, detect_preds, average='macro', zero_division=0)
+            det_f1 = f1_score(detect_labels, detect_preds, labels=[det_label], average='macro', zero_division=0)
         else:
             correct_det = sum(1 for a, b in zip(detect_labels, detect_preds) if a == b)
             det_acc = correct_det / max(1, len(detect_labels))

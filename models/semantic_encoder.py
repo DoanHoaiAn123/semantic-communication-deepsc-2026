@@ -6,17 +6,24 @@ from typing import Optional
 class PositionalEncoding(nn.Module):
     """
     Thêm thông tin vị trí vào các token embedding (Sinusoidal Positional Encoding)
+    Hỗ trợ mở rộng động khi seq_len vượt quá max_seq_len ban đầu.
     """
     def __init__(self, d_model: int, max_seq_len: int = 5000, dropout: float = 0.1):
         super().__init__()
+        if d_model % 2 != 0:
+            raise ValueError(f"d_model phải là số chẵn cho Sinusoidal PositionalEncoding, nhận được: {d_model}")
+        self.d_model = d_model
         self.dropout = nn.Dropout(p=dropout)
+        self.register_buffer('pe', self._build_pe(max_seq_len, d_model))
 
-        position = torch.arange(max_seq_len).unsqueeze(1)
-        div_term = torch.exp(torch.arange(0, d_model, 2) * (-math.log(10000.0) / d_model))
-        pe = torch.zeros(1, max_seq_len, d_model)
+    @staticmethod
+    def _build_pe(length: int, d_model: int, device=None, dtype=torch.float32) -> torch.Tensor:
+        position = torch.arange(length, device=device, dtype=dtype).unsqueeze(1)
+        div_term = torch.exp(torch.arange(0, d_model, 2, device=device, dtype=dtype) * (-math.log(10000.0) / d_model))
+        pe = torch.zeros(1, length, d_model, device=device, dtype=dtype)
         pe[0, :, 0::2] = torch.sin(position * div_term)
         pe[0, :, 1::2] = torch.cos(position * div_term)
-        self.register_buffer('pe', pe)
+        return pe
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -26,7 +33,14 @@ class PositionalEncoding(nn.Module):
         Returns:
             Tensor đã cộng positional encoding.
         """
-        x = x + self.pe[:, :x.size(1), :]
+        seq_len = x.size(1)
+        if seq_len == 0:
+            return x
+        if seq_len > self.pe.size(1):
+            pe_ext = self._build_pe(seq_len, self.d_model, device=x.device, dtype=self.pe.dtype)
+        else:
+            pe_ext = self.pe[:, :seq_len, :]
+        x = x + pe_ext.to(dtype=x.dtype, device=x.device)
         return self.dropout(x)
 
 class TransformerEncoderLayer(nn.Module):
@@ -93,13 +107,29 @@ class SemanticEncoder(nn.Module):
 
     def forward(self, src_ids: torch.Tensor, src_mask: Optional[torch.Tensor] = None) -> torch.Tensor:
         """
-        Biến đổi chuỗi đầu vào thành vector ngữ nghĩa.
+        Biến đổi chuỗi đầu vào thành vector ngữ nghĩa (có Masked Mean Pooling loại bỏ [PAD]).
         Args:
             src_ids: Tensor [batch_size, seq_len]
-            src_mask: Tensor mask tùy chọn
+            src_mask: Tensor boolean mask tùy chọn [batch_size, seq_len] (True tại vị trí [PAD])
         Returns:
             latent: Tensor [batch_size, latent_dim]
         """
+        B, S = src_ids.size()
+        if S == 0:
+            return torch.zeros((B, self.projection.out_features), device=src_ids.device)
+
+        if src_mask is not None:
+            src_mask = src_mask.to(dtype=torch.bool, device=src_ids.device)
+            # Bảo vệ trường hợp một hàng chứa toàn [PAD] (tránh softmax chia 0/0 gây NaN)
+            all_pad = src_mask.all(dim=1)
+            if all_pad.any():
+                safe_mask = src_mask.clone()
+                safe_mask[all_pad, 0] = False
+            else:
+                safe_mask = src_mask
+        else:
+            safe_mask = None
+
         # Lấy embedding: [B, S] -> [B, S, d_model]
         x = self.embedding(src_ids) * math.sqrt(self.embedding.embedding_dim)
         
@@ -108,10 +138,15 @@ class SemanticEncoder(nn.Module):
         
         # Truyền qua các lớp Transformer Encoder
         for layer in self.layers:
-            x = layer(x, src_mask)
+            x = layer(x, safe_mask)
             
-        # [B, S, d_model] -> [B, d_model] (lấy trung bình theo chiều chuỗi - mean pooling)
-        x = x.mean(dim=1)
+        # [B, S, d_model] -> [B, d_model] (Masked Mean Pooling loại bỏ các vị trí [PAD])
+        if src_mask is not None:
+            valid_mask = (~src_mask).unsqueeze(-1).to(x.dtype)  # [B, S, 1]
+            valid_counts = valid_mask.sum(dim=1).clamp(min=1.0) # [B, 1]
+            x = (x * valid_mask).sum(dim=1) / valid_counts
+        else:
+            x = x.mean(dim=1)
         
         # Chiếu về không gian latent: [B, latent_dim]
         latent = self.projection(x)

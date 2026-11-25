@@ -1,4 +1,7 @@
+import os
 from dataclasses import dataclass, field
+
+_PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 @dataclass
 class ModelConfig:
@@ -24,8 +27,8 @@ class TrainingConfig:
     snr_min: float = -5.0
     snr_max: float = 20.0
     noise_aware: bool = True
-    checkpoint_dir: str = 'checkpoints'
-    results_dir: str = 'results'
+    checkpoint_dir: str = os.path.join(_PROJECT_ROOT, 'checkpoints')
+    results_dir: str = os.path.join(_PROJECT_ROOT, 'results')
 
 @dataclass
 class DataConfig:

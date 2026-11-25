@@ -1,9 +1,11 @@
 import torch
 from torch.utils.data import Dataset, DataLoader
 import re
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 import random
 import os
+import json
+import unicodedata
 
 # =====================================================================
 # Dữ liệu mẫu 3 ngôn ngữ (Anh, Việt, Trung) — fallback khi không có internet
@@ -66,10 +68,11 @@ _SUBJECTS_VI = ["Con mèo", "Con chó", "Bạn tôi", "Giáo viên", "Sinh viên
 _VERBS_VI = ["chạy", "đi bộ", "nhảy", "ngủ", "ăn", "đọc"]
 _OBJECTS_VI = ["trong công viên", "ở nhà", "nhanh chóng", "chậm rãi", "vui vẻ", "một cuốn sách"]
 
+_SAMPLE_RNG = random.Random(42)
 for _ in range(75):
-    idx_s = random.randint(0, len(_SUBJECTS_EN) - 1)
-    idx_v = random.randint(0, len(_VERBS_EN) - 1)
-    idx_o = random.randint(0, len(_OBJECTS_EN) - 1)
+    idx_s = _SAMPLE_RNG.randint(0, len(_SUBJECTS_EN) - 1)
+    idx_v = _SAMPLE_RNG.randint(0, len(_VERBS_EN) - 1)
+    idx_o = _SAMPLE_RNG.randint(0, len(_OBJECTS_EN) - 1)
     en = f"{_SUBJECTS_EN[idx_s]} {_VERBS_EN[idx_v]} {_OBJECTS_EN[idx_o]}."
     vi = f"{_SUBJECTS_VI[idx_s]} {_VERBS_VI[idx_v]} {_OBJECTS_VI[idx_o]}."
     SAMPLE_DATA_EN_VI.append((en, vi))
@@ -77,7 +80,8 @@ for _ in range(75):
 
 class SimpleTokenizer:
     """Tokenizer đơn giản hỗ trợ đa ngôn ngữ (Anh, Việt, Trung) cho Semantic Communication."""
-    def __init__(self):
+    def __init__(self, max_vocab_size: int = 10000, vocab_file: Optional[str] = None):
+        self.max_vocab_size = max_vocab_size
         self.pad_token = '[PAD]'
         self.sos_token = '[SOS]'
         self.eos_token = '[EOS]'
@@ -101,6 +105,25 @@ class SimpleTokenizer:
             self.lang_token_zh: 6,
         }
         self.id2word = {v: k for k, v in self.word2id.items()}
+        if vocab_file and os.path.exists(vocab_file):
+            self.load(vocab_file)
+
+    def load(self, vocab_path: str):
+        """Nạp từ điển từ tệp JSON."""
+        with open(vocab_path, 'r', encoding='utf-8') as f:
+            v_data = json.load(f)
+        self.word2id = v_data['word2id']
+        self.id2word = {int(k): v for k, v in v_data['id2word'].items()}
+
+    def save(self, vocab_path: str):
+        """Lưu từ điển ra tệp JSON."""
+        os.makedirs(os.path.dirname(os.path.abspath(vocab_path)), exist_ok=True)
+        with open(vocab_path, 'w', encoding='utf-8') as f:
+            json.dump({
+                'word2id': self.word2id,
+                'id2word': {str(k): v for k, v in self.id2word.items()},
+                'vocab_size': self.vocab_size
+            }, f, ensure_ascii=False, indent=2)
         
     def build_vocab(self, sentences: List[str], max_vocab: int = 10000):
         """Xây dựng từ điển từ danh sách các câu."""
@@ -125,7 +148,10 @@ class SimpleTokenizer:
         return (0x4E00 <= cp <= 0x9FFF) or (0x3400 <= cp <= 0x4DBF)
 
     def _tokenize(self, text: str) -> List[str]:
-        """Tách token tiếng Anh / tiếng Việt theo từ, tiếng Trung theo ký tự."""
+        """Tách token tiếng Anh / tiếng Việt theo từ, tiếng Trung theo ký tự (chuẩn hóa NFC)."""
+        if not text:
+            return []
+        text = unicodedata.normalize('NFC', str(text))
         tokens = []
         buffer = []
         
@@ -156,12 +182,15 @@ class SimpleTokenizer:
         return ids
         
     def decode(self, ids: List[int], skip_special_tokens: bool = True) -> str:
-        """Chuyển đổi token IDs trở lại chuỗi văn bản."""
+        """Chuyển đổi token IDs trở lại chuỗi văn bản (dừng tại [EOS] đầu tiên)."""
         words = []
         for i in ids:
-            if skip_special_tokens and i in [self.pad_id, self.sos_id, self.eos_id]:
+            idx = int(i)
+            if skip_special_tokens and idx == self.eos_id:
+                break
+            if skip_special_tokens and idx in [self.pad_id, self.sos_id]:
                 continue
-            word = self.id2word.get(i, self.unk_token)
+            word = self.id2word.get(idx, self.unk_token)
             if skip_special_tokens and word in [self.lang_token_en, self.lang_token_vi, self.lang_token_zh]:
                 continue
             words.append(word)
@@ -308,11 +337,32 @@ def _load_harouzie_dataset(max_samples: int = 3000, direction: str = 'en-vi') ->
     return data
 
 
-def load_raw_opus_dataset(max_samples: int = 5000, direction: str = 'en-vi', raw_dir: str = None, include_all_splits: bool = False) -> List[Tuple[str, str]]:
+def _count_effective_tokens(text: str) -> int:
+    """Đếm số từ (Anh/Việt) hoặc ký tự chữ Hán (Trung) sau chuẩn hóa NFC."""
+    if not text:
+        return 0
+    text = unicodedata.normalize('NFC', text.strip())
+    cjk_chars = []
+    non_cjk_chars = []
+    for c in text:
+        if (0x4E00 <= ord(c) <= 0x9FFF) or (0x3400 <= ord(c) <= 0x4DBF):
+            cjk_chars.append(c)
+            non_cjk_chars.append(' ')
+        else:
+            non_cjk_chars.append(c)
+    non_cjk_str = ''.join(non_cjk_chars)
+    cleaned = re.sub(r'[^\w\s\u00C0-\u024F\u1E00-\u1EFF]', ' ', non_cjk_str)
+    word_cnt = len(cleaned.split())
+    return len(cjk_chars) + word_cnt
+
+
+def load_raw_opus_dataset(max_samples: int = 5000, direction: str = 'en-vi', raw_dir: str = None, split: str = 'train') -> List[Tuple[str, str]]:
     """
-    Nạp dữ liệu từ file raw OPUS-100 đã tải về máy:
-      data/raw/opus-100-corpus-v1.0/opus-100-corpus/v1.0/supervised/en-vi/opus.en-vi-train.{en,vi}
-      Nếu include_all_splits=True, nạp thêm cả dev và test.
+    Nạp dữ liệu từ file raw OPUS-100 đã tải về máy theo đúng phân chia chính thức:
+      - split='train': chỉ nạp opus.en-vi-train.{en,vi}
+      - split='dev':   chỉ nạp opus.en-vi-dev.{en,vi}
+      - split='test':  chỉ nạp opus.en-vi-test.{en,vi}
+    Tuyệt đối KHÔNG tự động gộp dev/test vào train để tránh Data Leakage.
     """
     if raw_dir is None:
         raw_dir = os.path.join(
@@ -320,34 +370,41 @@ def load_raw_opus_dataset(max_samples: int = 5000, direction: str = 'en-vi', raw
             'opus-100-corpus', 'v1.0', 'supervised', 'en-vi'
         )
     raw_dir = os.path.normpath(raw_dir)
-    
-    splits = [('opus.en-vi-train.en', 'opus.en-vi-train.vi')]
-    if include_all_splits or (max_samples is not None and max_samples <= 0):
-        splits.append(('opus.en-vi-dev.en', 'opus.en-vi-dev.vi'))
-        splits.append(('opus.en-vi-test.en', 'opus.en-vi-test.vi'))
+
+    valid_splits = {'train', 'dev', 'test'}
+    if split not in valid_splits:
+        raise ValueError(f"split phải thuộc {valid_splits}, nhận được: '{split}'")
+
+    en_file = f'opus.en-vi-{split}.en'
+    vi_file = f'opus.en-vi-{split}.vi'
+    en_path = os.path.join(raw_dir, en_file)
+    vi_path = os.path.join(raw_dir, vi_file)
 
     data = []
-    for en_file, vi_file in splits:
-        en_path = os.path.join(raw_dir, en_file)
-        vi_path = os.path.join(raw_dir, vi_file)
-        if not os.path.exists(en_path) or not os.path.exists(vi_path):
-            continue
+    seen_pairs = set()
+    if not os.path.exists(en_path) or not os.path.exists(vi_path):
+        return data
 
-        print(f"  [Raw OPUS-100] Đang nạp từ file cục bộ: {en_file}...")
-        with open(en_path, 'r', encoding='utf-8', errors='ignore') as f_en, open(vi_path, 'r', encoding='utf-8', errors='ignore') as f_vi:
-            for en, vi in zip(f_en, f_vi):
-                en, vi = en.strip(), vi.strip()
-                if 2 <= len(en.split()) <= 50 and 2 <= len(vi.split()) <= 50:
-                    if direction == 'vi-en':
-                        data.append((vi, en))
-                    else:
-                        data.append((en, vi))
-                    if max_samples and max_samples > 0 and len(data) >= max_samples:
-                        break
-        if max_samples and max_samples > 0 and len(data) >= max_samples:
-            break
+    print(f"  [Raw OPUS-100 | {split}] Đang nạp từ file cục bộ: {en_file}...")
+    with open(en_path, 'r', encoding='utf-8', errors='ignore') as f_en, open(vi_path, 'r', encoding='utf-8', errors='ignore') as f_vi:
+        for en, vi in zip(f_en, f_vi):
+            en = unicodedata.normalize('NFC', en.strip())
+            vi = unicodedata.normalize('NFC', vi.strip())
+            if not en or not vi or en.lower() == vi.lower():
+                continue
+            len_en = _count_effective_tokens(en)
+            len_vi = _count_effective_tokens(vi)
+            if 2 <= len_en <= 50 and 2 <= len_vi <= 50:
+                pair = (vi, en) if direction == 'vi-en' else (en, vi)
+                pair_key = (pair[0].lower(), pair[1].lower())
+                if pair_key in seen_pairs:
+                    continue
+                seen_pairs.add(pair_key)
+                data.append(pair)
+                if max_samples and max_samples > 0 and len(data) >= max_samples:
+                    break
 
-    print(f"  [Raw OPUS-100] Đã nạp thành công {len(data):,} cặp câu song ngữ (en-vi)!")
+    print(f"  [Raw OPUS-100 | {split}] Đã nạp thành công {len(data):,} cặp câu song ngữ ({direction})!")
     return data
 
 
@@ -367,17 +424,24 @@ def load_raw_tatoeba_dataset(max_samples: int = 5000, direction: str = 'en-vi', 
 
     print(f"  [Raw Tatoeba] Đang nạp từ file TSV cục bộ: {tsv_path}...")
     data = []
+    seen_pairs = set()
     with open(tsv_path, 'r', encoding='utf-8', errors='ignore') as f:
         for line in f:
             parts = line.strip().split('\t')
             if len(parts) >= 4:
-                en = parts[1].strip()
-                vi = parts[3].strip()
-                if 2 <= len(en.split()) <= 50 and 2 <= len(vi.split()) <= 50:
-                    if direction == 'vi-en':
-                        data.append((vi, en))
-                    else:
-                        data.append((en, vi))
+                en = unicodedata.normalize('NFC', parts[1].strip())
+                vi = unicodedata.normalize('NFC', parts[3].strip())
+                if not en or not vi or en.lower() == vi.lower():
+                    continue
+                len_en = _count_effective_tokens(en)
+                len_vi = _count_effective_tokens(vi)
+                if 2 <= len_en <= 50 and 2 <= len_vi <= 50:
+                    pair = (vi, en) if direction == 'vi-en' else (en, vi)
+                    pair_key = (pair[0].lower(), pair[1].lower())
+                    if pair_key in seen_pairs:
+                        continue
+                    seen_pairs.add(pair_key)
+                    data.append(pair)
                     if max_samples and max_samples > 0 and len(data) >= max_samples:
                         break
 
@@ -385,123 +449,143 @@ def load_raw_tatoeba_dataset(max_samples: int = 5000, direction: str = 'en-vi', 
     return data
 
 
-def load_all_raw_datasets(direction: str = 'en-vi') -> List[Tuple[str, str]]:
+def load_all_raw_datasets(direction: str = 'en-vi', max_samples: int = 0) -> List[Tuple[str, str]]:
     """
-    Nạp TOÀN BỘ dữ liệu có trong thư mục data/raw không chừa lại bất cứ gì:
-      1. OPUS-100: train + dev + test
-      2. Tatoeba: English - Vietnamese + Chinese - Vietnamese
+    Nạp tập huấn luyện OPUS-100 sạch (chỉ split='train').
+    KHÔNG trộn opus.en-vi-dev, opus.en-vi-test và KHÔNG trộn Tatoeba vào tập Train
+    để đảm bảo tính độc lập hoàn toàn cho Validation, Test và đánh giá chéo miền (Tập 2).
     """
-    print("  🔥 Đang nạp TOÀN BỘ dataset từ thư mục data/raw (không chừa lại bất kỳ file nào)...")
-    data_opus = load_raw_opus_dataset(max_samples=0, direction=direction, include_all_splits=True)
-    data_tatoeba_en = load_raw_tatoeba_dataset(max_samples=0, direction=direction)
-    
-    # Nạp thêm Tatoeba Trung - Việt nếu có
-    tat_zh_path = os.path.join(
-        os.path.dirname(__file__), '..', 'data', 'raw', 'tatoeba',
-        'Các cặp câu trong Tiếng Trung - Tiếng Việt - 2026-10-14.tsv'
-    )
-    tat_zh_path = os.path.normpath(tat_zh_path)
-    data_tatoeba_zh = []
-    if os.path.exists(tat_zh_path):
-        with open(tat_zh_path, 'r', encoding='utf-8', errors='ignore') as f:
-            for line in f:
-                parts = line.strip().split('\t')
-                if len(parts) >= 4:
-                    zh = parts[1].strip()
-                    vi = parts[3].strip()
-                    if zh and vi:
-                        data_tatoeba_zh.append((zh, vi))
-        print(f"  [Raw Tatoeba ZH-VI] Đã nạp thêm {len(data_tatoeba_zh):,} cặp câu Trung - Việt.")
+    print("  [Clean Train Loader] Chỉ nạp OPUS-100 split='train' (giữ dev/test và Tatoeba hoàn toàn độc lập)...")
+    return load_raw_opus_dataset(max_samples=max_samples, direction=direction, split='train')
 
-    total_data = data_opus + data_tatoeba_en + data_tatoeba_zh
-    print(f"  🌟 TỔNG CỘNG ĐÃ NẠP TOÀN BỘ: {len(total_data):,} cặp câu!")
-    return total_data
+
+def _deduplicate_train_data(
+    train_data: List[Tuple[str, str]],
+    *excluded_splits: List[Tuple[str, str]]
+) -> List[Tuple[str, str]]:
+    """Loại bỏ các cặp câu trong train_data bị trùng câu nguồn (src) HOẶC câu đích (tgt) với val/test/tatoeba."""
+    excluded_srcs = set()
+    excluded_tgts = set()
+    for split_data in excluded_splits:
+        if not split_data:
+            continue
+        for src, tgt in split_data:
+            excluded_srcs.add(unicodedata.normalize('NFC', src.strip().lower()))
+            excluded_tgts.add(unicodedata.normalize('NFC', tgt.strip().lower()))
+
+    if not excluded_srcs and not excluded_tgts:
+        return train_data
+
+    cleaned = [
+        pair for pair in train_data
+        if unicodedata.normalize('NFC', pair[0].strip().lower()) not in excluded_srcs
+        and unicodedata.normalize('NFC', pair[1].strip().lower()) not in excluded_tgts
+    ]
+    removed = len(train_data) - len(cleaned)
+    if removed > 0:
+        print(f"  [Deduplication] Đã loại bỏ {removed:,} câu trùng lặp (cả src & tgt) giữa Train với Val/Test/Tatoeba.")
+    return cleaned
 
 
 def create_dataloaders(config, batch_size=64, rebuild_vocab: bool = False, save_vocab: bool = False):
     """
-    Tạo DataLoader hỗ trợ cả:
-      1. Raw Dataset tải về máy: data/raw/opus-100-corpus-v1.0 và data/raw/tatoeba
-      2. Hugging Face: harouzie/vi_en-translation (Chuẩn đề cương)
-      3. Hugging Face: opus100 (Đa ngữ)
-      4. Dataset 2 Tatoeba/WMT Lifestyle (Làm giàu vocab — tùy chọn)
-      5. Fallback nội bộ an toàn (Offline)
+    Tạo DataLoader đảm bảo KHÔNG Data Leakage:
+      1. Phân chia riêng biệt train_data / val_data / test_data TRƯỚC khi xây dựng từ điển:
+         - Với OPUS-100 raw: dùng đúng 3 split chính thức (train / dev / test), chỉ shuffle train_data.
+         - Giữ Tatoeba hoàn toàn độc lập làm Tập 2 (Cross-Domain Evaluation).
+         - Lọc bỏ các câu trùng lặp giữa train_data với val_data, test_data và Tatoeba.
+      2. Chỉ xây dựng Vocabulary (tokenizer.build_vocab) từ văn bản thuộc train_data.
     """
-    all_data = []
     dataset_name = getattr(config, 'dataset_name', 'harouzie/vi_en-translation') if not isinstance(config, dict) else config.get('dataset_name', 'harouzie/vi_en-translation')
     max_samples = getattr(config, 'max_samples', 3000) if not isinstance(config, dict) else config.get('max_samples', 3000)
-    use_supplementary = getattr(config, 'use_supplementary_dataset', True) if not isinstance(config, dict) else config.get('use_supplementary_dataset', True)
     rebuild_vocab = rebuild_vocab or (getattr(config, 'rebuild_vocab', False) if not isinstance(config, dict) else config.get('rebuild_vocab', False))
+    test_ratio = getattr(config, 'test_ratio', 0.1) if not isinstance(config, dict) else config.get('test_ratio', 0.1)
+    val_ratio = getattr(config, 'val_ratio', 0.1) if not isinstance(config, dict) else config.get('val_ratio', 0.1)
 
-    # Ưu tiên 0: Yêu cầu trực tiếp raw dataset
-    if 'all_raw' in dataset_name or 'toan_bo' in dataset_name:
-        all_data = load_all_raw_datasets(direction='en-vi')
-    elif 'opus_raw' in dataset_name or 'opus100_raw' in dataset_name:
-        all_data = load_raw_opus_dataset(max_samples=max_samples, direction='en-vi')
+    train_data: List[Tuple[str, str]] = []
+    val_data: List[Tuple[str, str]] = []
+    test_data: List[Tuple[str, str]] = []
+    all_data: List[Tuple[str, str]] = []
+
+    use_official_opus_splits = False
+
+    # 1. Nạp dữ liệu theo cấu hình (KHÔNG gộp dev/test/Tatoeba vào tập train OPUS-100)
+    if any(k in dataset_name for k in ('all_raw', 'toan_bo', 'opus_raw', 'opus100_raw', 'combined_raw')):
+        train_data = load_raw_opus_dataset(max_samples=max_samples, direction='en-vi', split='train')
+        val_data = load_raw_opus_dataset(max_samples=0, direction='en-vi', split='dev')
+        test_data = load_raw_opus_dataset(max_samples=0, direction='en-vi', split='test')
+        if train_data and val_data and test_data:
+            use_official_opus_splits = True
+        else:
+            all_data = train_data
+
     elif 'tatoeba_raw' in dataset_name:
         all_data = load_raw_tatoeba_dataset(max_samples=max_samples, direction='en-vi')
-    elif 'combined_raw' in dataset_name:
-        half = max_samples // 2 if (max_samples and max_samples > 0) else 0
-        d_opus = load_raw_opus_dataset(max_samples=half, direction='en-vi')
-        d_tat = load_raw_tatoeba_dataset(max_samples=half, direction='en-vi')
-        all_data = d_opus + d_tat
-        print(f"  [Combined Raw] Đã kết hợp {len(all_data):,} mẫu (OPUS-100: {len(d_opus):,} + Tatoeba: {len(d_tat):,}).")
 
-    # 1. Trường hợp dùng harouzie/vi_en-translation (Chuẩn đề cương)
     elif 'harouzie' in dataset_name or 'vi_en' in dataset_name:
         try:
             all_data = _load_harouzie_dataset(max_samples=max_samples or 3000, direction='en-vi')
         except Exception as e:
             print(f"  ⚠️ Không thể nạp trực tiếp harouzie/vi_en-translation ({e}).")
-            print("  🔄 Tự động chuyển sang nạp Raw OPUS-100 đã có trong thư mục data/raw...")
-            all_data = load_raw_opus_dataset(max_samples=max_samples, direction='en-vi')
-            if not all_data:
-                all_data = load_raw_tatoeba_dataset(max_samples=max_samples, direction='en-vi')
+            print("  🔄 Tự động chuyển sang nạp Raw OPUS-100 (tách riêng train/dev/test)...")
+            train_data = load_raw_opus_dataset(max_samples=max_samples, direction='en-vi', split='train')
+            val_data = load_raw_opus_dataset(max_samples=0, direction='en-vi', split='dev')
+            test_data = load_raw_opus_dataset(max_samples=0, direction='en-vi', split='test')
+            if train_data and val_data and test_data:
+                use_official_opus_splits = True
+            else:
+                all_data = train_data
 
-    # 2. Trường hợp dùng opus100 từ huggingface
     elif 'opus' in dataset_name:
-        # Thử nạp raw offline trước
-        all_data = load_raw_opus_dataset(max_samples=max_samples, direction='en-vi')
-        if not all_data:
-            max_per_pair = getattr(config, 'max_samples_per_pair', 500) if not isinstance(config, dict) else config.get('max_samples_per_pair', 500)
-            lang_pairs = getattr(config, 'language_pairs', []) if not isinstance(config, dict) else config.get('language_pairs', [])
-            for pair_info in lang_pairs:
-                src_lang = pair_info['src']
-                tgt_lang = pair_info['tgt']
-                subset = pair_info.get('subset')
-                if subset is not None:
-                    try:
-                        data = _load_opus100_pair(dataset_name, subset, src_lang, tgt_lang, max_per_pair)
-                        all_data.extend(data)
-                    except Exception:
-                        pass
+        train_data = load_raw_opus_dataset(max_samples=max_samples, direction='en-vi', split='train')
+        val_data = load_raw_opus_dataset(max_samples=0, direction='en-vi', split='dev')
+        test_data = load_raw_opus_dataset(max_samples=0, direction='en-vi', split='test')
+        if train_data and val_data and test_data:
+            use_official_opus_splits = True
+        else:
+            all_data = train_data
 
-    # 3. Fallback nếu không có dữ liệu: thử nạp từ raw folder trước khi dùng SAMPLE_DATA
-    if not all_data:
-        all_data = load_raw_opus_dataset(max_samples=max_samples, direction='en-vi')
-        if not all_data:
-            all_data = load_raw_tatoeba_dataset(max_samples=max_samples, direction='en-vi')
+    # 2. Fallback an toàn nếu chưa có dữ liệu
+    if not use_official_opus_splits and not all_data:
+        train_data = load_raw_opus_dataset(max_samples=max_samples, direction='en-vi', split='train')
+        val_data = load_raw_opus_dataset(max_samples=0, direction='en-vi', split='dev')
+        test_data = load_raw_opus_dataset(max_samples=0, direction='en-vi', split='test')
+        if train_data and val_data and test_data:
+            use_official_opus_splits = True
+        else:
+            all_data = train_data or load_raw_tatoeba_dataset(max_samples=max_samples, direction='en-vi')
 
-    if not all_data:
+    if not use_official_opus_splits and not all_data:
         print("  ℹ️ Sử dụng dữ liệu mẫu nội bộ phong phú (Anh - Việt).")
-        all_data = SAMPLE_DATA_EN_VI
+        all_data = list(SAMPLE_DATA_EN_VI)
 
-    if max_samples and max_samples > 0 and len(all_data) > max_samples:
-        all_data = all_data[:max_samples]
+    # 3. Chia tập Train / Validation / Test TRƯỚC khi xây dựng Vocabulary (cố định seed để tái lập)
+    split_seed = getattr(config, 'seed', 42) if not isinstance(config, dict) else config.get('seed', 42)
+    split_rng = random.Random(split_seed)
+    if use_official_opus_splits:
+        # Khử trùng lặp giữa dev và test
+        val_data = _deduplicate_train_data(val_data, test_data)
+        # Lọc trùng giữa train với dev, test và Tatoeba (Tập 2 độc lập) rồi chỉ shuffle trong train_data
+        tatoeba_eval = load_raw_tatoeba_dataset(max_samples=0, direction='en-vi')
+        train_data = _deduplicate_train_data(train_data, val_data, test_data, tatoeba_eval)
+        split_rng.shuffle(train_data)
+    else:
+        if max_samples and max_samples > 0 and len(all_data) > max_samples:
+            all_data = all_data[:max_samples]
+        split_rng.shuffle(all_data)
 
-    random.shuffle(all_data)
+        n_total = len(all_data)
+        n_test = max(1, int(n_total * test_ratio))
+        n_val = max(1, int(n_total * val_ratio))
+        n_train = max(1, n_total - n_test - n_val)
 
-    # ── Dataset 2: Làm giàu từ vựng cho tokenizer ─────────────────────────────
-    # Chỉ dùng văn bản để build_vocab phong phú hơn (đa miền).
-    # KHÔNG trộn vào tập train/val/test của Dataset 1 → giữ nguyên split chuẩn.
-    supplementary_texts: List[str] = []
-    if use_supplementary:
-        d2_data = load_supplementary_dataset()
-        if d2_data:
-            supplementary_texts = [src for src, _ in d2_data] + [tgt for _, tgt in d2_data]
-            print(f"  [Dataset 2] Bổ sung {len(supplementary_texts)} câu vào vocab (không trộn vào train).")
+        train_data = all_data[:n_train]
+        val_data = all_data[n_train:n_train + n_val]
+        test_data = all_data[n_train + n_val:]
+        val_data = _deduplicate_train_data(val_data, test_data)
+        train_data = _deduplicate_train_data(train_data, val_data, test_data)
 
-    # Xây dựng tokenizer từ file vocab đã lưu (khớp với checkpoint) hoặc tạo mới
+    # 4. Xây dựng Tokenizer: CHỈ dùng văn bản của train_data (KHÔNG dùng val, test hay Dataset 2)
     tokenizer = SimpleTokenizer()
     vocab_path = os.path.join(os.path.dirname(__file__), '..', 'checkpoints', 'vocab.json')
     if os.path.exists(vocab_path) and not rebuild_vocab:
@@ -512,12 +596,10 @@ def create_dataloaders(config, batch_size=64, rebuild_vocab: bool = False, save_
         tokenizer.id2word = {int(k): v for k, v in v_data['id2word'].items()}
         print(f"  [Vocab] Sử dụng từ điển có sẵn ({tokenizer.vocab_size} từ).")
     else:
-        # Dùng cả văn bản Dataset 1 + Dataset 2 để build vocab phong phú hơn
-        all_texts = [src for src, _ in all_data] + [tgt for _, tgt in all_data]
-        all_texts += supplementary_texts  # Làm giàu từ vựng từ Dataset 2
+        train_texts = [src for src, _ in train_data] + [tgt for _, tgt in train_data]
         max_vocab = getattr(config, 'vocab_size', 10000) if not isinstance(config, dict) else config.get('vocab_size', 10000)
-        tokenizer.build_vocab(all_texts, max_vocab=max_vocab)
-        print(f"  [Vocab] Xây dựng từ điển mới: {tokenizer.vocab_size} từ từ {len(all_texts)} câu.")
+        tokenizer.build_vocab(train_texts, max_vocab=max_vocab)
+        print(f"  [Vocab] Xây dựng từ điển mới CHỈ từ train_data: {tokenizer.vocab_size} từ từ {len(train_texts):,} câu.")
         if save_vocab:
             import json
             os.makedirs(os.path.dirname(vocab_path), exist_ok=True)
@@ -528,18 +610,6 @@ def create_dataloaders(config, batch_size=64, rebuild_vocab: bool = False, save_
                     'vocab_size': tokenizer.vocab_size
                 }, f, ensure_ascii=False, indent=2)
             print(f"  [Vocab] Đã lưu từ điển mới vào: {vocab_path}")
-
-    test_ratio = getattr(config, 'test_ratio', 0.1) if not isinstance(config, dict) else config.get('test_ratio', 0.1)
-    val_ratio = getattr(config, 'val_ratio', 0.1) if not isinstance(config, dict) else config.get('val_ratio', 0.1)
-
-    n_total = len(all_data)
-    n_test = max(1, int(n_total * test_ratio))
-    n_val = max(1, int(n_total * val_ratio))
-    n_train = max(1, n_total - n_test - n_val)
-
-    train_data = all_data[:n_train]
-    val_data = all_data[n_train:n_train+n_val]
-    test_data = all_data[n_train+n_val:]
 
     train_dataset = SemanticCommDataset(train_data)
     val_dataset = SemanticCommDataset(val_data)

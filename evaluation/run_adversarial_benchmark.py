@@ -51,20 +51,50 @@ from training.config import get_default_config
 # ══════════════════════════════════════════════════════════════════════════════
 
 def calc_token_metrics(ref_str: str, hyp_str: str) -> Tuple[float, float, float, float]:
-    """Tính toán Token-level Accuracy, F1 Macro, Precision, Recall."""
-    r_words = ref_str.strip().split()
-    h_words = hyp_str.strip().split()
+    """
+    Tính toán Token-level Accuracy, Macro-F1, Macro-Precision, Macro-Recall trên một cặp câu.
+    Khắc phục lỗi rút gọn đại số khiến Acc == Prec == Rec == F1 khi hai câu có cùng số từ:
+      - Accuracy: tỷ lệ khớp đúng vị trí (positional match) trên độ dài chuẩn
+      - Precision, Recall, F1 Macro: tính theo tập lớp từ vựng (per-class macro-average) trên hợp các từ
+    """
+    r_words = [w.lower() for w in ref_str.strip().split() if w.strip()]
+    h_words = [w.lower() for w in hyp_str.strip().split() if w.strip()]
     if not r_words:
         return 0.0, 0.0, 0.0, 0.0
-    if ref_str.strip() == hyp_str.strip():
+    if r_words == h_words:
         return 100.0, 100.0, 100.0, 100.0
     min_l = min(len(r_words), len(h_words))
+    max_l = max(len(r_words), len(h_words), 1)
     matched = sum(1 for idx in range(min_l) if r_words[idx] == h_words[idx])
-    acc = (matched / max(len(r_words), len(h_words), 1)) * 100.0
-    prec = (matched / max(len(h_words), 1)) * 100.0
-    rec = (matched / max(len(r_words), 1)) * 100.0
-    f1 = (2 * prec * rec) / (prec + rec) if (prec + rec) > 0 else 0.0
-    return acc, f1, prec, rec
+    acc = (matched / max_l) * 100.0
+
+    from collections import Counter
+    tp, fp, fn = Counter(), Counter(), Counter()
+    all_classes = set(r_words) | set(h_words)
+    for idx in range(max_l):
+        rw = r_words[idx] if idx < len(r_words) else None
+        hw = h_words[idx] if idx < len(h_words) else None
+        if rw is not None and hw is not None:
+            if rw == hw:
+                tp[rw] += 1
+            else:
+                fn[rw] += 1
+                fp[hw] += 1
+        elif rw is not None:
+            fn[rw] += 1
+        elif hw is not None:
+            fp[hw] += 1
+
+    precs, recs, f1s = [], [], []
+    for c in sorted(all_classes):
+        p_c = tp[c] / (tp[c] + fp[c]) if (tp[c] + fp[c]) > 0 else 0.0
+        r_c = tp[c] / (tp[c] + fn[c]) if (tp[c] + fn[c]) > 0 else 0.0
+        f1_c = (2.0 * p_c * r_c / (p_c + r_c)) if (p_c + r_c) > 0 else 0.0
+        precs.append(p_c * 100.0)
+        recs.append(r_c * 100.0)
+        f1s.append(f1_c * 100.0)
+
+    return float(acc), float(np.mean(f1s)), float(np.mean(precs)), float(np.mean(recs))
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -131,12 +161,14 @@ def load_test_data(dataset_type: str = "tatoeba", max_samples: int = 100, custom
         if len(pairs) < max_samples:
             tatoeba_tsv = os.path.join(BASE_DIR, 'data', 'raw', 'tatoeba', 'Các cặp câu trong Tiếng Anh - Tiếng Việt - 2026-10-14.tsv')
             if os.path.exists(tatoeba_tsv):
+                seen_pairs = set(pairs)
                 with open(tatoeba_tsv, 'r', encoding='utf-8', errors='ignore') as f:
                     for line in f:
                         parts = line.strip().split('\t')
                         if len(parts) >= 4:
                             e, v = parts[1].strip(), parts[3].strip()
-                            if e and v and (e, v) not in pairs:
+                            if e and v and (e, v) not in seen_pairs:
+                                seen_pairs.add((e, v))
                                 pairs.append((e, v))
                         if max_samples > 0 and len(pairs) >= max_samples:
                             break
@@ -295,7 +327,7 @@ def run_fast_benchmark(pairs: List[Tuple[str, str]], is_table_5_6: bool = False,
             "BLEU_CW_PhongThu (%)": round(b_cw_def, 2),
         })
 
-    # Tổng hợp giá trị trung bình và Confusion Matrix Per-Class Macro-Average cho Precision, Recall, F1 Macro
+    # Tổng hợp giá trị trung bình và Confusion Matrix Per-Class Macro-Average trên HỢP toàn bộ các lớp (gt U pred)
     from collections import Counter
     col_map = {
         "clean": "Clean_Giai_Ma",
@@ -312,13 +344,23 @@ def run_fast_benchmark(pairs: List[Tuple[str, str]], is_table_5_6: bool = False,
         for row_log in sample_logs:
             gt_w = str(row_log["Ground_Truth_VI"]).split()
             pr_w = str(row_log[col_name]).split()
-            for a, b in zip(gt_w, pr_w):
-                a_l, b_l = a.lower(), b.lower()
-                classes_set.add(a_l)
-                if a_l == b_l:
-                    tp[a_l] += 1
-                else:
+            max_w = max(len(gt_w), len(pr_w))
+            for idx_w in range(max_w):
+                a_l = gt_w[idx_w].lower() if idx_w < len(gt_w) else None
+                b_l = pr_w[idx_w].lower() if idx_w < len(pr_w) else None
+                if a_l is not None:
+                    classes_set.add(a_l)
+                if b_l is not None:
+                    classes_set.add(b_l)
+                if a_l is not None and b_l is not None:
+                    if a_l == b_l:
+                        tp[a_l] += 1
+                    else:
+                        fn[a_l] += 1
+                        fp[b_l] += 1
+                elif a_l is not None:
                     fn[a_l] += 1
+                elif b_l is not None:
                     fp[b_l] += 1
         precs_c, recs_c, f1s_c = [], [], []
         for c in sorted(classes_set):
@@ -423,51 +465,58 @@ def run_real_pytorch_benchmark(pairs: List[Tuple[str, str]], eps: float = 0.15) 
         with torch.no_grad():
             clean_latent = model.semantic_encoder(src_tensor, src_mask)
 
+        input_tgt = tgt_tensor[:, :-1]
+        target_lbl = tgt_tensor[:, 1:]
+        input_tgt_mask = tgt_mask[:, :-1] if tgt_mask is not None else None
+
         # 1. Clean
         with torch.no_grad():
+            det_clean_preds = detector(clean_latent).argmax(dim=-1).cpu().tolist()
             noisy = model.channel(model.channel_encoder(clean_latent), snr_db=10.0)
             rec = model.channel_decoder(noisy)
-            out_ids = model.semantic_decoder.generate(rec, max_len=32, sos_id=tokenizer.sos_id, eos_id=tokenizer.eos_id)
+            out_ids = model.semantic_decoder.generate(rec, max_len=32, sos_token_id=tokenizer.sos_id, eos_token_id=tokenizer.eos_id)
             clean_hyps = [tokenizer.decode(h.cpu().tolist()) for h in out_ids]
 
         # 2. FGSM
         fgsm_lat, _ = fgsm_attack(
-            model=model, latent=clean_latent, target_ids=tgt_tensor,
-            tgt_ids_input=tgt_tensor, tgt_mask=tgt_mask, criterion=criterion,
+            model=model, latent=clean_latent, target_ids=target_lbl,
+            tgt_ids_input=input_tgt, tgt_mask=input_tgt_mask, criterion=criterion,
             epsilon=eps, snr_db=10.0
         )
         with torch.no_grad():
+            det_fgsm_preds = detector(fgsm_lat).argmax(dim=-1).cpu().tolist()
             noisy = model.channel(model.channel_encoder(fgsm_lat), snr_db=10.0)
             rec = model.channel_decoder(noisy)
-            out_ids = model.semantic_decoder.generate(rec, max_len=32, sos_id=tokenizer.sos_id, eos_id=tokenizer.eos_id)
+            out_ids = model.semantic_decoder.generate(rec, max_len=32, sos_token_id=tokenizer.sos_id, eos_token_id=tokenizer.eos_id)
             fgsm_hyps = [tokenizer.decode(h.cpu().tolist()) for h in out_ids]
 
         # 3. FGSM + Defended
         with torch.no_grad():
-            fgsm_def_lat = defense.defend(fgsm_lat, force_attack_type=1)
+            fgsm_def_lat = defense.defend(fgsm_lat, force_attack_type=None)
             noisy = model.channel(model.channel_encoder(fgsm_def_lat), snr_db=10.0)
             rec = model.channel_decoder(noisy)
-            out_ids = model.semantic_decoder.generate(rec, max_len=32, sos_id=tokenizer.sos_id, eos_id=tokenizer.eos_id)
+            out_ids = model.semantic_decoder.generate(rec, max_len=32, sos_token_id=tokenizer.sos_id, eos_token_id=tokenizer.eos_id)
             fgsm_def_hyps = [tokenizer.decode(h.cpu().tolist()) for h in out_ids]
 
         # 4. C&W (10 bước tối ưu để tiết kiệm thời gian)
         cw_lat, _ = cw_attack(
-            model=model, latent=clean_latent, target_ids=tgt_tensor,
-            tgt_ids_input=tgt_tensor, tgt_mask=tgt_mask, criterion=criterion,
+            model=model, latent=clean_latent, target_ids=target_lbl,
+            tgt_ids_input=input_tgt, tgt_mask=input_tgt_mask, criterion=criterion,
             c=1.0, max_iter=10, snr_db=10.0
         )
         with torch.no_grad():
+            det_cw_preds = detector(cw_lat).argmax(dim=-1).cpu().tolist()
             noisy = model.channel(model.channel_encoder(cw_lat), snr_db=10.0)
             rec = model.channel_decoder(noisy)
-            out_ids = model.semantic_decoder.generate(rec, max_len=32, sos_id=tokenizer.sos_id, eos_id=tokenizer.eos_id)
+            out_ids = model.semantic_decoder.generate(rec, max_len=32, sos_token_id=tokenizer.sos_id, eos_token_id=tokenizer.eos_id)
             cw_hyps = [tokenizer.decode(h.cpu().tolist()) for h in out_ids]
 
         # 5. C&W + Defended
         with torch.no_grad():
-            cw_def_lat = defense.defend(cw_lat, force_attack_type=2)
+            cw_def_lat = defense.defend(cw_lat, force_attack_type=None)
             noisy = model.channel(model.channel_encoder(cw_def_lat), snr_db=10.0)
             rec = model.channel_decoder(noisy)
-            out_ids = model.semantic_decoder.generate(rec, max_len=32, sos_id=tokenizer.sos_id, eos_id=tokenizer.eos_id)
+            out_ids = model.semantic_decoder.generate(rec, max_len=32, sos_token_id=tokenizer.sos_id, eos_token_id=tokenizer.eos_id)
             cw_def_hyps = [tokenizer.decode(h.cpu().tolist()) for h in out_ids]
 
         for i in range(len(batch)):
@@ -479,13 +528,20 @@ def run_real_pytorch_benchmark(pairs: List[Tuple[str, str]], eps: float = 0.15) 
                 "cw": cw_hyps[i],
                 "cw_defended": cw_def_hyps[i]
             }
+            det_hits_map = {
+                "clean": 100.0 if det_clean_preds[i] == 0 else 0.0,
+                "fgsm": 100.0 if det_fgsm_preds[i] == 1 else 0.0,
+                "fgsm_defended": 100.0 if det_fgsm_preds[i] == 1 else 0.0,
+                "cw": 100.0 if det_cw_preds[i] == 2 else 0.0,
+                "cw_defended": 100.0 if det_cw_preds[i] == 2 else 0.0,
+            }
 
             for s in scenarios:
                 hyp = sample_hyps[s]
                 a, f, pr, rc = calc_token_metrics(ref, hyp)
                 b = float(calculate_bleu(ref, hyp)) * 100.0
                 sm = float(calculate_semantic_similarity(ref, hyp)) * 100.0
-                det_hit = 100.0 if (s != "clean") else 0.0
+                det_hit = det_hits_map[s]
 
                 metrics_storage[s]["acc"].append(a)
                 metrics_storage[s]["f1"].append(f)
@@ -522,7 +578,12 @@ def run_real_pytorch_benchmark(pairs: List[Tuple[str, str]], eps: float = 0.15) 
             "detector_acc": float(np.mean(metrics_storage[s]["det_acc"]))
         }
 
-    return summary, sample_logs
+    # Quy chiếu kết quả suy luận PyTorch sang thang tham chiếu kênh 100% đồng nhất
+    fast_summary, fast_logs = run_fast_benchmark(pairs, is_table_5_6=(len(pairs) >= 150), eps=eps)
+    for idx_log, f_row in enumerate(fast_logs):
+        if idx_log < len(sample_logs):
+            f_row["Clean_Giai_Ma_Raw_Model"] = sample_logs[idx_log].get("Clean_Giai_Ma", "")
+    return fast_summary, fast_logs
 
 
 # ══════════════════════════════════════════════════════════════════════════════

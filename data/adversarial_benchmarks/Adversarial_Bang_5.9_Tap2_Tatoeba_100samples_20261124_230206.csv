@@ -1,0 +1,6 @@
+﻿Kịch bản kiểm thử,Accuracy (%),F1 Macro (%),BLEU (%),Similarity (%),ΔAccuracy vs Clean,Tỷ lệ phục hồi (%)
+Không tấn công (Clean),71.27%,66.29%,40.17%,72.38%,Gốc,—
+FGSM (Chưa phòng thủ),40.92%,40.51%,12.74%,25.63%,-30.35%,—
+FGSM + Có phòng thủ,63.74%,60.66%,30.44%,59.20%,-7.53%,75.19%
+C&W (Chưa phòng thủ),32.14%,31.36%,6.41%,35.66%,-39.13%,—
+C&W + Có phòng thủ,57.56%,52.64%,22.04%,56.88%,-13.70%,64.98%

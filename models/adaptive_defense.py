@@ -32,7 +32,8 @@ class CWDenoiser(nn.Module):
     Bộ khử nhiễu chuyên dụng cho tấn công C&W.
     
     C&W tạo nhiễu L2 tối ưu, nhỏ nhưng tinh vi.
-    Chiến lược: AutoEncoder projection — chiếu latent về manifold sạch qua bottleneck.
+    Chiến lược: AutoEncoder projection kết hợp Gated Residual Connection
+    giúp chiếu latent về manifold sạch mà không làm biến dạng tín hiệu gốc.
     """
     def __init__(self, latent_dim: int = 128, bottleneck_dim: int = 64):
         super().__init__()
@@ -50,12 +51,20 @@ class CWDenoiser(nn.Module):
             nn.GELU(),
             nn.Linear(latent_dim, latent_dim)
         )
+        # Gated Residual network: điều phối tỷ lệ pha trộn giữa manifold khôi phục và tín hiệu thu
+        self.gate_net = nn.Sequential(
+            nn.Linear(latent_dim * 2, latent_dim),
+            nn.Sigmoid()
+        )
+        # Khởi tạo bias âm để mặc định ưu tiên bảo toàn tín hiệu gốc khi chưa hiệu chỉnh
+        nn.init.xavier_uniform_(self.gate_net[0].weight)
+        nn.init.constant_(self.gate_net[0].bias, -2.0)
     
     def forward(self, latent: torch.Tensor) -> torch.Tensor:
         compressed = self.encoder(latent)
         reconstructed = self.decoder(compressed)
-        # Residual blend: giữ lại 70% manifold sạch và 30% tín hiệu thu
-        return 0.7 * reconstructed + 0.3 * latent
+        gate = self.gate_net(torch.cat([latent, reconstructed], dim=-1))
+        return (1.0 - gate) * latent + gate * reconstructed
 
 
 class AdaptiveDefense(nn.Module):

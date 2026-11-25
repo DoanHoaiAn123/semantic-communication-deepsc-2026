@@ -70,13 +70,21 @@ class AdversarialTrainer:
         )
         self.detector_criterion = nn.CrossEntropyLoss()
 
-        # self.adaptive_defense đã chứa self.detector, khử trùng lặp parameters
-        all_params = list(self.model.parameters()) + list(self.adaptive_defense.parameters())
-        unique_params = list(dict.fromkeys(all_params))
+        # Tách nhóm tham số: model dùng lr chuẩn (1e-4), adaptive_defense & detector dùng detector_lr (1e-3)
         lr = getattr(self.config_train, 'lr', 1e-4) if not isinstance(self.config_train, dict) else self.config_train.get('lr', 1e-4)
+        det_lr = getattr(self.config_adv, 'detector_lr', 1e-3) if not isinstance(self.config_adv, dict) else self.config_adv.get('detector_lr', 1e-3)
         weight_decay = getattr(self.config_train, 'weight_decay', 1e-4) if not isinstance(self.config_train, dict) else self.config_train.get('weight_decay', 1e-4)
-        
-        self.optimizer = AdamW(unique_params, lr=lr, weight_decay=weight_decay)
+        model_params = list(self.model.parameters())
+        model_param_ids = {id(p) for p in model_params}
+        defense_params = [p for p in self.adaptive_defense.parameters() if id(p) not in model_param_ids]
+        self.optimizer = AdamW(
+            [
+                {'params': model_params, 'lr': lr},
+                {'params': defense_params, 'lr': max(lr, det_lr)},
+            ],
+            lr=lr,
+            weight_decay=weight_decay,
+        )
 
         # Scheduler
         epochs = getattr(self.config_train, 'epochs', 10) if not isinstance(self.config_train, dict) else self.config_train.get('epochs', 10)
@@ -114,6 +122,7 @@ class AdversarialTrainer:
             'processed_samples': self.processed_samples,
             'global_step': self.global_step,
             'losses': self.last_losses,
+            'vocab_sha256': self.run_metadata.get('vocab_sha256') if isinstance(self.run_metadata, dict) else None,
             'run_metadata': self.run_metadata,
         }
         os.makedirs(os.path.dirname(os.path.abspath(self.progress_path)), exist_ok=True)
@@ -232,11 +241,23 @@ class AdversarialTrainer:
             logits_cw = self.model.semantic_decoder(adv_rec_cw, input_tgt_ids, current_tgt_mask)
             loss_cw = self.criterion(logits_cw.reshape(-1, logits_cw.size(-1)), target_ids.reshape(-1))
 
-            # 7. Tổng hợp hàm mất mát
+            # 7. Neo giữ manifold không gian ẩn cho bộ khử nhiễu (bảo toàn chuẩn L2 trên tín hiệu sạch & khôi phục về clean_latent)
+            clean_target = clean_latent.detach()
+            identity_cw = self.adaptive_defense.cw_denoiser(clean_target)
+            identity_fgsm = self.adaptive_defense.fgsm_denoiser(clean_target)
+            loss_latent_reg = (
+                torch.mean((defended_cw - clean_target) ** 2)
+                + torch.mean((identity_cw - clean_target) ** 2)
+                + 0.5 * torch.mean((defended_fgsm - clean_target) ** 2)
+                + 0.5 * torch.mean((identity_fgsm - clean_target) ** 2)
+            )
+
+            # 8. Tổng hợp hàm mất mát
             loss_total = (self.alpha_clean * loss_clean + 
                           self.alpha_fgsm * loss_fgsm + 
                           self.alpha_cw * loss_cw + 
-                          self.alpha_detector * loss_detector)
+                          self.alpha_detector * loss_detector +
+                          0.5 * loss_latent_reg)
             
             # Attack generation backpropagates through the model to construct
             # perturbations. Only the training objective may update its weights.
@@ -245,7 +266,6 @@ class AdversarialTrainer:
             
             grad_clip = getattr(self.config_train, 'grad_clip', 1.0) if not isinstance(self.config_train, dict) else self.config_train.get('grad_clip', 1.0)
             torch.nn.utils.clip_grad_norm_(self.model.parameters(), grad_clip)
-            torch.nn.utils.clip_grad_norm_(self.detector.parameters(), grad_clip)
             torch.nn.utils.clip_grad_norm_(self.adaptive_defense.parameters(), grad_clip)
             
             self.optimizer.step()
@@ -459,6 +479,7 @@ class AdversarialTrainer:
             'train_samples': len(self.train_loader.dataset),
             'steps_per_epoch': len(self.train_loader),
             'losses': self.last_losses,
+            'vocab_sha256': self.run_metadata.get('vocab_sha256') if isinstance(self.run_metadata, dict) else None,
             'run_metadata': self.run_metadata,
         }
         temporary_path = str(path) + '.tmp'

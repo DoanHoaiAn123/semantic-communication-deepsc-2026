@@ -1,5 +1,6 @@
+import math
 import numpy as np
-from typing import Tuple
+from typing import Tuple, Optional
 
 class TraditionalPipeline:
     """
@@ -13,6 +14,8 @@ class TraditionalPipeline:
 
     def text_to_bits(self, text: str) -> np.ndarray:
         """Chuyển đổi văn bản thành mảng bit (UTF-8)."""
+        if not text:
+            return np.array([], dtype=np.uint8)
         bytes_data = text.encode('utf-8')
         bits_str = ''.join([format(b, '08b') for b in bytes_data])
         bits = np.array([int(b) for b in bits_str], dtype=np.uint8)
@@ -21,6 +24,8 @@ class TraditionalPipeline:
     def bits_to_text(self, bits: np.ndarray) -> str:
         """Giải mã mảng bit trở lại thành văn bản (UTF-8)."""
         n_bits = len(bits)
+        if n_bits == 0:
+            return ""
         if n_bits % 8 != 0:
             padding = 8 - (n_bits % 8)
             bits = np.pad(bits, (0, padding), 'constant', constant_values=0)
@@ -41,40 +46,51 @@ class TraditionalPipeline:
         bits = (symbols > 0).astype(np.uint8)
         return bits
 
-    def awgn_channel(self, symbols: np.ndarray, snr_db: float) -> np.ndarray:
+    def awgn_channel(self, symbols: np.ndarray, snr_db: float, rng: Optional[np.random.Generator] = None) -> np.ndarray:
         """Kênh truyền AWGN (Additive White Gaussian Noise)."""
-        if snr_db > 100:
+        snr_val = float(snr_db)
+        if not math.isfinite(snr_val):
+            raise ValueError(f"snr_db phải là số hữu hạn, nhận được: {snr_db}")
+        if snr_val > 100.0 or len(symbols) == 0:
             return symbols
             
-        p_signal = np.mean(symbols ** 2)
-        snr_linear = 10.0 ** (snr_db / 10.0)
+        gen = rng if rng is not None else np.random.default_rng()
+        p_signal = float(np.mean(symbols ** 2))
+        snr_linear = 10.0 ** (snr_val / 10.0)
         p_noise = p_signal / (2.0 * snr_linear + 1e-10)
-        noise = np.random.normal(0, np.sqrt(p_noise), size=symbols.shape)
+        noise = gen.normal(0, np.sqrt(p_noise), size=symbols.shape)
         return symbols + noise
 
-    def rayleigh_channel(self, symbols: np.ndarray, snr_db: float) -> np.ndarray:
-        """Kênh truyền Rayleigh Fading + AWGN (có cân bằng Zero-Forcing)."""
-        if snr_db > 100:
+    def rayleigh_channel(self, symbols: np.ndarray, snr_db: float, rng: Optional[np.random.Generator] = None) -> np.ndarray:
+        """Kênh truyền Rayleigh Fading + AWGN (có cân bằng kênh MMSE/CSI)."""
+        snr_val = float(snr_db)
+        if not math.isfinite(snr_val):
+            raise ValueError(f"snr_db phải là số hữu hạn, nhận được: {snr_db}")
+        if snr_val > 100.0 or len(symbols) == 0:
             return symbols
             
+        gen = rng if rng is not None else np.random.default_rng()
         # Hệ số fading Rayleigh
-        h_r = np.random.normal(0, np.sqrt(0.5), size=symbols.shape)
-        h_i = np.random.normal(0, np.sqrt(0.5), size=symbols.shape)
+        h_r = gen.normal(0, np.sqrt(0.5), size=symbols.shape)
+        h_i = gen.normal(0, np.sqrt(0.5), size=symbols.shape)
         h = np.sqrt(h_r ** 2 + h_i ** 2 + 1e-10)
         
         # Nhiễu AWGN
-        p_signal = np.mean(symbols ** 2)
-        snr_linear = 10.0 ** (snr_db / 10.0)
+        p_signal = float(np.mean(symbols ** 2))
+        snr_linear = 10.0 ** (snr_val / 10.0)
         p_noise = p_signal / (2.0 * snr_linear + 1e-10)
-        noise = np.random.normal(0, np.sqrt(p_noise), size=symbols.shape)
+        noise = gen.normal(0, np.sqrt(p_noise), size=symbols.shape)
         
-        # Nhận và cân bằng
+        # Nhận và cân bằng kênh (với BPSK quyết định dấu > 0, nhân h dương bảo toàn chính xác dấu của y/h)
         y = h * symbols + noise
-        y_eq = y / (h + 1e-6)
+        noise_to_sig = p_noise / (p_signal + 1e-10)
+        y_eq = (h * y) / (h ** 2 + noise_to_sig + 1e-8)
         return y_eq
 
     def calculate_ber(self, original_bits: np.ndarray, received_bits: np.ndarray) -> float:
         """Tính toán tỷ lệ lỗi bit (Bit Error Rate - BER)."""
+        if len(original_bits) == 0 and len(received_bits) == 0:
+            return 0.0
         min_len = min(len(original_bits), len(received_bits))
         if min_len == 0:
             return 1.0
@@ -91,24 +107,30 @@ class TraditionalPipeline:
             text (str): Văn bản gốc cần truyền.
             snr_db (float): SNR của kênh truyền (dB).
             channel_type (str): 'awgn' hoặc 'rayleigh'.
-            seed (int, optional): Seed ngẫu nhiên để tái lập kết quả nhất quán.
+            seed (int, optional): Seed ngẫu nhiên cục bộ để tái lập kết quả nhất quán mà không làm ô nhiễm RNG toàn cục.
             
         Returns:
             Tuple[str, float]: (Văn bản nhận được, Tỷ lệ lỗi bit BER)
         """
+        snr_val = float(snr_db)
+        if not math.isfinite(snr_val):
+            raise ValueError(f"snr_db phải là số hữu hạn, nhận được: {snr_db}")
+        ct = channel_type.strip().lower()
+        if 'rayleigh' not in ct and 'awgn' not in ct:
+            raise ValueError(f"Loại kênh '{channel_type}' không hợp lệ. Chỉ hỗ trợ 'awgn' hoặc 'rayleigh'.")
+
         if not text:
             return "", 0.0
             
-        if seed is not None:
-            np.random.seed(abs(int(seed)) % (2**32 - 1))
+        rng = np.random.default_rng(abs(int(seed)) % (2**32 - 1)) if seed is not None else np.random.default_rng()
             
         tx_bits = self.text_to_bits(text)
         tx_symbols = self.bpsk_modulate(tx_bits)
         
-        if 'rayleigh' in channel_type.lower():
-            rx_symbols = self.rayleigh_channel(tx_symbols, snr_db)
+        if 'rayleigh' in ct:
+            rx_symbols = self.rayleigh_channel(tx_symbols, snr_val, rng=rng)
         else:
-            rx_symbols = self.awgn_channel(tx_symbols, snr_db)
+            rx_symbols = self.awgn_channel(tx_symbols, snr_val, rng=rng)
             
         rx_bits = self.bpsk_demodulate(rx_symbols)
         ber = self.calculate_ber(tx_bits, rx_bits)

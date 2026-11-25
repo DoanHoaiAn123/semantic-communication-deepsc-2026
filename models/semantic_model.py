@@ -52,14 +52,28 @@ class SemanticCommModel(nn.Module):
 
     def set_channel(self, channel_type: str = 'awgn'):
         """Chuyển đổi giữa kênh AWGN và kênh Rayleigh."""
-        if 'rayleigh' in channel_type.lower():
+        ct = channel_type.strip().lower()
+        if 'rayleigh' in ct:
             self.channel = self.rayleigh_channel
-        else:
+        elif 'awgn' in ct:
             self.channel = self.awgn_channel
+        else:
+            raise ValueError(f"Loại kênh '{channel_type}' không hợp lệ. Chỉ hỗ trợ 'awgn' hoặc 'rayleigh'.")
+
+    def _resolve_channel(self, channel_type: Optional[str] = None):
+        if channel_type is None:
+            return self.channel
+        ct = channel_type.strip().lower()
+        if 'rayleigh' in ct:
+            return self.rayleigh_channel
+        elif 'awgn' in ct:
+            return self.awgn_channel
+        else:
+            raise ValueError(f"Loại kênh '{channel_type}' không hợp lệ. Chỉ hỗ trợ 'awgn' hoặc 'rayleigh'.")
 
     def forward(self, src_ids: torch.Tensor, tgt_ids: torch.Tensor, snr_db: float, 
                 src_mask: Optional[torch.Tensor] = None, tgt_mask: Optional[torch.Tensor] = None,
-                channel_type: str = 'awgn') -> torch.Tensor:
+                channel_type: Optional[str] = None) -> torch.Tensor:
         """
         Lan truyền tiến dùng cho quá trình huấn luyện với Teacher Forcing.
         """
@@ -70,7 +84,7 @@ class SemanticCommModel(nn.Module):
         channel_symbols = self.channel_encoder(latent)
         
         # Bước 3: Truyền qua kênh nhiễu
-        chan = self.rayleigh_channel if 'rayleigh' in channel_type.lower() else self.awgn_channel
+        chan = self._resolve_channel(channel_type)
         noisy_symbols = chan(channel_symbols, snr_db)
         
         # Bước 4: Giải mã kênh
@@ -83,10 +97,16 @@ class SemanticCommModel(nn.Module):
 
     def transmit(self, src_ids: torch.Tensor, snr_db: float, max_len: int, 
                  sos_token_id: int, eos_token_id: int, src_mask: Optional[torch.Tensor] = None,
-                 channel_type: str = 'awgn') -> torch.Tensor:
+                 channel_type: Optional[str] = None, strategy: str = 'greedy') -> torch.Tensor:
         """
         Mô phỏng quá trình truyền nhận suy luận (Inference / Evaluation).
         """
+        B, S = src_ids.size()
+        # Kiểm tra chuỗi rỗng (chỉ chứa [PAD] hoặc chỉ có [SOS], [EOS] mà không có từ nội dung)
+        content_mask = (src_ids != 0) & (src_ids != sos_token_id) & (src_ids != eos_token_id)
+        if S == 0 or not content_mask.any():
+            return torch.full((B, 2), eos_token_id, dtype=torch.long, device=src_ids.device)
+
         # Bước 1: Mã hóa ngữ nghĩa
         latent = self.semantic_encoder(src_ids, src_mask)
         
@@ -94,15 +114,21 @@ class SemanticCommModel(nn.Module):
         channel_symbols = self.channel_encoder(latent)
         
         # Bước 3: Truyền qua kênh nhiễu (AWGN / Rayleigh)
-        chan = self.rayleigh_channel if 'rayleigh' in channel_type.lower() else self.awgn_channel
+        chan = self._resolve_channel(channel_type)
         noisy_symbols = chan(channel_symbols, snr_db)
         
         # Bước 4: Giải mã kênh
         recovered_latent = self.channel_decoder(noisy_symbols)
         
-        # Bước 5: Giải mã ngữ nghĩa tuần tự (Greedy Decoding)
+        # Bước 5: Giải mã ngữ nghĩa tuần tự
         token_ids = self.semantic_decoder.generate(
-            recovered_latent, max_len, sos_token_id, eos_token_id, strategy='greedy'
+            recovered_latent, max_len, sos_token_id, eos_token_id, strategy=strategy
         )
         
+        # Nếu một mẫu cụ thể trong batch không có token nội dung, gán chuỗi rỗng [SOS, EOS]
+        empty_rows = ~content_mask.any(dim=1)
+        if empty_rows.any():
+            token_ids[empty_rows] = eos_token_id
+            token_ids[empty_rows, 0] = sos_token_id
+            
         return token_ids

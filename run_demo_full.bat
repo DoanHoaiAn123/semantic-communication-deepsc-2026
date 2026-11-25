@@ -8,7 +8,7 @@ echo ======================================================================
 echo.
 
 cd /d "%~dp0"
-set USERPROFILE=%~dp0
+set MPLCONFIGDIR=%TEMP%\matplotlib_deepsc
 set STREAMLIT_CONFIG_DIR=%~dp0.streamlit
 set STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
 

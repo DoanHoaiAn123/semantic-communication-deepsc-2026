@@ -17,8 +17,8 @@ from training.dataset import create_dataloaders
 from training.train import Trainer
 
 def run_experiment_1(model, test_loader, tokenizer, device, config):
-    """Experiment 1: Truyền thông ở điều kiện không nhiễu (SNR cao = 20dB)."""
-    print("\n--- Chay Experiment 1: Dieu kien khong nhieu (SNR=20dB) ---")
+    """Experiment 1: Truyền thông ở điều kiện SNR cao (SNR = 20dB)."""
+    print("\n--- Chay Experiment 1: Dieu kien SNR cao (SNR=20dB) ---")
     model.eval()
     results = []
     
@@ -31,7 +31,7 @@ def run_experiment_1(model, test_loader, tokenizer, device, config):
             output_ids = model.transmit(
                 src_ids=src_ids,
                 snr_db=20.0,
-                max_len=32,
+                max_len=48,
                 sos_token_id=tokenizer.sos_id,
                 eos_token_id=tokenizer.eos_id,
                 src_mask=batch['src_mask'].to(device)
@@ -66,7 +66,7 @@ def run_experiment_2(model, test_loader, tokenizer, device, config, snr_levels):
                 output_ids = model.transmit(
                     src_ids=src_ids,
                     snr_db=snr,
-                    max_len=32,
+                    max_len=48,
                     sos_token_id=tokenizer.sos_id,
                     eos_token_id=tokenizer.eos_id,
                     src_mask=batch['src_mask'].to(device)
@@ -152,9 +152,8 @@ def main():
     traditional_pipeline = TraditionalPipeline()
     snr_levels = [-5, 0, 5, 10, 15, 20]
     
-    # Chạy các thí nghiệm
+    # Chạy các thí nghiệm (không chạy trùng SNR=20 hai lần)
     all_results = []
-    all_results.extend(run_experiment_1(model, test_loader, tokenizer, device, config))
     all_results.extend(run_experiment_2(model, test_loader, tokenizer, device, config, snr_levels))
     all_results.extend(run_experiment_3(traditional_pipeline, test_loader, snr_levels))
     
@@ -163,26 +162,29 @@ def main():
     final_data = []
     for res in tqdm(all_results, desc="Tinh toan Metrics"):
         try:
-            bleu = calculate_bleu(res['tgt_text'], res['pred_text'])
-            bertscore_result = calculate_bertscore(res['tgt_text'], res['pred_text'])
+            # TraditionalPipeline truyền văn bản nguồn (src_text) ở mức bit UTF-8 nên cần so với src_text;
+            # SemanticCommModel dịch và truyền ngữ nghĩa sang văn bản đích (tgt_text) nên so với tgt_text.
+            ref_for_eval = res['src_text'] if res.get('method') == 'Traditional' else res['tgt_text']
+            bleu = calculate_bleu(ref_for_eval, res['pred_text'])
+            bertscore_result = calculate_bertscore(ref_for_eval, res['pred_text'])
             if isinstance(bertscore_result, dict):
                 bertscore = bertscore_result.get('F1', bertscore_result.get('f1', 0.0))
             else:
                 bertscore = float(bertscore_result)
-            sem_sim = calculate_semantic_similarity(res['tgt_text'], res['pred_text'])
+            sem_sim = calculate_semantic_similarity(ref_for_eval, res['pred_text'])
             
             res['bleu'] = bleu
             res['bertscore'] = bertscore
             res['semantic_similarity'] = sem_sim
             if 'ber_traditional' not in res:
-                res['ber_traditional'] = 0.0
+                res['ber_traditional'] = None
             final_data.append(res)
         except Exception:
             res['bleu'] = 0.0
             res['bertscore'] = 0.0
             res['semantic_similarity'] = 0.0
             if 'ber_traditional' not in res:
-                res['ber_traditional'] = 0.0
+                res['ber_traditional'] = None
             final_data.append(res)
             
     # Lưu kết quả

@@ -1,0 +1,112 @@
+{
+  "status": "completed",
+  "updated_at": "2026-11-23T22:41:13.671536+00:00",
+  "epoch": 2,
+  "epochs": 2,
+  "step": 770,
+  "steps_per_epoch": 770,
+  "train_samples": 49264,
+  "processed_samples": 98528,
+  "global_step": 1540,
+  "losses": {
+    "total": 4.1017961502075195,
+    "clean": 4.282047271728516,
+    "fgsm": 4.345789909362793,
+    "cw": 4.561318874359131,
+    "detector": 1.621997356414795
+  },
+  "run_metadata": {
+    "started_at": "2026-11-24T03:53:33.889117+07:00",
+    "pid": 13636,
+    "arguments": {
+      "checkpoint": "checkpoints/best_model.pth",
+      "dataset": "opus",
+      "samples": 50000,
+      "epochs": 2,
+      "batch_size": 64,
+      "lr": 0.0001,
+      "cw_steps": 15,
+      "save_every_steps": 25,
+      "threads": 16,
+      "seed": 42,
+      "run_dir": null
+    },
+    "source_checkpoint": "C:\\Users\\doanh\\OneDrive\\Desktop\\Tốt Nghiệp 2026\\semantic-communication\\checkpoints\\best_model.pth",
+    "source_checkpoint_sha256": "38996e1c80716ffcbe45cddea7ccedc7c38ab252de7bb7c90175d62af794ba8b",
+    "source_epoch": 8,
+    "vocab_sha256": "97105f6bcefeccd03c7b7ac10374170508a0c062a811a8ef9dac200d681cd189",
+    "dataset_counts": {
+      "train": 49264,
+      "validation": 1794,
+      "test": 1838
+    },
+    "train_batches_per_epoch": 770,
+    "planned_updates": 1540,
+    "planned_sample_exposures": 98528,
+    "data_config": {
+      "dataset_name": "opus_raw",
+      "max_samples": 50000,
+      "language_pairs": [
+        {
+          "src": "en",
+          "tgt": "vi",
+          "subset": "en-vi"
+        },
+        {
+          "src": "en",
+          "tgt": "zh",
+          "subset": "en-zh"
+        },
+        {
+          "src": "vi",
+          "tgt": "zh",
+          "subset": null
+        }
+      ],
+      "max_samples_per_pair": 500,
+      "test_ratio": 0.1,
+      "val_ratio": 0.1,
+      "use_supplementary_dataset": true,
+      "supplementary_dataset_path": "data/processed/dataset2_tatoeba_wmt_info.json"
+    },
+    "model_config": {
+      "d_model": 256,
+      "n_heads": 4,
+      "n_layers": 2,
+      "d_ff": 512,
+      "latent_dim": 128,
+      "max_seq_len": 64,
+      "dropout": 0.1,
+      "vocab_size": 10000
+    },
+    "training_config": {
+      "lr": 0.0001,
+      "batch_size": 64,
+      "epochs": 2,
+      "weight_decay": 1e-05,
+      "warmup_steps": 500,
+      "grad_clip": 1.0,
+      "snr_min": -5.0,
+      "snr_max": 20.0,
+      "noise_aware": true,
+      "checkpoint_dir": "C:\\Users\\doanh\\OneDrive\\Desktop\\Tốt Nghiệp 2026\\semantic-communication\\checkpoints",
+      "results_dir": "C:\\Users\\doanh\\OneDrive\\Desktop\\Tốt Nghiệp 2026\\semantic-communication\\results"
+    },
+    "adversarial_config": {
+      "epsilon_fgsm": 0.15,
+      "cw_c": 1.0,
+      "cw_kappa": 0.0,
+      "cw_max_iter": 15,
+      "cw_lr": 0.01,
+      "alpha_clean": 0.4,
+      "alpha_fgsm": 0.25,
+      "alpha_cw": 0.25,
+      "alpha_detector": 0.1,
+      "detector_hidden_dim": 256,
+      "detector_lr": 0.001
+    },
+    "split_seed": 42,
+    "split_matches_standard_run": false,
+    "split_note": "Standard checkpoint has no split or RNG state. This is a new seeded split of the same supported corpus; validation/test are not independent of standard pretraining."
+  }
+}
