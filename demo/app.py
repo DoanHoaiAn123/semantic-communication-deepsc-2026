@@ -1455,20 +1455,8 @@ with st.sidebar:
         label_visibility="collapsed",
         key="main_nav_radio"
     )
-
-    st.markdown(f"<hr style='margin: 12px 0;'>", unsafe_allow_html=True)
-    st.markdown(f"<p style='font-size: 0.78rem;  letter-spacing: 0.5px; font-weight: 700; color: {colors['subtext']}; margin-bottom: 6px;'>Chế độ động cơ suy luận</p>", unsafe_allow_html=True)
-    engine_mode_ui = st.selectbox(
-        "Chế độ động cơ:",
-        ["Fast Simulation (Chuẩn KLTN)", "Live PyTorch Model (Checkpoint Thật)"],
-        index=0,
-        label_visibility="collapsed",
-        key="sidebar_engine_mode"
-    )
-    use_live_pytorch_flag = ("Live PyTorch" in engine_mode_ui)
+    use_live_pytorch_flag = False
     _loaded_ckpt = load_model_and_tokenizer()
-    if _loaded_ckpt and _loaded_ckpt[0] is not None and _loaded_ckpt[1] is not None:
-        st.caption(f"✓ PyTorch Ready (`vocab={_loaded_ckpt[1].vocab_size:,}` từ)")
 
 # ==========================================
 # 2. TIÊU ĐỀ CHÍNH TRANG WEB
